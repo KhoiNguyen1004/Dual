@@ -1,0 +1,757 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6A20DC67251ADC1600E89BAE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6A20DC66251ADC1600E89BAE /* GoogleService-Info.plist */; };
+		6A6374FD2518E16C0019A984 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6374FC2518E16C0019A984 /* AppDelegate.swift */; };
+		6A6374FF2518E16C0019A984 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6374FE2518E16C0019A984 /* SceneDelegate.swift */; };
+		6A6375012518E16C0019A984 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6375002518E16C0019A984 /* ViewController.swift */; };
+		6A6375042518E16C0019A984 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A6375022518E16C0019A984 /* Main.storyboard */; };
+		6A6375062518E16D0019A984 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A6375052518E16D0019A984 /* Assets.xcassets */; };
+		6A6375092518E16E0019A984 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A6375072518E16D0019A984 /* LaunchScreen.storyboard */; };
+		6A6375142518E16E0019A984 /* DualTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6375132518E16E0019A984 /* DualTests.swift */; };
+		6A63751F2518E16E0019A984 /* DualUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A63751E2518E16E0019A984 /* DualUITests.swift */; };
+		6D9BDF2591CEB89635767F1E /* Pods_DualTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F71504BDFD09D9F0EEC89FC /* Pods_DualTests.framework */; };
+		DCA27C4D2EFCB8AAA40E61BD /* Pods_Dual.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E5E1652748770AF643C1CA9 /* Pods_Dual.framework */; };
+		F1320D109A6ED01E66589935 /* Pods_Dual_DualUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0952409C424F1E6B8460F611 /* Pods_Dual_DualUITests.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		6A6375102518E16E0019A984 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6A6374F12518E16C0019A984 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6A6374F82518E16C0019A984;
+			remoteInfo = Dual;
+		};
+		6A63751B2518E16E0019A984 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6A6374F12518E16C0019A984 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6A6374F82518E16C0019A984;
+			remoteInfo = Dual;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0952409C424F1E6B8460F611 /* Pods_Dual_DualUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Dual_DualUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		17C65DD14320DEE0B4F0A60F /* Pods-Dual-DualUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Dual-DualUITests.debug.xcconfig"; path = "Target Support Files/Pods-Dual-DualUITests/Pods-Dual-DualUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		3C346B18E285A5C9362192B9 /* Pods-DualTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DualTests.release.xcconfig"; path = "Target Support Files/Pods-DualTests/Pods-DualTests.release.xcconfig"; sourceTree = "<group>"; };
+		4F71504BDFD09D9F0EEC89FC /* Pods_DualTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DualTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		52AF72C23AC9B097F2B6E6C0 /* Pods-DualTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DualTests.debug.xcconfig"; path = "Target Support Files/Pods-DualTests/Pods-DualTests.debug.xcconfig"; sourceTree = "<group>"; };
+		6A20DC66251ADC1600E89BAE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		6A488A92A15C6A105D6297E7 /* Pods-Dual.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Dual.release.xcconfig"; path = "Target Support Files/Pods-Dual/Pods-Dual.release.xcconfig"; sourceTree = "<group>"; };
+		6A6374F92518E16C0019A984 /* Dual.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dual.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6A6374FC2518E16C0019A984 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		6A6374FE2518E16C0019A984 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		6A6375002518E16C0019A984 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		6A6375032518E16C0019A984 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		6A6375052518E16D0019A984 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		6A6375082518E16E0019A984 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		6A63750A2518E16E0019A984 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6A63750F2518E16E0019A984 /* DualTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DualTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6A6375132518E16E0019A984 /* DualTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DualTests.swift; sourceTree = "<group>"; };
+		6A6375152518E16E0019A984 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6A63751A2518E16E0019A984 /* DualUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DualUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6A63751E2518E16E0019A984 /* DualUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DualUITests.swift; sourceTree = "<group>"; };
+		6A6375202518E16E0019A984 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6A8A42818D5D4632EC1B0043 /* Pods-Dual.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Dual.debug.xcconfig"; path = "Target Support Files/Pods-Dual/Pods-Dual.debug.xcconfig"; sourceTree = "<group>"; };
+		799FBFC27ED5C4223A0B7B91 /* Pods-Dual-DualUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Dual-DualUITests.release.xcconfig"; path = "Target Support Files/Pods-Dual-DualUITests/Pods-Dual-DualUITests.release.xcconfig"; sourceTree = "<group>"; };
+		8E5E1652748770AF643C1CA9 /* Pods_Dual.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Dual.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6A6374F62518E16C0019A984 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DCA27C4D2EFCB8AAA40E61BD /* Pods_Dual.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6A63750C2518E16E0019A984 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6D9BDF2591CEB89635767F1E /* Pods_DualTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6A6375172518E16E0019A984 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F1320D109A6ED01E66589935 /* Pods_Dual_DualUITests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6A6374F02518E16C0019A984 = {
+			isa = PBXGroup;
+			children = (
+				6A6374FB2518E16C0019A984 /* Dual */,
+				6A6375122518E16E0019A984 /* DualTests */,
+				6A63751D2518E16E0019A984 /* DualUITests */,
+				6A6374FA2518E16C0019A984 /* Products */,
+				E865F12582C65D7D6F9B1F4C /* Pods */,
+				ED42D39194A3DE6E9DD6AF3C /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		6A6374FA2518E16C0019A984 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6A6374F92518E16C0019A984 /* Dual.app */,
+				6A63750F2518E16E0019A984 /* DualTests.xctest */,
+				6A63751A2518E16E0019A984 /* DualUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6A6374FB2518E16C0019A984 /* Dual */ = {
+			isa = PBXGroup;
+			children = (
+				6A6374FC2518E16C0019A984 /* AppDelegate.swift */,
+				6A6374FE2518E16C0019A984 /* SceneDelegate.swift */,
+				6A6375002518E16C0019A984 /* ViewController.swift */,
+				6A6375022518E16C0019A984 /* Main.storyboard */,
+				6A6375052518E16D0019A984 /* Assets.xcassets */,
+				6A6375072518E16D0019A984 /* LaunchScreen.storyboard */,
+				6A20DC66251ADC1600E89BAE /* GoogleService-Info.plist */,
+				6A63750A2518E16E0019A984 /* Info.plist */,
+			);
+			path = Dual;
+			sourceTree = "<group>";
+		};
+		6A6375122518E16E0019A984 /* DualTests */ = {
+			isa = PBXGroup;
+			children = (
+				6A6375132518E16E0019A984 /* DualTests.swift */,
+				6A6375152518E16E0019A984 /* Info.plist */,
+			);
+			path = DualTests;
+			sourceTree = "<group>";
+		};
+		6A63751D2518E16E0019A984 /* DualUITests */ = {
+			isa = PBXGroup;
+			children = (
+				6A63751E2518E16E0019A984 /* DualUITests.swift */,
+				6A6375202518E16E0019A984 /* Info.plist */,
+			);
+			path = DualUITests;
+			sourceTree = "<group>";
+		};
+		E865F12582C65D7D6F9B1F4C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6A8A42818D5D4632EC1B0043 /* Pods-Dual.debug.xcconfig */,
+				6A488A92A15C6A105D6297E7 /* Pods-Dual.release.xcconfig */,
+				17C65DD14320DEE0B4F0A60F /* Pods-Dual-DualUITests.debug.xcconfig */,
+				799FBFC27ED5C4223A0B7B91 /* Pods-Dual-DualUITests.release.xcconfig */,
+				52AF72C23AC9B097F2B6E6C0 /* Pods-DualTests.debug.xcconfig */,
+				3C346B18E285A5C9362192B9 /* Pods-DualTests.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		ED42D39194A3DE6E9DD6AF3C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8E5E1652748770AF643C1CA9 /* Pods_Dual.framework */,
+				0952409C424F1E6B8460F611 /* Pods_Dual_DualUITests.framework */,
+				4F71504BDFD09D9F0EEC89FC /* Pods_DualTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6A6374F82518E16C0019A984 /* Dual */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6A6375232518E16E0019A984 /* Build configuration list for PBXNativeTarget "Dual" */;
+			buildPhases = (
+				BB695BABBE591E9665C53572 /* [CP] Check Pods Manifest.lock */,
+				6A6374F52518E16C0019A984 /* Sources */,
+				6A6374F62518E16C0019A984 /* Frameworks */,
+				6A6374F72518E16C0019A984 /* Resources */,
+				A91CCBE285E2B41F9479D00A /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Dual;
+			productName = Dual;
+			productReference = 6A6374F92518E16C0019A984 /* Dual.app */;
+			productType = "com.apple.product-type.application";
+		};
+		6A63750E2518E16E0019A984 /* DualTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6A6375262518E16E0019A984 /* Build configuration list for PBXNativeTarget "DualTests" */;
+			buildPhases = (
+				B0D6FD6EE765CE2AF5B42BB3 /* [CP] Check Pods Manifest.lock */,
+				6A63750B2518E16E0019A984 /* Sources */,
+				6A63750C2518E16E0019A984 /* Frameworks */,
+				6A63750D2518E16E0019A984 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6A6375112518E16E0019A984 /* PBXTargetDependency */,
+			);
+			name = DualTests;
+			productName = DualTests;
+			productReference = 6A63750F2518E16E0019A984 /* DualTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		6A6375192518E16E0019A984 /* DualUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6A6375292518E16E0019A984 /* Build configuration list for PBXNativeTarget "DualUITests" */;
+			buildPhases = (
+				97D3B856B8448D930F05FEA4 /* [CP] Check Pods Manifest.lock */,
+				6A6375162518E16E0019A984 /* Sources */,
+				6A6375172518E16E0019A984 /* Frameworks */,
+				6A6375182518E16E0019A984 /* Resources */,
+				93506E7177543B004920B004 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6A63751C2518E16E0019A984 /* PBXTargetDependency */,
+			);
+			name = DualUITests;
+			productName = DualUITests;
+			productReference = 6A63751A2518E16E0019A984 /* DualUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6A6374F12518E16C0019A984 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1200;
+				LastUpgradeCheck = 1200;
+				TargetAttributes = {
+					6A6374F82518E16C0019A984 = {
+						CreatedOnToolsVersion = 12.0;
+					};
+					6A63750E2518E16E0019A984 = {
+						CreatedOnToolsVersion = 12.0;
+						TestTargetID = 6A6374F82518E16C0019A984;
+					};
+					6A6375192518E16E0019A984 = {
+						CreatedOnToolsVersion = 12.0;
+						TestTargetID = 6A6374F82518E16C0019A984;
+					};
+				};
+			};
+			buildConfigurationList = 6A6374F42518E16C0019A984 /* Build configuration list for PBXProject "Dual" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 6A6374F02518E16C0019A984;
+			productRefGroup = 6A6374FA2518E16C0019A984 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6A6374F82518E16C0019A984 /* Dual */,
+				6A63750E2518E16E0019A984 /* DualTests */,
+				6A6375192518E16E0019A984 /* DualUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6A6374F72518E16C0019A984 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6A6375092518E16E0019A984 /* LaunchScreen.storyboard in Resources */,
+				6A20DC67251ADC1600E89BAE /* GoogleService-Info.plist in Resources */,
+				6A6375062518E16D0019A984 /* Assets.xcassets in Resources */,
+				6A6375042518E16C0019A984 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6A63750D2518E16E0019A984 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6A6375182518E16E0019A984 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		93506E7177543B004920B004 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Dual-DualUITests/Pods-Dual-DualUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Dual-DualUITests/Pods-Dual-DualUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Dual-DualUITests/Pods-Dual-DualUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		97D3B856B8448D930F05FEA4 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Dual-DualUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A91CCBE285E2B41F9479D00A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Dual/Pods-Dual-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Dual/Pods-Dual-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Dual/Pods-Dual-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B0D6FD6EE765CE2AF5B42BB3 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DualTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BB695BABBE591E9665C53572 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Dual-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6A6374F52518E16C0019A984 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6A6375012518E16C0019A984 /* ViewController.swift in Sources */,
+				6A6374FD2518E16C0019A984 /* AppDelegate.swift in Sources */,
+				6A6374FF2518E16C0019A984 /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6A63750B2518E16E0019A984 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6A6375142518E16E0019A984 /* DualTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6A6375162518E16E0019A984 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6A63751F2518E16E0019A984 /* DualUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		6A6375112518E16E0019A984 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6A6374F82518E16C0019A984 /* Dual */;
+			targetProxy = 6A6375102518E16E0019A984 /* PBXContainerItemProxy */;
+		};
+		6A63751C2518E16E0019A984 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6A6374F82518E16C0019A984 /* Dual */;
+			targetProxy = 6A63751B2518E16E0019A984 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		6A6375022518E16C0019A984 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6A6375032518E16C0019A984 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		6A6375072518E16D0019A984 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6A6375082518E16E0019A984 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		6A6375212518E16E0019A984 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		6A6375222518E16E0019A984 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		6A6375242518E16E0019A984 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6A8A42818D5D4632EC1B0043 /* Pods-Dual.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = LXVXS9V5X7;
+				INFOPLIST_FILE = Dual/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = Dual.LLC.Dual;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6A6375252518E16E0019A984 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6A488A92A15C6A105D6297E7 /* Pods-Dual.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = LXVXS9V5X7;
+				INFOPLIST_FILE = Dual/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = Dual.LLC.Dual;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		6A6375272518E16E0019A984 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 52AF72C23AC9B097F2B6E6C0 /* Pods-DualTests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = LXVXS9V5X7;
+				INFOPLIST_FILE = DualTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = Dual.LLC.DualTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Dual.app/Dual";
+			};
+			name = Debug;
+		};
+		6A6375282518E16E0019A984 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3C346B18E285A5C9362192B9 /* Pods-DualTests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = LXVXS9V5X7;
+				INFOPLIST_FILE = DualTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = Dual.LLC.DualTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Dual.app/Dual";
+			};
+			name = Release;
+		};
+		6A63752A2518E16E0019A984 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 17C65DD14320DEE0B4F0A60F /* Pods-Dual-DualUITests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = LXVXS9V5X7;
+				INFOPLIST_FILE = DualUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = Dual.LLC.DualUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Dual;
+			};
+			name = Debug;
+		};
+		6A63752B2518E16E0019A984 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 799FBFC27ED5C4223A0B7B91 /* Pods-Dual-DualUITests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = LXVXS9V5X7;
+				INFOPLIST_FILE = DualUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = Dual.LLC.DualUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Dual;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6A6374F42518E16C0019A984 /* Build configuration list for PBXProject "Dual" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6A6375212518E16E0019A984 /* Debug */,
+				6A6375222518E16E0019A984 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6A6375232518E16E0019A984 /* Build configuration list for PBXNativeTarget "Dual" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6A6375242518E16E0019A984 /* Debug */,
+				6A6375252518E16E0019A984 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6A6375262518E16E0019A984 /* Build configuration list for PBXNativeTarget "DualTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6A6375272518E16E0019A984 /* Debug */,
+				6A6375282518E16E0019A984 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6A6375292518E16E0019A984 /* Build configuration list for PBXNativeTarget "DualUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6A63752A2518E16E0019A984 /* Debug */,
+				6A63752B2518E16E0019A984 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 6A6374F12518E16C0019A984 /* Project object */;
+}
