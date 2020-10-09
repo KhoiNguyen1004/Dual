@@ -7,6 +7,8 @@
 
 import UIKit
 import Firebase
+import PixelSDK
+
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,6 +21,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         FirebaseApp.configure()
+        PixelSDK.setup(pixel_key)
+        PixelSDK.shared.maxVideoDuration = 60
+        
         
         let userDefaults = UserDefaults.standard
         
@@ -41,6 +46,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("The app has been launched before. Loading UserDefaults...")
             // Run code here for every other launch but the first
         }
+        
+        
         
         return true
     }

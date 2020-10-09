@@ -92,7 +92,7 @@ class InterestedVC: UIViewController, UICollectionViewDataSource, UICollectionVi
     
     func loadGame() {
         
-        DataService.instance.mainFireStoreRef.collection("Support_game").order(by: "name", descending: false).getDocuments { (snap, err) in
+        DataService.instance.mainFireStoreRef.collection("Support_game").order(by: "name", descending: true).getDocuments { (snap, err) in
             
             
             if err != nil {
@@ -108,9 +108,9 @@ class InterestedVC: UIViewController, UICollectionViewDataSource, UICollectionVi
                 
                 if i["name"] as? String != "Others" {
                     
-                    let cuisine = InterestedModel(postKey: item.documentID, Game_model: i)
+                    let item  = InterestedModel(postKey: item.documentID, Game_model: i)
                     
-                    self.itemList.append(cuisine)
+                    self.itemList.insert(item, at: 0)
                     
                 }
                 
