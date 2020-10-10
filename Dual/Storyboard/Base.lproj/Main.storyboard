@@ -164,7 +164,7 @@
             <objects>
                 <viewController id="FEs-O1-7jQ" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="W1R-yA-BQP">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="7ew-EI-sOK"/>
                         <color key="backgroundColor" systemColor="systemYellowColor"/>
@@ -467,6 +467,9 @@
                                         <real key="value" value="20"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="postBtnPressed:" destination="y8y-QU-z39" eventType="touchUpInside" id="vjR-3X-9M4"/>
+                                </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="tas-s9-UL4">
                                 <rect key="frame" x="219" y="362" width="140" height="42"/>
@@ -608,7 +611,7 @@
             <objects>
                 <viewController id="N5p-Er-kyy" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="qar-o2-eHG">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="Xa0-Vk-yUQ"/>
                         <color key="backgroundColor" systemColor="systemBlueColor"/>
@@ -624,7 +627,7 @@
             <objects>
                 <viewController id="i7D-lb-cTa" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="SPI-PM-aY3">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="8H1-O4-0ep"/>
                         <color key="backgroundColor" systemColor="systemGreenColor"/>

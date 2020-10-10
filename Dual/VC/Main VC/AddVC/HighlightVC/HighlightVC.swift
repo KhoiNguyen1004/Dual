@@ -12,7 +12,7 @@ import MarqueeLabel
 import PixelSDK
 import PhotosUI
 import MediaWatermark
-
+import Firebase
 
 class HighlightVC: UIViewController {
     
@@ -31,14 +31,14 @@ class HighlightVC: UIViewController {
     @IBOutlet weak var creatorLink: UITextField!
     
     var selectedVideo: SessionVideo!
+    var processedURL: URL!
+    var exportedURL: URL!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-    
-        
-        
+       
         if item.url2 != "" {
             
             HighlightName.text = item.name
@@ -172,6 +172,9 @@ class HighlightVC: UIViewController {
     @IBAction func cameraBtnPressed(_ sender: Any) {
         
         
+        PixelSDK.shared.primaryFilters = PixelSDK.defaultInstaFilters + PixelSDK.defaultVisualEffectFilters
+        
+        
         let container = ContainerController(modes: [.library, .video])
         container.editControllerDelegate = self
         
@@ -189,27 +192,39 @@ class HighlightVC: UIViewController {
         
     }
     
-    func addWatermark(image: UIImage, name: String, url: URL) {
+    func addWatermark(name: String, url: URL, completed: @escaping DownloadComplete)  {
         
         if let item = MediaItem(url: url) {
-            let logoImage = UIImage(named: "logo")
-                    
-            let firstElement = MediaElement(image: logoImage!)
-            firstElement.frame = CGRect(x: 0, y: 0, width: logoImage!.size.width, height: logoImage!.size.height)
-                    
-            let testStr = "Attributed Text"
-            let attributes = [ NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 35) ]
+   
+            let testStr = name
+            let attributes = [ NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15) ]
             let attrStr = NSAttributedString(string: testStr, attributes: attributes)
                     
             let secondElement = MediaElement(text: attrStr)
-            secondElement.frame = CGRect(x: 300, y: 300, width: logoImage!.size.width, height: logoImage!.size.height)
+            secondElement.frame = CGRect(x: 25, y: -5, width: 200, height: 35)
                     
-            item.add(elements: [firstElement, secondElement])
+            item.add(elements: [secondElement])
                     
             let mediaProcessor = MediaProcessor()
             mediaProcessor.processElements(item: item) { (result, error) in
                 
-                print(result.processedUrl!)
+                
+                if error != nil {
+                    
+                    
+                    self.processedURL = url
+                    
+                } else {
+                    
+                    if let waterMarkedUrl = result.processedUrl {
+                        self.processedURL = waterMarkedUrl
+                    } else {
+                        self.processedURL = url
+                    }
+                    
+                }
+                
+                completed()
                 
             }
         }
@@ -217,19 +232,128 @@ class HighlightVC: UIViewController {
         
     }
     
-    
-    func exportVideo(video: SessionVideo) {
+    func exportVideo(video: SessionVideo, completed: @escaping DownloadComplete) {
         
         VideoExporter.shared.export(video: video, progress: { progress in
             print("Export progress: \(progress)")
-        }, completion: { error in
+        }, completion: { [self] error in
             if let error = error {
-                print("Unable to export video: \(error)")
+                SwiftLoader.hide()
+                self.showErrorAlert("Ops!", msg: "Unable to export video: \(error)")
                 return
             }
+            
+            self.exportedURL = video.exportedVideoURL
+            SwiftLoader.hide()
+            
+            completed()
 
-            print("Finished video export at URL: \(video.exportedVideoURL)")
+    
         })
+        
+    }
+    
+    
+    
+    
+    // upload video to firebase
+    
+    
+    func uploadVideo(url: URL) {
+        
+        
+        
+        let data = try! Data(contentsOf: url)
+        let metaData = StorageMetadata()
+        let imageUID = UUID().uuidString
+        metaData.contentType = "video/mp4"
+        let uploadUrl = DataService.instance.mainStorageRef.child(item.name).child(imageUID)
+        uploadUrl.putData(data , metadata: metaData) { (metaData, err) in
+            
+            
+            
+            if err != nil {
+                SwiftLoader.hide()
+                print(err?.localizedDescription as Any)
+                return
+            }
+            
+            
+            uploadUrl.downloadURL(completion: { (url, err) in
+                
+                
+                guard let Url = url?.absoluteString else { return }
+                
+                let downUrl = Url as String
+                let downloadUrl = downUrl as NSString
+                let downloadedUrl = downloadUrl as String
+                
+                print(downloadedUrl)
+                
+                
+                
+            })
+            
+            
+        }
+        
+        
+    }
+    
+    
+    @IBAction func postBtnPressed(_ sender: Any) {
+        
+        swiftLoader()
+        
+        print("Start exporting")
+        exportVideo(video: selectedVideo){
+            // add watermark
+            print("Start watermarking")
+            self.addWatermark(name: "Dual team - Kai1004pro", url: self.exportedURL) {
+                print("Start uploading")
+                self.uploadVideo(url: self.processedURL)
+                
+            }
+            
+        }
+        
+        
+    }
+    
+    // func show error alert
+    
+    func showErrorAlert(_ title: String, msg: String) {
+                                                                                                                                           
+        let alert = UIAlertController(title: title, message: msg, preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alert.addAction(action)
+        
+                                                                                       
+        present(alert, animated: true, completion: nil)
+        
+    }
+    
+    func swiftLoader() {
+        
+        var config : SwiftLoader.Config = SwiftLoader.Config()
+        config.size = 170
+        
+        config.backgroundColor = UIColor.clear
+        config.spinnerColor = UIColor.white
+        config.titleTextColor = UIColor.white
+        
+        
+        config.spinnerLineWidth = 3.0
+        config.foregroundColor = UIColor.black
+        config.foregroundAlpha = 0.7
+        
+        
+        SwiftLoader.setConfig(config: config)
+        
+        
+        SwiftLoader.show(title: "", animated: true)
+        
+                                                                                                                                      
         
     }
     
@@ -265,11 +389,6 @@ extension HighlightVC: EditControllerDelegate {
         print("Did cancel load here")
         
     }
-    
-   
-    
-    
-    
     
 }
 

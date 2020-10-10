@@ -365,7 +365,7 @@ PODS:
   - nanopb/decode (1.30906.0)
   - nanopb/encode (1.30906.0)
   - NVActivityIndicatorView/AppExtension (4.8.0)
-  - PixelSDK (10.1.1):
+  - PixelSDK (10.1.2):
     - PixelSDK-GPUImage3 (~> 1.1.1)
   - PixelSDK-GPUImage3 (1.1.13)
   - PromisesObjC (1.2.11)
@@ -471,7 +471,7 @@ SPEC CHECKSUMS:
   MGSwipeTableCell: b804e4e450dee439c42250be90bd50458bf67fce
   nanopb: 59317e09cf1f1a0af72f12af412d54edf52603fc
   NVActivityIndicatorView: d24b7ebcf80af5dcd994adb650e2b6c93379270f
-  PixelSDK: b09c9125f4163addb6d8687703e96ebfbcfaac5e
+  PixelSDK: 733ada36c2c43e0ba9c2e6437daa612ed00de595
   PixelSDK-GPUImage3: 739e8363b869501fbb9cd3e4230755798e4609cb
   PromisesObjC: 8c196f5a328c2cba3e74624585467a557dcb482f
   Protobuf: 3dac39b34a08151c6d949560efe3f86134a3f748
