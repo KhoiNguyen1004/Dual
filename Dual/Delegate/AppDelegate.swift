@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         FirebaseApp.configure()
-        PixelSDK.setup(pixel_key)
+        PixelSDK.setup("test")
         PixelSDK.shared.maxVideoDuration = 60
         
         

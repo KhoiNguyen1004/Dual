@@ -30,6 +30,8 @@ class HighlightVC: UIViewController {
     
     @IBOutlet weak var creatorLink: UITextField!
     
+    var selectedVideo: SessionVideo!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -102,7 +104,7 @@ class HighlightVC: UIViewController {
         
         if soundText.isPaused == true {
             
-            soundText.restartLabel()
+            soundText.unpauseLabel()
             
             
         }
@@ -113,6 +115,7 @@ class HighlightVC: UIViewController {
         
         
         soundText.pauseLabel()
+        
     }
     
 
@@ -169,44 +172,18 @@ class HighlightVC: UIViewController {
     @IBAction func cameraBtnPressed(_ sender: Any) {
         
         
-        let sheet = UIAlertController(title: "Hello Kai1004pro!", message: "Please choose which type to upload your highlight!", preferredStyle: .alert)
+        let container = ContainerController(modes: [.library, .video])
+        container.editControllerDelegate = self
         
+        // Include only videos from the users photo library
+        container.libraryController.fetchPredicate = NSPredicate(format: "mediaType == %d", PHAssetMediaType.video.rawValue)
+        // Include only videos from the users drafts
+        container.libraryController.draftMediaTypes = [.video]
         
-        let new = UIAlertAction(title: "New record", style: .default) { (alert) in
-            
-            let container = ContainerController(mode: .video)
-            container.editControllerDelegate = self
-            
-            let nav = UINavigationController(rootViewController: container)
-            nav.modalPresentationStyle = .fullScreen
-            self.present(nav, animated: true, completion: nil)
-            
-            
-        }
+        let nav = UINavigationController(rootViewController: container)
+        nav.modalPresentationStyle = .fullScreen
         
-        let library = UIAlertAction(title: "Video library", style: .default) { (alert) in
-            
-            
-            let container = ContainerController(modes: [.library, .video])
-            container.editControllerDelegate = self
-            
-            // Include only videos from the users photo library
-            container.libraryController.fetchPredicate = NSPredicate(format: "mediaType == %d", PHAssetMediaType.video.rawValue)
-            // Include only videos from the users drafts
-            container.libraryController.draftMediaTypes = [.video]
-            
-            let nav = UINavigationController(rootViewController: container)
-            nav.modalPresentationStyle = .fullScreen
-            
-            self.present(nav, animated: true, completion: nil)
-            
-        }
-        
-        
-        
-        sheet.addAction(new)
-        sheet.addAction(library)
-        present(sheet, animated: true, completion: nil)
+        self.present(nav, animated: true, completion: nil)
        
         
         
@@ -241,6 +218,21 @@ class HighlightVC: UIViewController {
     }
     
     
+    func exportVideo(video: SessionVideo) {
+        
+        VideoExporter.shared.export(video: video, progress: { progress in
+            print("Export progress: \(progress)")
+        }, completion: { error in
+            if let error = error {
+                print("Unable to export video: \(error)")
+                return
+            }
+
+            print("Finished video export at URL: \(video.exportedVideoURL)")
+        })
+        
+    }
+    
     
 }
 
@@ -257,18 +249,10 @@ extension HighlightVC: EditControllerDelegate {
         // Called when the Next button in the EditController is pressed.
         // Use this time to either dismiss the UINavigationController, or push a new controller on.
         
+        
         if let video = session.video {
             
-            VideoExporter.shared.export(video: video, progress: { progress in
-                print("Export progress: \(progress)")
-            }, completion: { error in
-                if let error = error {
-                    print("Unable to export video: \(error)")
-                    return
-                }
-
-                print("Finished video export at URL: \(video.exportedVideoURL)")
-            })
+            selectedVideo = video
             
         }
         
