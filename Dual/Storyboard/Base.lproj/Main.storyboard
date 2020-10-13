@@ -180,7 +180,7 @@
             <objects>
                 <viewController id="W0m-NM-lO1" customClass="AddVC" customModule="Dual" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="vtR-mN-32H">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pick your sport" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bQ8-dB-7i0">
@@ -190,7 +190,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="zDE-gh-DSe">
-                                <rect key="frame" x="16" y="121" width="343" height="368"/>
+                                <rect key="frame" x="16" y="121" width="343" height="348"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="3ci-2a-PTf">
                                     <size key="itemSize" width="128" height="128"/>
@@ -246,7 +246,7 @@
                                 </cells>
                             </collectionView>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1N8-LK-6Yi">
-                                <rect key="frame" x="62.5" y="539" width="250" height="47"/>
+                                <rect key="frame" x="62.5" y="519" width="250" height="47"/>
                                 <color key="backgroundColor" red="0.97209972140000001" green="0.74186402559999998" blue="0.355625093" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="47" id="D3e-5T-Bt8"/>
@@ -572,6 +572,7 @@
                             <constraint firstItem="WCg-NT-G2Q" firstAttribute="leading" secondItem="eiZ-Lz-YFG" secondAttribute="leading" constant="16" id="UUU-aX-F1s"/>
                             <constraint firstItem="eiZ-Lz-YFG" firstAttribute="trailing" secondItem="j9B-l8-TOc" secondAttribute="trailing" constant="16" id="YH1-bg-zcK"/>
                             <constraint firstItem="5pU-oI-L0h" firstAttribute="leading" secondItem="eiZ-Lz-YFG" secondAttribute="leading" constant="16" id="YpB-GE-daG"/>
+                            <constraint firstItem="tas-s9-UL4" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="wRr-pa-jMh" secondAttribute="trailing" symbolic="YES" id="Zbh-Kb-QqN"/>
                             <constraint firstItem="eiZ-Lz-YFG" firstAttribute="trailing" secondItem="tas-s9-UL4" secondAttribute="trailing" constant="16" id="avL-g4-cOj"/>
                             <constraint firstAttribute="trailing" secondItem="5eV-6u-Wae" secondAttribute="trailing" id="b7I-Fb-MYf"/>
                             <constraint firstItem="SLN-a7-Ya4" firstAttribute="top" secondItem="Bwg-GB-bnF" secondAttribute="bottom" constant="20" id="bBb-pQ-BwC"/>
@@ -596,6 +597,7 @@
                         <outlet property="HighlightImg" destination="vYz-kJ-6G3" id="ure-XG-9oC"/>
                         <outlet property="HighlightName" destination="MPN-2i-yib" id="5VZ-97-C6d"/>
                         <outlet property="OnlyMeBtn" destination="Zda-5I-U3N" id="gyx-nY-bUQ"/>
+                        <outlet property="checkImg" destination="n03-2h-9s3" id="QuZ-M4-GPR"/>
                         <outlet property="creatorLink" destination="SLN-a7-Ya4" id="jT3-Ed-8Vc"/>
                         <outlet property="highlightTitle" destination="lOy-w1-sHX" id="lVe-0x-IyQ"/>
                         <outlet property="publicBtn" destination="JFA-N7-kYX" id="rLt-DK-giW"/>

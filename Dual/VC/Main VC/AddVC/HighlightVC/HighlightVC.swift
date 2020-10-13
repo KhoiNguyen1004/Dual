@@ -24,7 +24,9 @@ class HighlightVC: UIViewController {
     @IBOutlet weak var soundText: MarqueeLabel!
     @IBOutlet weak var highlightTitle: UITextField!
     var item: AddModel!
+    
 
+    @IBOutlet weak var checkImg: UIImageView!
     @IBOutlet weak var HighlightName: UILabel!
     @IBOutlet weak var HighlightImg: UIImageView!
     
@@ -33,6 +35,9 @@ class HighlightVC: UIViewController {
     var selectedVideo: SessionVideo!
     var processedURL: URL!
     var exportedURL: URL!
+    var mode: String!
+    var music: String!
+  
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -97,6 +102,17 @@ class HighlightVC: UIViewController {
         soundText.text = "Original sound - Kai1004pro                                   "
         
         
+        // defaults mode
+        
+        publicBtn.setImage(UIImage(named: "SelectedPublic"), for: .normal)
+        FriendsBtn.setImage(UIImage(named: "friends"), for: .normal)
+        OnlyMeBtn.setImage(UIImage(named: "profile"), for: .normal)
+        
+        
+        mode = "Public"
+        music = "Original sound"
+        
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -140,6 +156,8 @@ class HighlightVC: UIViewController {
         FriendsBtn.setImage(UIImage(named: "friends"), for: .normal)
         OnlyMeBtn.setImage(UIImage(named: "profile"), for: .normal)
         
+        
+        mode = "Public"
     }
     
     
@@ -149,6 +167,9 @@ class HighlightVC: UIViewController {
         publicBtn.setImage(UIImage(named: "public"), for: .normal)
         OnlyMeBtn.setImage(UIImage(named: "profile"), for: .normal)
         
+        
+        mode = "Friends"
+        
     }
     
     @IBAction func OnlyMeBtnPressed(_ sender: Any) {
@@ -156,6 +177,8 @@ class HighlightVC: UIViewController {
         OnlyMeBtn.setImage(UIImage(named: "SelectedOnlyMe"), for: .normal)
         FriendsBtn.setImage(UIImage(named: "friends"), for: .normal)
         publicBtn.setImage(UIImage(named: "public"), for: .normal)
+        
+        mode = "Only me"
         
         
     }
@@ -224,6 +247,7 @@ class HighlightVC: UIViewController {
                     
                 }
                 
+                
                 completed()
                 
             }
@@ -244,8 +268,7 @@ class HighlightVC: UIViewController {
             }
             
             self.exportedURL = video.exportedVideoURL
-            SwiftLoader.hide()
-            
+           
             completed()
 
     
@@ -265,60 +288,117 @@ class HighlightVC: UIViewController {
         
         let data = try! Data(contentsOf: url)
         let metaData = StorageMetadata()
-        let imageUID = UUID().uuidString
+        let vidUID = UUID().uuidString
         metaData.contentType = "video/mp4"
-        let uploadUrl = DataService.instance.mainStorageRef.child(item.name).child(imageUID)
-        uploadUrl.putData(data , metadata: metaData) { (metaData, err) in
+        let uploadUrl = DataService.instance.mainStorageRef.child(item.name).child(vidUID)
+        
+        let uploadTask = uploadUrl.putData(data , metadata: metaData) { (metaData, err) in
             
             
             
             if err != nil {
-                SwiftLoader.hide()
+
                 print(err?.localizedDescription as Any)
                 return
             }
             
             
-            uploadUrl.downloadURL(completion: { (url, err) in
-                
-                
-                guard let Url = url?.absoluteString else { return }
-                
-                let downUrl = Url as String
-                let downloadUrl = downUrl as NSString
-                let downloadedUrl = downloadUrl as String
-                
-                print(downloadedUrl)
-                
-                
-                
-            })
             
+        }
+        
+        uploadTask.observe(.progress) { snapshot in
+            let percentComplete = 100.0 * Double(snapshot.progress!.completedUnitCount)
+                / Double(snapshot.progress!.totalUnitCount)
+            
+            print("Uploading progress: \(percentComplete)")
+        }
+        
+        
+        uploadTask.observe(.success) { snapshot in
+          // Upload completed successfully
+            
+            uploadUrl.downloadURL(completion: { (url, err) in
+                 
+                 
+                 guard let Url = url?.absoluteString else { return }
+                 
+                 let downUrl = Url as String
+                 let downloadUrl = downUrl as NSString
+                 let downloadedUrl = downloadUrl as String
+                 
+                 
+                 // put in firestore here
+        
+                 
+                 let higlightVideo = ["category": self.item.name as Any, "url": downloadedUrl as Any, "status": "Pending" as Any, "userUID": Auth.auth().currentUser!.uid as Any, "post_time": FieldValue.serverTimestamp() , "mode": self.mode as Any, "music": self.music as Any]
+                 
+                 let db = DataService.instance.mainFireStoreRef.collection("Highlights")
+                 
+                print("Writing to database")
+                
+                db.addDocument(data: higlightVideo)
+                 
+                 
+                print("Finished writting")
+                 
+                
+             })
             
         }
         
         
     }
+    
+    
     
     
     @IBAction func postBtnPressed(_ sender: Any) {
         
-        swiftLoader()
-        
-        print("Start exporting")
-        exportVideo(video: selectedVideo){
-            // add watermark
-            print("Start watermarking")
-            self.addWatermark(name: "Dual team - Kai1004pro", url: self.exportedURL) {
-                print("Start uploading")
-                self.uploadVideo(url: self.processedURL)
+
+        if selectedVideo != nil {
+            
+            swiftLoader()
+            
+            print("Start exporting")
+            exportVideo(video: selectedVideo){
+                // add watermark
+                print("Start watermarking")
+                self.addWatermark(name: "Dual team - Kai1004pro", url: self.exportedURL) {
+                    
+                    
+                    print("Done Watermarking")
+                    
+                    DispatchQueue.main.async {
+                        self.selectedVideo = nil
+                        let img = UIImage(named: "Icon awesome-photo-video")
+                        self.checkImg.image = img
+                        SwiftLoader.hide()
+                    }
+                    
+
+                    print("Start uploading")
+                    
+                    Dispatch.background {
+                        
+                        print("Run on background thread")
+                        self.uploadVideo(url: self.processedURL)
+                        
+                        
+                    }
+                    
+   
+                }
                 
             }
             
+        } else {
+            
+            self.showErrorAlert("Ops!", msg: "Please upload or record your highlight")
+            
         }
         
-        
-    }
+
+}
     
     // func show error alert
     
@@ -353,10 +433,9 @@ class HighlightVC: UIViewController {
         
         SwiftLoader.show(title: "", animated: true)
         
-                                                                                                                                      
-        
+ 
     }
-    
+  
     
 }
 
@@ -377,6 +456,8 @@ extension HighlightVC: EditControllerDelegate {
         if let video = session.video {
             
             selectedVideo = video
+            let img = UIImage(named: "wtick")
+            checkImg.image = img
             
         }
         
