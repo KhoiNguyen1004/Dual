@@ -17,6 +17,7 @@ import Firebase
 class HighlightVC: UIViewController {
     
     
+    @IBOutlet weak var isComment: UISwitch!
     @IBOutlet weak var publicBtn: UIButton!
     @IBOutlet weak var FriendsBtn: UIButton!
     @IBOutlet weak var OnlyMeBtn: UIButton!
@@ -37,6 +38,7 @@ class HighlightVC: UIViewController {
     var exportedURL: URL!
     var mode: String!
     var music: String!
+    var isAllowComment: Bool!
   
     
     override func viewDidLoad() {
@@ -109,8 +111,12 @@ class HighlightVC: UIViewController {
         OnlyMeBtn.setImage(UIImage(named: "profile"), for: .normal)
         
         
+        
+        // default setting
         mode = "Public"
         music = "Original sound"
+        isAllowComment = true
+        isComment.setOn(true, animated: false)
         
         
     }
@@ -148,6 +154,28 @@ class HighlightVC: UIViewController {
         
     }
     
+    @IBAction func isCommentBtnPressed(_ sender: Any) {
+        
+        if isAllowComment == true {
+            
+            
+            isAllowComment =  false
+            isComment.setOn(false, animated: true)
+            
+            print("Allow comment: \(String(describing: self.isAllowComment))")
+            
+            
+        } else {
+            
+            isAllowComment = true
+            isComment.setOn(true, animated: true)
+            
+            print("Allow comment: \(String(describing: self.isAllowComment))")
+            
+        }
+        
+        
+    }
     // mode choose
     
     @IBAction func PublicBtnPressed(_ sender: Any) {
@@ -330,13 +358,15 @@ class HighlightVC: UIViewController {
                  // put in firestore here
         
                  
-                 let higlightVideo = ["category": self.item.name as Any, "url": downloadedUrl as Any, "status": "Pending" as Any, "userUID": Auth.auth().currentUser!.uid as Any, "post_time": FieldValue.serverTimestamp() , "mode": self.mode as Any, "music": self.music as Any]
+                let higlightVideo = ["category": self.item.name as Any, "url": downloadedUrl as Any, "status": "Pending" as Any, "userUID": Auth.auth().currentUser!.uid as Any, "post_time": FieldValue.serverTimestamp() , "mode": self.mode as Any, "music": self.music as Any, "Mux_processed": false, "Mux_playbackID": "nil", "Allow_comment": self.isAllowComment!]
                  
-                 let db = DataService.instance.mainFireStoreRef.collection("Highlights")
+                let db = DataService.instance.mainFireStoreRef.collection("Highlights")
                  
                 print("Writing to database")
                 
-                db.addDocument(data: higlightVideo)
+                let id = db.addDocument(data: higlightVideo)
+                
+                self.ProcessWithMux(link: downloadedUrl, ref: id.documentID)
                  
                  
                 print("Finished writting")
@@ -399,6 +429,60 @@ class HighlightVC: UIViewController {
         
 
 }
+    
+    // process with mux api and put on database
+        
+    func ProcessWithMux(link: String, ref: String) {
+            
+        
+            print("Start mux processing")
+            let url = MainAPIClient.shared.baseURLString
+            let urls = URL(string: url!)?.appendingPathComponent("mux-upload")
+        
+
+            AF.request(urls!, method: .post, parameters: [
+                
+                
+                "url": link,
+                
+                ])
+                
+                .validate(statusCode: 200..<500)
+                .responseJSON { responseJSON in
+                    
+                    switch responseJSON.result {
+                        
+                    case .success(let json):
+                        
+                        print("Success Mux processing")
+                        if let dict = json as? [String: AnyObject] {
+                            
+                            
+                            if let id = dict["id"] as? String {
+                                
+                                let update = ["Mux_processed": true, "Mux_playbackID": id, "status": "Ready" as Any]
+                                print("Updating data")
+                                
+                                DataService.instance.mainFireStoreRef.collection("Highlights").document(ref).updateData(update)
+                                
+                                print("Updated data")
+                                
+                                
+                                
+                                
+                                
+                            }
+                        }
+                        
+                    case .failure(let error):
+                        
+                        print("Mux processing failed: \(error.localizedDescription)")
+                        
+                    }
+                    
+            }
+            
+        }
     
     // func show error alert
     

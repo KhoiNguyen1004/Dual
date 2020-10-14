@@ -43,7 +43,7 @@ class fancyBtn: UIButton {
         }
     }
     
-    @IBInspectable var cornerRadius: CGFloat {
+    @IBInspectable override var cornerRadius: CGFloat {
         set {
             layer.cornerRadius = newValue
         }
