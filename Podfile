@@ -26,6 +26,7 @@ target 'Dual' do
   pod 'NVActivityIndicatorView/AppExtension'
   pod 'MarqueeLabel'
   pod "MediaWatermark"
+  pod 'DTCollectionViewManager', '~> 8.0.0-beta.1'
 
   
   

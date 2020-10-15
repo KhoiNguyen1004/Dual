@@ -366,11 +366,14 @@ class HighlightVC: UIViewController {
                 
                 let id = db.addDocument(data: higlightVideo)
                 
-                self.ProcessWithMux(link: downloadedUrl, ref: id.documentID)
-                 
-                 
                 print("Finished writting")
-                 
+                
+                print("Send data to backend for mux processing!")
+                
+                DataService.instance.mainRealTimeDataBaseRef.child("Mux-Processing").child(id.documentID).setValue(["url": downloadedUrl])
+                
+                print("Sent")
+                
                 
              })
             
@@ -430,59 +433,6 @@ class HighlightVC: UIViewController {
 
 }
     
-    // process with mux api and put on database
-        
-    func ProcessWithMux(link: String, ref: String) {
-            
-        
-            print("Start mux processing")
-            let url = MainAPIClient.shared.baseURLString
-            let urls = URL(string: url!)?.appendingPathComponent("mux-upload")
-        
-
-            AF.request(urls!, method: .post, parameters: [
-                
-                
-                "url": link,
-                
-                ])
-                
-                .validate(statusCode: 200..<500)
-                .responseJSON { responseJSON in
-                    
-                    switch responseJSON.result {
-                        
-                    case .success(let json):
-                        
-                        print("Success Mux processing")
-                        if let dict = json as? [String: AnyObject] {
-                            
-                            
-                            if let id = dict["id"] as? String {
-                                
-                                let update = ["Mux_processed": true, "Mux_playbackID": id, "status": "Ready" as Any]
-                                print("Updating data")
-                                
-                                DataService.instance.mainFireStoreRef.collection("Highlights").document(ref).updateData(update)
-                                
-                                print("Updated data")
-                                
-                                
-                                
-                                
-                                
-                            }
-                        }
-                        
-                    case .failure(let error):
-                        
-                        print("Mux processing failed: \(error.localizedDescription)")
-                        
-                    }
-                    
-            }
-            
-        }
     
     // func show error alert
     

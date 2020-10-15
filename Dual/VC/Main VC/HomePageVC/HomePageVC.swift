@@ -36,15 +36,13 @@ class HomePageVC: UITabBarController {
         
         if let uid = Auth.auth().currentUser?.uid, uid != "" {
         
-                
+            print(uid)
                  
         } else {
                  
                  
-                 try! Auth.auth().signOut()
-                    
-               
-                   self.performSegue(withIdentifier: "moveToInterestedVC", sender: nil)
+            try! Auth.auth().signOut()
+            self.performSegue(withIdentifier: "moveToInterestedVC", sender: nil)
                 
       
         }
@@ -52,6 +50,9 @@ class HomePageVC: UITabBarController {
     
         
     }
+    
+    
+    
     
 
    

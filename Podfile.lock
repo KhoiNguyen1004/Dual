@@ -222,6 +222,11 @@ PODS:
     - BoringSSL-GRPC/Interface (= 0.0.7)
   - BoringSSL-GRPC/Interface (0.0.7)
   - Cache (5.3.0)
+  - DTCollectionViewManager (8.0.0-beta.1):
+    - DTModelStorage (~> 9.0.0-beta.1)
+  - DTModelStorage (9.0.0-beta.1):
+    - DTModelStorage/Core (= 9.0.0-beta.1)
+  - DTModelStorage/Core (9.0.0-beta.1)
   - Firebase/Auth (6.34.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 6.9.2)
@@ -383,6 +388,7 @@ DEPENDENCIES:
   - Alamofire
   - AlamofireImage
   - Cache (~> 5.3.0)
+  - DTCollectionViewManager (~> 8.0.0-beta.1)
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Database
@@ -407,6 +413,8 @@ SPEC REPOS:
     - AlamofireImage
     - BoringSSL-GRPC
     - Cache
+    - DTCollectionViewManager
+    - DTModelStorage
     - Firebase
     - FirebaseAnalytics
     - FirebaseAuth
@@ -447,6 +455,8 @@ SPEC CHECKSUMS:
   AlamofireImage: c4a2ba349885fb3064feb74d2e547bd42ce9be10
   BoringSSL-GRPC: 8edf627ee524575e2f8d19d56f068b448eea3879
   Cache: 48762993ec44e1d93483c4d4a13edd18452326f4
+  DTCollectionViewManager: 0e819ece2344ff39e64a3f98d4d930b59b9e4a99
+  DTModelStorage: 8a7e58c22a77539fe705427cff137cd578feafa8
   Firebase: c23a36d9e4cdf7877dfcba8dd0c58add66358999
   FirebaseAnalytics: 3bb096873ee0d7fa4b6c70f5e9166b6da413cc7f
   FirebaseAuth: c92d49ada7948d1a23466e3db17bc4c2039dddc3
@@ -481,6 +491,6 @@ SPEC CHECKSUMS:
   ZSWTaggedString: 1a6aab3143188634c1e5dfe9383ce754c1fb5fe2
   ZSWTappableLabel: cff84c0a55e30f2141f7dac24e5903302a7e35ec
 
-PODFILE CHECKSUM: d50d419a9adcf78eff827262f843725f6a6e14ce
+PODFILE CHECKSUM: 41a6402a3a745211bb57129f76e25d4f9a52de83
 
 COCOAPODS: 1.9.3
