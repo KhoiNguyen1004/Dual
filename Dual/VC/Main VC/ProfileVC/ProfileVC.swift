@@ -12,22 +12,55 @@ import AVKit
 import AVFoundation
 import CoreLocation
 import Alamofire
+import DTCollectionViewManager
 
-class ProfileVC: UIViewController, UINavigationControllerDelegate {
+class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionViewManageable, UICollectionViewDelegateFlowLayout {
     
     
     @IBOutlet weak var avatarImg: borderAvatarView!
     @IBOutlet weak var profileImgBtn: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
     
+    private var expectedTargetContentOffset: CGPoint = .zero
+    
+    var Highlight_list = [HighlightsModel]()
+    var firstLoad = true
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         
+        
+        
+        
+        manager.register(HighlightsCollectionCell.self) { [weak self] mapping in
+            
+            mapping.sizeForCell { cell, model in
+                self?.itemSize(for: self?.collectionView.bounds.size.width ?? .zero) ?? .zero
+            }
+            
+            
+            
+            
+        }
+        
+
+        
         loadVideo()
         
+        
+        
     }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        coordinator.animate { [weak self] context in
+            self?.expectedTargetContentOffset = self?.collectionView.contentOffset ?? .zero
+            self?.updateLayout(size: size, animated: true)
+        } completion: { _ in }
+    }
+    
+    
     
  
     @IBAction func ImgBtnPressed(_ sender: Any) {
@@ -112,18 +145,34 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate {
         let db = DataService.instance.mainFireStoreRef
         let uid = Auth.auth().currentUser?.uid
         
-        db.collection("Highlights").whereField("userUID", isEqualTo: uid!).order(by: "post_time", descending: true).whereField("status", isEqualTo: "Ready").limit(to: 50)
-            .addSnapshotListener { querySnapshot, error in
+        db.collection("Highlights").whereField("userUID", isEqualTo: uid!).order(by: "post_time", descending: true).limit(to: 50)
+            .addSnapshotListener { [self] querySnapshot, error in
                 guard let snapshot = querySnapshot else {
                     print("Error fetching snapshots: \(error!)")
                     return
                 }
                 
-                for item in snapshot.documents {
-                    print(item.data())
+            
+                
+                if firstLoad == true {
+                    
+                    for item in snapshot.documents {
+                        
+                        
+                        print("First load")
+                        
+                        let dict = HighlightsModel(postKey: item.documentID, Highlight_model: item.data())
+                        self.Highlight_list.append(dict)
+                        
+                        manager.memoryStorage.setItems(self.Highlight_list)
+                        
+                    }
+                    
+                    firstLoad =  false
+                    
                 }
                 
-                
+          
                 snapshot.documentChanges.forEach { diff in
 
                     if (diff.type == .modified) {
@@ -133,11 +182,15 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate {
                             
                             print("New ready: \(diff.document.data())")
                             
+                            let item = HighlightsModel(postKey: diff.document.documentID, Highlight_model: diff.document.data())
+                            self.Highlight_list.insert(item, at: 0)
+                            manager.memoryStorage.removeAllItems()
+                            manager.memoryStorage.setItems(self.Highlight_list)
                             // add new item processing goes here
                             
                         } else {
                             
-                            //print("Pending: \(diff.document.data())")
+                    
                             
                         }
                     } else if (diff.type == .removed) {
@@ -153,7 +206,19 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate {
    
     }
     
+    // layouyt
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0.0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 0.0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0,left: 0,bottom: 0,right: 0);
+    }
     
 
 }
@@ -174,6 +239,19 @@ extension ProfileVC: UIImagePickerControllerDelegate {
         self.dismiss(animated: true, completion: nil)
     }
     
-
+    
+    private func itemSize(for width: CGFloat) -> CGSize {
+        
+        return CGSize(width: (width - 1)/3, height: 170)
+    
+    }
+    
+    private func updateLayout(size: CGSize, animated: Bool) {
+        let layout = UICollectionViewFlowLayout()
+        layout.minimumInteritemSpacing = 0.0
+        layout.minimumLineSpacing = 0.0
+        layout.itemSize = itemSize(for: size.width)
+        collectionView.setCollectionViewLayout(layout, animated: animated)
+    }
     
 }

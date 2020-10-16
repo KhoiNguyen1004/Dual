@@ -18,7 +18,6 @@
 		6A407865252A12A80063F378 /* PinterestLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A407864252A12A80063F378 /* PinterestLayout.swift */; };
 		6A40786D252A5F6A0063F378 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A40786C252A5F6A0063F378 /* Constant.swift */; };
 		6A407C2D252A715D0063F378 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A407C2C252A715D0063F378 /* User.swift */; };
-		6A61DF012538AD7F0029399F /* HighlightsCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A61DF002538AD7F0029399F /* HighlightsCollectionCell.swift */; };
 		6A61DF0E2538AF050029399F /* HighlightsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A61DF0D2538AF050029399F /* HighlightsModel.swift */; };
 		6A6374FD2518E16C0019A984 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6374FC2518E16C0019A984 /* AppDelegate.swift */; };
 		6A6374FF2518E16C0019A984 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6374FE2518E16C0019A984 /* SceneDelegate.swift */; };
@@ -46,6 +45,8 @@
 		6ABF1DCB252CBEAD00D15D27 /* SwiftLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ABF1DCA252CBEAC00D15D27 /* SwiftLoader.swift */; };
 		6ABF1DD5252CECFF00D15D27 /* HomePageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ABF1DD4252CECFF00D15D27 /* HomePageVC.swift */; };
 		6AC5481D2530F98C00999916 /* Session+TypeAlias.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC5481C2530F98C00999916 /* Session+TypeAlias.swift */; };
+		6ACF220C25392D2B00B17D25 /* HighlightCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACF220A25392D2B00B17D25 /* HighlightCollectionCell.swift */; };
+		6ACF220D25392D2B00B17D25 /* HighlightsCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6ACF220B25392D2B00B17D25 /* HighlightsCollectionCell.xib */; };
 		6AD7CEAE252E67A900E326F0 /* AddVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD7CEAD252E67A900E326F0 /* AddVC.swift */; };
 		6AD7CEB8252E692500E326F0 /* AddModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD7CEB7252E692500E326F0 /* AddModel.swift */; };
 		6AD7CEC0252E693D00E326F0 /* AddCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD7CEBF252E693D00E326F0 /* AddCell.swift */; };
@@ -84,7 +85,6 @@
 		6A407864252A12A80063F378 /* PinterestLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinterestLayout.swift; sourceTree = "<group>"; };
 		6A40786C252A5F6A0063F378 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		6A407C2C252A715D0063F378 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = User.swift; path = Dual/Constant/User.swift; sourceTree = SOURCE_ROOT; };
-		6A61DF002538AD7F0029399F /* HighlightsCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightsCollectionCell.swift; sourceTree = "<group>"; };
 		6A61DF0D2538AF050029399F /* HighlightsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightsModel.swift; sourceTree = "<group>"; };
 		6A6374F92518E16C0019A984 /* Dual.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dual.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A6374FC2518E16C0019A984 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -118,6 +118,8 @@
 		6ABF1DCA252CBEAC00D15D27 /* SwiftLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftLoader.swift; sourceTree = "<group>"; };
 		6ABF1DD4252CECFF00D15D27 /* HomePageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageVC.swift; sourceTree = "<group>"; };
 		6AC5481C2530F98C00999916 /* Session+TypeAlias.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Session+TypeAlias.swift"; path = "Dual/VC/Main VC/AddVC/HighlightVC/Session+TypeAlias.swift"; sourceTree = SOURCE_ROOT; };
+		6ACF220A25392D2B00B17D25 /* HighlightCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightCollectionCell.swift; sourceTree = "<group>"; };
+		6ACF220B25392D2B00B17D25 /* HighlightsCollectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HighlightsCollectionCell.xib; sourceTree = "<group>"; };
 		6AD7CEAD252E67A900E326F0 /* AddVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddVC.swift; sourceTree = "<group>"; };
 		6AD7CEB7252E692500E326F0 /* AddModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddModel.swift; sourceTree = "<group>"; };
 		6AD7CEBF252E693D00E326F0 /* AddCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCell.swift; sourceTree = "<group>"; };
@@ -201,7 +203,8 @@
 		6A61DEFF2538AD400029399F /* HighlightsCollectionCell */ = {
 			isa = PBXGroup;
 			children = (
-				6A61DF002538AD7F0029399F /* HighlightsCollectionCell.swift */,
+				6ACF220A25392D2B00B17D25 /* HighlightCollectionCell.swift */,
+				6ACF220B25392D2B00B17D25 /* HighlightsCollectionCell.xib */,
 			);
 			path = HighlightsCollectionCell;
 			sourceTree = "<group>";
@@ -570,6 +573,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6A6375092518E16E0019A984 /* LaunchScreen.storyboard in Resources */,
+				6ACF220D25392D2B00B17D25 /* HighlightsCollectionCell.xib in Resources */,
 				6A20DC67251ADC1600E89BAE /* GoogleService-Info.plist in Resources */,
 				6A6375062518E16D0019A984 /* Assets.xcassets in Resources */,
 				6A6375042518E16C0019A984 /* Main.storyboard in Resources */,
@@ -751,12 +755,12 @@
 				6A76906025202401009BFC21 /* avatarImgRendered.swift in Sources */,
 				6A76906425202402009BFC21 /* circleView.swift in Sources */,
 				6A76906625202402009BFC21 /* borderAvatarView.swift in Sources */,
-				6A61DF012538AD7F0029399F /* HighlightsCollectionCell.swift in Sources */,
 				6A40786D252A5F6A0063F378 /* Constant.swift in Sources */,
 				6A4077D825295E660063F378 /* InterestedCell.swift in Sources */,
 				6A797BBE2529565500EB64D3 /* DataService.swift in Sources */,
 				6A76906C25202402009BFC21 /* ProfileView.swift in Sources */,
 				6A797BC5252958A600EB64D3 /* InterestedVC.swift in Sources */,
+				6ACF220C25392D2B00B17D25 /* HighlightCollectionCell.swift in Sources */,
 				6A76906B25202402009BFC21 /* modifiedChooseCarView.swift in Sources */,
 				6A76906A25202402009BFC21 /* defaultCardView.swift in Sources */,
 				6A76905F25202401009BFC21 /* fancyBtn.swift in Sources */,

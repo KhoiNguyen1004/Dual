@@ -39,7 +39,8 @@ class HighlightVC: UIViewController {
     var mode: String!
     var music: String!
     var isAllowComment: Bool!
-  
+    var Htitle: String!
+    var StreamLink: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -356,9 +357,13 @@ class HighlightVC: UIViewController {
                  
                  
                  // put in firestore here
+                
+                
+                
+                
         
                  
-                let higlightVideo = ["category": self.item.name as Any, "url": downloadedUrl as Any, "status": "Pending" as Any, "userUID": Auth.auth().currentUser!.uid as Any, "post_time": FieldValue.serverTimestamp() , "mode": self.mode as Any, "music": self.music as Any, "Mux_processed": false, "Mux_playbackID": "nil", "Allow_comment": self.isAllowComment!]
+                let higlightVideo = ["category": self.item.name as Any, "url": downloadedUrl as Any, "status": "Pending" as Any, "userUID": Auth.auth().currentUser!.uid as Any, "post_time": FieldValue.serverTimestamp() , "mode": self.mode as Any, "music": self.music as Any, "Mux_processed": false, "Mux_playbackID": "nil", "Allow_comment": self.isAllowComment!, "highlight_title": self.Htitle!, "stream_link": self.StreamLink!]
                  
                 let db = DataService.instance.mainFireStoreRef.collection("Highlights")
                  
@@ -391,6 +396,26 @@ class HighlightVC: UIViewController {
         if selectedVideo != nil {
             
             swiftLoader()
+            
+            
+            if let title = highlightTitle.text, title != "" {
+                
+                Htitle = title
+            } else {
+                
+                Htitle = "nil"
+                
+            }
+            
+            if let link = creatorLink.text, link != "" {
+                
+                StreamLink = link
+                
+            } else {
+                
+                StreamLink = "nil"
+            }
+            
             
             print("Start exporting")
             exportVideo(video: selectedVideo){
@@ -426,7 +451,7 @@ class HighlightVC: UIViewController {
             
         } else {
             
-            self.showErrorAlert("Ops!", msg: "Please upload or record your highlight")
+            self.showErrorAlert("Oops!", msg: "Please upload or record your highlight")
             
         }
         
