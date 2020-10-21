@@ -8,69 +8,63 @@
 import UIKit
 import DTCollectionViewManager
 import Alamofire
-
+import AsyncDisplayKit
 
 class HighlightsCollectionCell: UICollectionViewCell, ModelTransfer {
     
-    @IBOutlet weak var thumbnail: UIImageView!
-    //@IBOutlet weak var modeView: UIImageView!
-    //@IBOutlet weak var ViewImg: UIImageView!
-    //@IBOutlet weak var ViewCount: UILabel!
+    @IBOutlet weak var thumbnailView: UIView!
+    @IBOutlet weak var modeView: UIImageView!
+    @IBOutlet weak var ViewCount: UILabel!
+    var imageNode = ASNetworkImageNode()
     
+    override func prepareForReuse() {
+        
+        super.prepareForReuse()
+       
+    }
     
     func update(with model: HighlightsModel) {
         
-            // Fill your cell with actual data
+        
+        // Fill cell with actual data
+          
+        
         let playbackID = model.Mux_playbackID
-        let url = "https://image.mux.com/\(playbackID!)/thumbnail.png?width=314&height=178&fit_mode=pad"
         
-       
+        let mode = model.mode
         
-        imageStorage.async.object(forKey: url) { result in
-            if case .value(let image) = result {
-                
-                DispatchQueue.main.async { // Make sure you're on the main thread here
-                    
-                    
-                    
-                    DispatchQueue.main.async {
-                        self.thumbnail.image = image
-                    }
-                    
-                }
-                
-            } else {
-                
-                
-             AF.request(url).responseImage { response in
-                    
-                    
-                    switch response.result {
-                    case let .success(value):
-                        
-                        DispatchQueue.main.async {
-                            self.thumbnail.image = value
-                        }
-                      
-                        try? imageStorage.setObject(value, forKey: url)
-                        
-                    case let .failure(error):
-                        
-                        print(error)
-                        
-                    }
-         
-                }
-                
-            }
+        if mode == "Public" {
+            
+            modeView.image = UIImage(named: "public")
+        
+        } else if mode == "Friends" {
+            
+            modeView.image = UIImage(named: "friends")
+            
+        } else if mode == "Only me" {
+            
+            modeView.image = UIImage(named: "profile")
             
         }
+        
+     
+        let url = "https://image.mux.com/\(playbackID!)/animated.gif?start=0&end=2&fit_mode=pad"
+        
+    
+        imageNode.contentMode = .scaleAspectFill
+        imageNode.shouldRenderProgressImages = true
+        imageNode.animatedImagePaused = false
+        imageNode.url = URL.init(string: url)
+        imageNode.frame = self.thumbnailView.layer.bounds
+        
+        
+        
+        self.thumbnailView.addSubnode(imageNode)
         
         
     }
     
 
-    
     
     
 }

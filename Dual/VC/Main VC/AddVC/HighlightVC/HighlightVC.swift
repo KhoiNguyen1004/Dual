@@ -11,7 +11,6 @@ import AlamofireImage
 import MarqueeLabel
 import PixelSDK
 import PhotosUI
-import MediaWatermark
 import Firebase
 
 class HighlightVC: UIViewController {
@@ -34,7 +33,6 @@ class HighlightVC: UIViewController {
     @IBOutlet weak var creatorLink: UITextField!
     
     var selectedVideo: SessionVideo!
-    var processedURL: URL!
     var exportedURL: URL!
     var mode: String!
     var music: String!
@@ -105,20 +103,16 @@ class HighlightVC: UIViewController {
         soundText.text = "Original sound - Kai1004pro                                   "
         
         
-        // defaults mode
         
-        publicBtn.setImage(UIImage(named: "SelectedPublic"), for: .normal)
-        FriendsBtn.setImage(UIImage(named: "friends"), for: .normal)
-        OnlyMeBtn.setImage(UIImage(named: "profile"), for: .normal)
         
         
         
         // default setting
-        mode = "Public"
         music = "Original sound"
         isAllowComment = true
         isComment.setOn(true, animated: false)
         
+        loadLastMode()
         
     }
     
@@ -138,6 +132,79 @@ class HighlightVC: UIViewController {
         
         
         soundText.pauseLabel()
+        
+    }
+    
+    func loadLastMode() {
+        
+        
+        DataService.instance.mainRealTimeDataBaseRef.child("Last_mode").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { [self] (snapData) in
+            
+            
+            if snapData.exists() {
+                
+                if let dict = snapData.value as? Dictionary<String, Any> {
+                    
+                    if let SavedMode = dict["mode"] as? String {
+                        
+                       
+                        
+                        if SavedMode == "Public" {
+                            
+                            self.mode = SavedMode
+                            
+                            publicBtn.setImage(UIImage(named: "SelectedPublic"), for: .normal)
+                            FriendsBtn.setImage(UIImage(named: "friends"), for: .normal)
+                            OnlyMeBtn.setImage(UIImage(named: "profile"), for: .normal)
+                            
+                        } else if SavedMode == "Friends" {
+                            
+                            self.mode = SavedMode
+                            
+                            FriendsBtn.setImage(UIImage(named: "selectedFriends"), for: .normal)
+                            publicBtn.setImage(UIImage(named: "public"), for: .normal)
+                            OnlyMeBtn.setImage(UIImage(named: "profile"), for: .normal)
+                            
+                        } else if SavedMode == "Only me" {
+                            
+                            self.mode = SavedMode
+                            
+                            OnlyMeBtn.setImage(UIImage(named: "SelectedOnlyMe"), for: .normal)
+                            FriendsBtn.setImage(UIImage(named: "friends"), for: .normal)
+                            publicBtn.setImage(UIImage(named: "public"), for: .normal)
+                            
+                        } else {
+                            
+                            self.mode = "Public"
+                            
+                            // defaults mode
+                            
+                            publicBtn.setImage(UIImage(named: "SelectedPublic"), for: .normal)
+                            FriendsBtn.setImage(UIImage(named: "friends"), for: .normal)
+                            OnlyMeBtn.setImage(UIImage(named: "profile"), for: .normal)
+                            
+                        }
+                        
+                    }
+                    
+                }
+                
+            } else {
+                
+                
+                self.mode = "Public"
+                
+                // defaults mode
+                
+                publicBtn.setImage(UIImage(named: "SelectedPublic"), for: .normal)
+                FriendsBtn.setImage(UIImage(named: "friends"), for: .normal)
+                OnlyMeBtn.setImage(UIImage(named: "profile"), for: .normal)
+                
+            }
+            
+        })
+        
+        
         
     }
     
@@ -243,47 +310,7 @@ class HighlightVC: UIViewController {
         
         
     }
-    
-    func addWatermark(name: String, url: URL, completed: @escaping DownloadComplete)  {
-        
-        if let item = MediaItem(url: url) {
-   
-            let testStr = name
-            let attributes = [ NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15) ]
-            let attrStr = NSAttributedString(string: testStr, attributes: attributes)
-                    
-            let secondElement = MediaElement(text: attrStr)
-            secondElement.frame = CGRect(x: 25, y: -5, width: 200, height: 35)
-                    
-            item.add(elements: [secondElement])
-                    
-            let mediaProcessor = MediaProcessor()
-            mediaProcessor.processElements(item: item) { (result, error) in
-                
-                
-                if error != nil {
-                    
-                    
-                    self.processedURL = url
-                    
-                } else {
-                    
-                    if let waterMarkedUrl = result.processedUrl {
-                        self.processedURL = waterMarkedUrl
-                    } else {
-                        self.processedURL = url
-                    }
-                    
-                }
-                
-                
-                completed()
-                
-            }
-        }
-        
-        
-    }
+ 
     
     func exportVideo(video: SessionVideo, completed: @escaping DownloadComplete) {
         
@@ -359,11 +386,12 @@ class HighlightVC: UIViewController {
                  // put in firestore here
                 
                 
-                
-                
-        
                  
                 let higlightVideo = ["category": self.item.name as Any, "url": downloadedUrl as Any, "status": "Pending" as Any, "userUID": Auth.auth().currentUser!.uid as Any, "post_time": FieldValue.serverTimestamp() , "mode": self.mode as Any, "music": self.music as Any, "Mux_processed": false, "Mux_playbackID": "nil", "Allow_comment": self.isAllowComment!, "highlight_title": self.Htitle!, "stream_link": self.StreamLink!]
+                
+                
+                // update last mode
+                DataService.instance.mainRealTimeDataBaseRef.child("Last_mode").child(Auth.auth().currentUser!.uid).setValue(["mode": self.mode as Any])
                  
                 let db = DataService.instance.mainFireStoreRef.collection("Highlights")
                  
@@ -420,31 +448,22 @@ class HighlightVC: UIViewController {
             print("Start exporting")
             exportVideo(video: selectedVideo){
                 // add watermark
-                print("Start watermarking")
-                self.addWatermark(name: "Dual team - Kai1004pro", url: self.exportedURL) {
-                    
-                    
-                    print("Done Watermarking")
-                    
-                    DispatchQueue.main.async {
-                        self.selectedVideo = nil
-                        let img = UIImage(named: "Icon awesome-photo-video")
-                        self.checkImg.image = img
-                        SwiftLoader.hide()
-                    }
-                    
+                DispatchQueue.main.async {
+                    self.selectedVideo = nil
+                    let img = UIImage(named: "Icon awesome-photo-video")
+                    self.checkImg.image = img
+                    SwiftLoader.hide()
+                }
+                
 
-                    print("Start uploading")
+                print("Start uploading")
+                
+                Dispatch.background {
                     
-                    Dispatch.background {
-                        
-                        print("Run on background thread")
-                        self.uploadVideo(url: self.processedURL)
-                        
-                        
-                    }
+                    print("Run on background thread")
+                    self.uploadVideo(url: self.exportedURL)
                     
-   
+                    
                 }
                 
             }

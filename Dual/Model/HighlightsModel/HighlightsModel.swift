@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Firebase
 
 //let higlightVideo = ["category": self.item.name as Any, "url": downloadedUrl as Any, "status": "Pending" as Any, "userUID": Auth.auth().currentUser!.uid as Any, "post_time": FieldValue.serverTimestamp() , "mode": self.mode as Any, "music": self.music as Any, "Mux_processed": false, "Mux_playbackID": "nil", "Allow_comment": self.isAllowComment!, "highlight_title": self.Htitle!, "stream_link": self.StreamLink!]
 
@@ -19,12 +20,38 @@ class HighlightsModel {
     fileprivate var _music: String!
     fileprivate var _Mux_processed: Bool!
     fileprivate var _Mux_playbackID: String!
+    fileprivate var _Mux_assetID: String!
     fileprivate var _Allow_comment: Bool!
     fileprivate var _userUID: String!
     fileprivate var _highlight_title: String!
     fileprivate var _stream_link: String!
-    fileprivate var _post_time: Any!
+    fileprivate var _highlight_id: String!
+    fileprivate var _post_time: Timestamp!
     
+    
+    
+    
+    
+    var Mux_assetID: String! {
+        get {
+            if _Mux_assetID == nil {
+                _Mux_assetID = ""
+            }
+            return _Mux_assetID
+        }
+        
+    }
+    
+    
+    var highlight_id: String! {
+        get {
+            if _highlight_id == nil {
+                _highlight_id = ""
+            }
+            return _highlight_id
+        }
+        
+    }
 
     var category: String! {
         get {
@@ -135,10 +162,10 @@ class HighlightsModel {
         
     }
     
-    var post_time: Any! {
+    var post_time: Timestamp! {
         get {
             if _post_time == nil {
-                _post_time = 0
+                _post_time = nil
             }
             return _post_time
         }
@@ -148,6 +175,14 @@ class HighlightsModel {
 
     
     init(postKey: String, Highlight_model: Dictionary<String, Any>) {
+        
+        
+        self._highlight_id = postKey
+       
+        
+        if let Mux_assetID = Highlight_model["Mux_assetID"] as? String {
+            self._Mux_assetID = Mux_assetID
+        }
         
         
         if let url = Highlight_model["url"] as? String {
@@ -194,7 +229,7 @@ class HighlightsModel {
             self._Allow_comment = Allow_comment
         }
         
-        if let post_time = Highlight_model["post_time"] {
+        if let post_time = Highlight_model["post_time"] as? Timestamp {
             self._post_time = post_time
             
         }

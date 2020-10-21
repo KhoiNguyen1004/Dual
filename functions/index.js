@@ -5,7 +5,9 @@ const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 const db = admin.firestore();
 const rt = admin.database();
-
+const http = require('http');
+const https = require('https');
+const request = require('request');
 const express = require('express');
 const path = require('path');
 var app = express();
@@ -34,7 +36,7 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
  response.send("Hello from Firebase LBTA!");
 });
 
-exports.MuxProcessing = functions.database.ref('/Mux-Processing/{ref}/{url}')
+exports.MuxProcessing = functions.database.ref('/Mux-Processing/{ref}/{urls}')
     .onWrite(async (change, context) => {
 
       const ref = context.params.ref;
@@ -65,7 +67,8 @@ exports.MuxProcessing = functions.database.ref('/Mux-Processing/{ref}/{url}')
             const res = await highlightRef.update({
               Mux_processed: true,
               Mux_playbackID: id,
-              status: 'Ready'});
+              status: 'Ready',
+              Mux_assetID: asset.id});
 
             var rm = rt.ref('/Mux-Processing'+'/' + ref);
             rm.remove();
@@ -78,6 +81,27 @@ exports.MuxProcessing = functions.database.ref('/Mux-Processing/{ref}/{url}')
 
       });
 
+
+
+});
+
+exports.MuxDelete = functions.database.ref('/Mux-Deleting/{ref}/{id}')
+    .onWrite(async (change, context) => {
+
+      const ref = context.params.ref;
+      const getInfoProfile = admin.database().ref(`/Mux-Deleting/${ref}`).once('value');
+      const results = await Promise.all([getInfoProfile]);
+      const infomation = results[0];
+      //
+
+      const id = infomation.val().id;
+
+      Video.Assets.del(id);
+
+      var rm = rt.ref('/Mux-Deleting'+'/' + ref);
+      rm.remove();
+
+      console.log('Mux-deleted')
 
 
 });

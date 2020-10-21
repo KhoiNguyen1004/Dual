@@ -362,14 +362,31 @@ PODS:
   - GTMSessionFetcher/Core (1.4.0)
   - leveldb-library (1.22)
   - MarqueeLabel (4.0.5)
-  - MediaWatermark (0.4.0)
   - MGSwipeTableCell (1.6.11)
+  - Mux-Stats-AVPlayer (1.3.8):
+    - Mux-Stats-Core (~> 2.2.0)
+  - Mux-Stats-Core (2.2.2)
   - nanopb (1.30906.0):
     - nanopb/decode (= 1.30906.0)
     - nanopb/encode (= 1.30906.0)
   - nanopb/decode (1.30906.0)
   - nanopb/encode (1.30906.0)
   - NVActivityIndicatorView/AppExtension (4.8.0)
+  - PINCache (3.0.2):
+    - PINCache/Arc-exception-safe (= 3.0.2)
+    - PINCache/Core (= 3.0.2)
+  - PINCache/Arc-exception-safe (3.0.2):
+    - PINCache/Core
+  - PINCache/Core (3.0.2):
+    - PINOperation (~> 1.2.0)
+  - PINOperation (1.2)
+  - PINRemoteImage/Core (3.0.1):
+    - PINOperation
+  - PINRemoteImage/iOS (3.0.1):
+    - PINRemoteImage/Core
+  - PINRemoteImage/PINCache (3.0.1):
+    - PINCache (~> 3.0.1)
+    - PINRemoteImage/Core
   - PixelSDK (10.1.2):
     - PixelSDK-GPUImage3 (~> 1.1.1)
   - PixelSDK-GPUImage3 (1.1.13)
@@ -379,6 +396,27 @@ PODS:
   - SwiftEntryKit (1.2.3):
     - QuickLayout (= 3.0.0)
   - SwiftyJSON (5.0.0)
+  - Texture (3.0.0):
+    - Texture/AssetsLibrary (= 3.0.0)
+    - Texture/Core (= 3.0.0)
+    - Texture/MapKit (= 3.0.0)
+    - Texture/Photos (= 3.0.0)
+    - Texture/PINRemoteImage (= 3.0.0)
+    - Texture/Video (= 3.0.0)
+  - Texture/AssetsLibrary (3.0.0):
+    - Texture/Core
+  - Texture/Core (3.0.0)
+  - Texture/MapKit (3.0.0):
+    - Texture/Core
+  - Texture/Photos (3.0.0):
+    - Texture/Core
+  - Texture/PINRemoteImage (3.0.0):
+    - PINRemoteImage/iOS (~> 3.0.0)
+    - PINRemoteImage/PINCache
+    - Texture/Core
+  - Texture/Video (3.0.0):
+    - Texture/Core
+  - TransitionButton (0.5.3)
   - ZSWTaggedString/Core (4.2)
   - ZSWTaggedString/Swift (4.2):
     - ZSWTaggedString/Core
@@ -397,12 +435,14 @@ DEPENDENCIES:
   - Firebase/Storage
   - GeoFire
   - MarqueeLabel
-  - MediaWatermark
   - MGSwipeTableCell
+  - Mux-Stats-AVPlayer (~> 1.3.0)
   - NVActivityIndicatorView/AppExtension
   - PixelSDK
   - SwiftEntryKit (= 1.2.3)
   - SwiftyJSON
+  - Texture
+  - TransitionButton
   - ZSWTaggedString/Swift (~> 4.0)
   - ZSWTappableLabel (~> 2.0)
 
@@ -435,10 +475,14 @@ SPEC REPOS:
     - GTMSessionFetcher
     - leveldb-library
     - MarqueeLabel
-    - MediaWatermark
     - MGSwipeTableCell
+    - Mux-Stats-AVPlayer
+    - Mux-Stats-Core
     - nanopb
     - NVActivityIndicatorView
+    - PINCache
+    - PINOperation
+    - PINRemoteImage
     - PixelSDK
     - PixelSDK-GPUImage3
     - PromisesObjC
@@ -446,6 +490,8 @@ SPEC REPOS:
     - QuickLayout
     - SwiftEntryKit
     - SwiftyJSON
+    - Texture
+    - TransitionButton
     - ZSWTaggedString
     - ZSWTappableLabel
 
@@ -477,10 +523,14 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 6f5c8abbab8a9bce4bb3f057e317728ec6182b10
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   MarqueeLabel: 00cc0bcd087111dca575878b3531af980559707d
-  MediaWatermark: d67db91deaaa9403220899adfb59c80221a02a7d
   MGSwipeTableCell: b804e4e450dee439c42250be90bd50458bf67fce
+  Mux-Stats-AVPlayer: f6366e5e2862b0fbabfd8bb812470caf7f02847f
+  Mux-Stats-Core: 16b58f39b40a5277ab0742f2efaf544cee98792d
   nanopb: 59317e09cf1f1a0af72f12af412d54edf52603fc
   NVActivityIndicatorView: d24b7ebcf80af5dcd994adb650e2b6c93379270f
+  PINCache: bea7c404c360f6fe0f6ee783c5cd14e778fa2aab
+  PINOperation: 3a967a927e7867e61976c6cc23e5770416449fbc
+  PINRemoteImage: 3b7cedb118c2d357f87e9eabc7c81ba0202cb236
   PixelSDK: 733ada36c2c43e0ba9c2e6437daa612ed00de595
   PixelSDK-GPUImage3: 739e8363b869501fbb9cd3e4230755798e4609cb
   PromisesObjC: 8c196f5a328c2cba3e74624585467a557dcb482f
@@ -488,9 +538,11 @@ SPEC CHECKSUMS:
   QuickLayout: 07b45a72b10083fee3f095990cfed1c1e7b27f0a
   SwiftEntryKit: 340713c2e4a6662c5149629990bf1088bf5f0389
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
+  Texture: 2f109e937850d94d1d07232041c9c7313ccddb81
+  TransitionButton: 36283346e17c64775a1b3bc3a7a72940a367de1f
   ZSWTaggedString: 1a6aab3143188634c1e5dfe9383ce754c1fb5fe2
   ZSWTappableLabel: cff84c0a55e30f2141f7dac24e5903302a7e35ec
 
-PODFILE CHECKSUM: 41a6402a3a745211bb57129f76e25d4f9a52de83
+PODFILE CHECKSUM: 554fedd5c28621ecc73acca45f8125d84255efd6
 
 COCOAPODS: 1.9.3

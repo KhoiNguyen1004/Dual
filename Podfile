@@ -25,9 +25,11 @@ target 'Dual' do
   pod 'PixelSDK'
   pod 'NVActivityIndicatorView/AppExtension'
   pod 'MarqueeLabel'
-  pod "MediaWatermark"
   pod 'DTCollectionViewManager', '~> 8.0.0-beta.1'
-
+  pod 'Mux-Stats-AVPlayer', '~>1.3.0'
+  pod 'TransitionButton'
+  pod "Texture"
+  
   
   
  # pod 'SinchVerification-Swift'

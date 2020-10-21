@@ -14,8 +14,13 @@ import CoreLocation
 import Alamofire
 import DTCollectionViewManager
 
+
 class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionViewManageable, UICollectionViewDelegateFlowLayout {
     
+    
+    var selectedItem: HighlightsModel!
+    
+    @IBOutlet weak var imgTest: UIImageView!
     
     @IBOutlet weak var avatarImg: borderAvatarView!
     @IBOutlet weak var profileImgBtn: UIButton!
@@ -30,6 +35,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionV
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        
         
         
         
@@ -66,7 +72,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionV
     @IBAction func ImgBtnPressed(_ sender: Any) {
         
         
-        let sheet = UIAlertController(title: "Upload your photo", message: "", preferredStyle: .actionSheet)
+        let sheet = UIAlertController(title: "Upload your profile photo", message: "", preferredStyle: .actionSheet)
         
         
         let camera = UIAlertAction(title: "Take a new photo", style: .default) { (alert) in
@@ -139,6 +145,37 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionV
 
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    
+        manager.didSelect(HighlightsCollectionCell.self) { cell, model, indexPath in
+            
+            
+            // React to selection
+            
+            self.selectedItem = model
+            self.performSegue(withIdentifier: "MoveToEditVideoVC", sender: nil)
+            
+            
+        }
+        
+    }
+    
+    // prepare for segue
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "MoveToEditVideoVC"{
+            if let destination = segue.destination as? EditVideoVC
+            {
+                
+                destination.selectedItem = self.selectedItem
+               
+                
+            }
+        }
+        
+    }
+    
     
     func loadVideo() {
         
@@ -159,12 +196,15 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionV
                     for item in snapshot.documents {
                         
                         
-                        print("First load")
-                        
-                        let dict = HighlightsModel(postKey: item.documentID, Highlight_model: item.data())
-                        self.Highlight_list.append(dict)
-                        
-                        manager.memoryStorage.setItems(self.Highlight_list)
+                        if item.data()["status"] as! String == "Ready" {
+                            
+                           
+                            let dict = HighlightsModel(postKey: item.documentID, Highlight_model: item.data())
+                            self.Highlight_list.append(dict)
+                            
+                            manager.memoryStorage.setItems(self.Highlight_list)
+                            
+                        }
                         
                     }
                     
@@ -178,24 +218,38 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionV
                     if (diff.type == .modified) {
                        
                         if diff.document.data()["status"] as! String == "Ready" {
-                            
-                            
-                            print("New ready: \(diff.document.data())")
-                            
+                               
                             let item = HighlightsModel(postKey: diff.document.documentID, Highlight_model: diff.document.data())
-                            self.Highlight_list.insert(item, at: 0)
-                            manager.memoryStorage.removeAllItems()
+                            
+                            let isIn = findDataInList(item: item)
+                            
+                            if isIn == false {
+                                
+                                self.Highlight_list.insert(item, at: 0)
+                                
+                            } else {
+                                
+                                let index = findDataIndex(item: item)
+                                self.Highlight_list.remove(at: index)
+                                self.Highlight_list.insert(item, at: index)
+                                
+                                
+                            }
+                            
+                            
                             manager.memoryStorage.setItems(self.Highlight_list)
                             // add new item processing goes here
                             
-                        } else {
-                            
-                    
-                            
                         }
+                        
                     } else if (diff.type == .removed) {
                         
-                        print("New removed: \(diff.document.data())")
+                       
+                        let item = HighlightsModel(postKey: diff.document.documentID, Highlight_model: diff.document.data())
+                        
+                        let index = findDataIndex(item: item)
+                        self.Highlight_list.remove(at: index)
+                        manager.memoryStorage.setItems(self.Highlight_list)
                         
                         // delete processing goes here
                     }
@@ -206,10 +260,48 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionV
    
     }
     
+    func findDataInList(item: HighlightsModel) -> Bool {
+        
+        for i in Highlight_list {
+            
+            if i.Mux_playbackID == item.Mux_playbackID, i.Mux_assetID == item.Mux_assetID, i.url == item.url {
+                
+                return true
+                
+            }
+            
+           
+            
+        }
+        
+        return false
+        
+    }
+    
+    func findDataIndex(item: HighlightsModel) -> Int {
+        
+        var count = 0
+        
+        for i in Highlight_list {
+            
+            if i.Mux_playbackID == item.Mux_playbackID, i.Mux_assetID == item.Mux_assetID, i.url == item.url {
+                
+                break
+                
+            }
+            
+            count += 1
+            
+        }
+        
+        return count
+        
+    }
+    
     // layouyt
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 0.0
+        return 2.0
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -241,8 +333,8 @@ extension ProfileVC: UIImagePickerControllerDelegate {
     
     
     private func itemSize(for width: CGFloat) -> CGSize {
-        
-        return CGSize(width: (width - 1)/3, height: 170)
+ 
+        return CGSize(width: (width - 0)/2, height: 150)
     
     }
     

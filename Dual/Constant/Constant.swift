@@ -12,6 +12,7 @@ import CoreLocation
 import SwiftEntryKit
 
 
+
 typealias DownloadComplete = () -> ()
 
 let diskConfig = DiskConfig(
@@ -122,10 +123,10 @@ func timeAgoSinceDate(_ date:Date, numericDates:Bool) -> String {
             return "Yesterday"
         }
     } else if (components.hour! >= 2) {
-        return "\(components.hour!) hrs ago"
+        return "\(components.hour!) hours ago"
     } else if (components.hour! >= 1){
         if (numericDates){
-            return "1 hr ago"
+            return "1 hour ago"
         } else {
             return "An hour ago"
         }
@@ -246,4 +247,6 @@ extension UITextField {
 }
 
 
+
 var pixel_key = "dUx7ImsiOiI1TUx4b3gpUj05dHM2Vmh0OlcpI2ZgTlQiLCJ2IjoiZjhGRGoiLCJpIjoiMjgifTF2"
+
