@@ -86,46 +86,61 @@ class VideoSettingVC: UIViewController {
     @IBAction func DeleteVideoBtnPressed(_ sender: Any) {
         
         
-        if let id = selectedItem.highlight_id, let playback_id = selectedItem.Mux_assetID {
-            swiftLoader(progress: "Deleting")
-            let db = DataService.instance.mainFireStoreRef.collection("Highlights")
+        let alert = UIAlertController(title: "Are you sure to delete this video !", message: "If you confirm to delete, this video will be removed permanently and this action can't be undo.", preferredStyle: UIAlertController.Style.actionSheet)
+
+        // add the actions (buttons)
+        alert.addAction(UIAlertAction(title: "Delete", style: UIAlertAction.Style.destructive, handler: { [self] action in
+
+            
+            if let id = selectedItem.highlight_id, let playback_id = selectedItem.Mux_assetID {
                 
-            db.document(id).delete() { err in
-                
-               
                 DispatchQueue.main.async {
-                    SwiftLoader.hide()
+                    swiftLoader(progress: "Deleting")
                 }
-                
-                if let err = err {
-                        print("Error removing document: \(err)")
-                } else {
-                        print("Document successfully removed!")
+              
+                let db = DataService.instance.mainFireStoreRef.collection("Highlights")
                     
-                
-                    
-                    print("Send data to backend for mux deleting!")
-                    
-                    DataService.instance.mainRealTimeDataBaseRef.child("Mux-Deleting").child(id).setValue(["id": playback_id])
-                    
-                    print("Sent")
-                    
-                    DispatchQueue.main.async {
-                       
-                        self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
-                        
-                    }
+                db.document(id).delete() { err in
                     
                    
+                    DispatchQueue.main.async {
+                        SwiftLoader.hide()
+                    }
+                    
+                    if let err = err {
+                            print("Error removing document: \(err)")
+                    } else {
+                            print("Document successfully removed!")
                         
+                    
+                        
+                        print("Send data to backend for mux deleting!")
+                        
+                        DataService.instance.mainRealTimeDataBaseRef.child("Mux-Deleting").child(id).setValue(["id": playback_id])
+                        
+                        print("Sent")
+                        
+                        DispatchQueue.main.async {
+                           
+                            self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
+                            
+                        }
+                        
+                       
+                            
+                    }
                 }
+                
+                
             }
             
-            
-        }
-      
+                
+        }))
 
-        
+        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
+
+        // show the alert
+        self.present(alert, animated: true, completion: nil)
         
     }
     

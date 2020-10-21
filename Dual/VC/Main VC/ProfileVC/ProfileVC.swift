@@ -214,12 +214,14 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionV
                 
           
                 snapshot.documentChanges.forEach { diff in
+                    
+                    let item = HighlightsModel(postKey: diff.document.documentID, Highlight_model: diff.document.data())
 
                     if (diff.type == .modified) {
                        
                         if diff.document.data()["status"] as! String == "Ready" {
                                
-                            let item = HighlightsModel(postKey: diff.document.documentID, Highlight_model: diff.document.data())
+                            
                             
                             let isIn = findDataInList(item: item)
                             
@@ -245,8 +247,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionV
                     } else if (diff.type == .removed) {
                         
                        
-                        let item = HighlightsModel(postKey: diff.document.documentID, Highlight_model: diff.document.data())
-                        
+                       
                         let index = findDataIndex(item: item)
                         self.Highlight_list.remove(at: index)
                         manager.memoryStorage.setItems(self.Highlight_list)

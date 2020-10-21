@@ -20,6 +20,8 @@ class AddVC: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
     var selectedItem: AddModel!
     var SelectedIndex: IndexPath!
     
+    var firstLoad = true
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -33,7 +35,7 @@ class AddVC: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
             
             
 
-        loadGame()
+        loadAddGame()
         
     }
     
@@ -244,10 +246,6 @@ class AddVC: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
     
     func loadGame() {
         
-        
-        itemList.removeAll()
-        self.collectionView.reloadData()
-        
         DataService.instance.mainFireStoreRef.collection("Support_game").order(by: "name", descending: true).getDocuments { (snap, err) in
             
             
@@ -284,6 +282,160 @@ class AddVC: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
         }
         
         
+        
+    }
+    
+    func loadAddGame() {
+        
+        let db = DataService.instance.mainFireStoreRef
+        
+        db.collection("Support_game").order(by: "name", descending: true)
+            .addSnapshotListener { [self] querySnapshot, error in
+                guard let snapshot = querySnapshot else {
+                    print("Error fetching snapshots: \(error!)")
+                    return
+                }
+                
+                if firstLoad == true {
+                    
+                    for item in snapshot.documents {
+                        
+                        if item.data()["status"] as! Bool == true {
+                            
+                            let i = item.data()
+                            let item = AddModel(postKey: item.documentID, Game_model: i)
+                            
+                            if i["name"] as? String != "Others" {
+                             
+                                
+                                self.itemList.insert(item, at: 0)
+                                
+                            } else {
+                                
+                                self.itemList.append(item)
+                                
+                            }
+                            
+                            self.collectionView.reloadData()
+                            
+                        }
+                        
+                        
+                        
+                    }
+                    
+                    firstLoad =  false
+                    
+                }
+                
+          
+                snapshot.documentChanges.forEach { diff in
+                    
+                    
+                    let item = AddModel(postKey: diff.document.documentID, Game_model: diff.document.data())
+
+                    if (diff.type == .modified) {
+        
+                        if diff.document.data()["status"] as! Bool == true {
+                               
+                        
+                            
+                            let isIn = findDataInList(item: item)
+                            
+                            if isIn == false {
+                                
+                                self.itemList.insert(item, at: 0)
+                                
+                            } else {
+                                
+                                let index = findDataIndex(item: item)
+                                self.itemList.remove(at: index)
+                                self.itemList.insert(item, at: index)
+                                
+                                
+                            }
+                            
+                            
+                            self.collectionView.reloadData()
+                            // add new item processing goes here
+                            
+                        } else {
+                            
+                            
+                            // removed
+                            
+                            let index = findDataIndex(item: item)
+                            self.itemList.remove(at: index)
+                            self.collectionView.reloadData()
+                            
+                            
+                        }
+                        
+                    } else if (diff.type == .removed) {
+                        
+                      
+                        
+                        let index = findDataIndex(item: item)
+                        self.itemList.remove(at: index)
+                        self.collectionView.reloadData()
+                        
+                        // delete processing goes here
+                        
+                        
+                    } else if (diff.type == .added) {
+                        
+                      
+                        let isIn = findDataInList(item: item)
+                        
+                        if isIn == false {
+                            
+                            self.itemList.insert(item, at: 0)
+                            self.collectionView.reloadData()
+                            
+                        }
+                        
+                        
+                    }
+                }
+            }
+        
+    }
+    
+    func findDataInList(item: AddModel) -> Bool {
+        
+        for i in itemList {
+            
+            if i.name == item.name {
+                
+                return true
+                
+            }
+            
+           
+            
+        }
+        
+        return false
+        
+    }
+    
+    func findDataIndex(item: AddModel) -> Int {
+        
+        var count = 0
+        
+        for i in itemList {
+            
+            if i.name == item.name {
+                
+                break
+                
+            }
+            
+            count += 1
+            
+        }
+        
+        return count
         
     }
     
