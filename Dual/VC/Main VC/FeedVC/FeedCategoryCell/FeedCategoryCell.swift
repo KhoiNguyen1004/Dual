@@ -1,31 +1,28 @@
 //
-//  AddCell.swift
+//  FeedCategoryCell.swift
 //  Dual
 //
-//  Created by Khoi Nguyen on 10/7/20.
+//  Created by Khoi Nguyen on 10/22/20.
 //
 
 import UIKit
-import AlamofireImage
 import Alamofire
 
-class AddCell: UICollectionViewCell {
+class FeedCategoryCell: UICollectionViewCell {
     
-    @IBOutlet var imageView: UIImageView!
-    @IBOutlet var name: UILabel!
-    @IBOutlet var shadowView: UIView!
+    @IBOutlet weak var backView: UIView!
+    @IBOutlet weak var shadowView: UIView!
+    @IBOutlet weak var CategoryImg: UIImageView!
+    @IBOutlet weak var Fylbl: UILabel!
     
-    var info: AddModel!
+    var info: CategoryModel!
     
-    
-    func configureCell(_ Information: AddModel) {
+    func configureCell(_ Information: CategoryModel) {
         self.info = Information
-        
-        
-        
-        self.name.text = info.name
-        
+      
         if let url = info.url, url != "" {
+            
+            self.Fylbl.text = ""
             
             imageStorage.async.object(forKey: url) { result in
                 if case .value(let image) = result {
@@ -33,7 +30,7 @@ class AddCell: UICollectionViewCell {
                     DispatchQueue.main.async { // Make sure you're on the main thread here
                         
                         
-                        self.imageView.image = image
+                        self.CategoryImg.image = image
                         
                         //try? imageStorage.setObject(image, forKey: url)
                         
@@ -41,13 +38,12 @@ class AddCell: UICollectionViewCell {
                     
                 } else {
                     
-                    
                  AF.request(self.info.url).responseImage { response in
                         
                         
                         switch response.result {
                         case let .success(value):
-                            self.imageView.image = value
+                            self.CategoryImg.image = value
                             try? imageStorage.setObject(value, forKey: url)
                         case let .failure(error):
                             print(error)
@@ -62,16 +58,18 @@ class AddCell: UICollectionViewCell {
             }
             
          
+        } else {
+            
+            
+            self.Fylbl.text = "For you"
+            self.CategoryImg.image = nil
+            
+            
         }
         
         
         
         
     }
-    
-    
-    
-    
-    
     
 }

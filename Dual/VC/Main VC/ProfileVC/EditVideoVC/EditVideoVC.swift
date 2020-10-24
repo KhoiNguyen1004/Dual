@@ -6,11 +6,12 @@
 //
 
 import UIKit
-import AVKit
 import AVFoundation
 import MarqueeLabel
 import Alamofire
 import AsyncDisplayKit
+import MUXSDKStats
+import Firebase
 
 
 class EditVideoVC: UIViewController {
@@ -160,12 +161,12 @@ class EditVideoVC: UIViewController {
             
             videoPlayer.addSubnode(videoNode)
             
-            videoNode.gravity = AVLayerVideoGravity.resizeAspect.rawValue
-            videoNode.shouldAutoplay = true
+            videoNode.gravity = AVLayerVideoGravity.resizeAspectFill.rawValue
+            videoNode.shouldAutoplay = false
             videoNode.shouldAutorepeat = true
            
             videoNode.asset = asset
-            
+    
             videoNode.play()
             
             

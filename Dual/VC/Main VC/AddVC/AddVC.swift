@@ -21,6 +21,7 @@ class AddVC: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
     var SelectedIndex: IndexPath!
     
     var firstLoad = true
+    var caseLoad = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,6 +60,14 @@ class AddVC: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AddCell", for: indexPath) as? AddCell {
             
             cell.layer.cornerRadius = 20
+            
+            if item.status == true {
+                cell.shadowView.backgroundColor = UIColor.clear
+            } else {
+                cell.shadowView.backgroundColor = UIColor.black
+            }
+            
+            
             cell.configureCell(item)
             
          
@@ -75,17 +84,70 @@ class AddVC: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 
         
-        let randomInt = Int.random(in: 0..<4)
-        
-        if randomInt == 0 {
-            return CGSize(width: (view.frame.width - 75 ) / 2 , height: 47)
-        } else if randomInt == 1 {
-            return CGSize(width: (view.frame.width - 100 ) / 2 , height: 47)
-        } else if randomInt == 2 {
-            return CGSize(width: (view.frame.width - 125 ) / 2 , height: 47)
+        if indexPath.row % 2 == 0 {
+            
+            let randomInt = Int.random(in: 0..<4)
+            
+            if randomInt == 0 {
+                caseLoad = 0
+                return CGSize(width: (view.frame.width - 70 ) / 2 , height: 47)
+            } else if randomInt == 1 {
+                caseLoad = 1
+                return CGSize(width: (view.frame.width - 90 ) / 2 , height: 47)
+            } else if randomInt == 2 {
+                caseLoad = 2
+                return CGSize(width: (view.frame.width - 110 ) / 2 , height: 47)
+            } else {
+                caseLoad = 3
+                return CGSize(width: (view.frame.width - 120 ) / 2 , height: 47)
+            }
+            
         } else {
-            return CGSize(width: (view.frame.width - 145 ) / 2 , height: 47)
+            
+            if caseLoad == 2 || caseLoad == 3 {
+                
+                let randomInt = Int.random(in: 0..<2)
+                
+                if randomInt == 0 {
+                    caseLoad = 0
+                    return CGSize(width: (view.frame.width - 70) / 2 , height: 47)
+                } else if randomInt == 1 {
+                    caseLoad = 1
+                    return CGSize(width: (view.frame.width - 90 ) / 2 , height: 47)
+                } else {
+                    
+                    caseLoad = 0
+                    return CGSize(width: (view.frame.width - 70 ) / 2 , height: 47)
+                    
+                }
+                
+                
+            } else {
+                
+                let randomInt = Int.random(in: 2..<4)
+                
+                if randomInt == 2 {
+                    caseLoad = 2
+                    return CGSize(width: (view.frame.width - 110 ) / 2 , height: 47)
+                } else if randomInt == 3 {
+                    caseLoad = 3
+                    return CGSize(width: (view.frame.width - 120 ) / 2 , height: 47)
+                } else {
+                    
+                    caseLoad = 2
+                    return CGSize(width: (view.frame.width - 110 ) / 2 , height: 47)
+                    
+                }
+                
+                
+                
+            }
+            
+            
+            
         }
+        
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -99,6 +161,14 @@ class AddVC: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
         if itemList.isEmpty != true {
             
             let item = itemList[indexPath.row]
+            
+            if item.status != true {
+                
+                self.showErrorAlert("Oops!", msg: "This category is temporarily disabled, please try again later.")
+                
+                return
+                
+            }
             
             if selectedItem != nil {
                 
@@ -241,49 +311,7 @@ class AddVC: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
         
     }
     
-  
-    
-    
-    func loadGame() {
-        
-        DataService.instance.mainFireStoreRef.collection("Support_game").order(by: "name", descending: true).getDocuments { (snap, err) in
-            
-            
-            if err != nil {
-                
-                self.showErrorAlert("Opss !", msg: err!.localizedDescription)
-                return
-            }
-        
-            for item in snap!.documents {
-                
-            
-                let i = item.data()
-                
-                let item = AddModel(postKey: item.documentID, Game_model: i)
-                
-                if i["name"] as? String != "Others" {
-                 
-                    
-                    self.itemList.insert(item, at: 0)
-                    
-                } else {
-                    
-                    self.itemList.append(item)
-                    
-                }
-                
-                
- 
-                self.collectionView.reloadData()
-                
-                
-            }
-        }
-        
-        
-        
-    }
+
     
     func loadAddGame() {
         
@@ -300,26 +328,21 @@ class AddVC: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
                     
                     for item in snapshot.documents {
                         
-                        if item.data()["status"] as! Bool == true {
+                        let i = item.data()
+                        let item = AddModel(postKey: item.documentID, Game_model: i)
+                        
+                        if i["name"] as? String != "Others" {
+                         
                             
-                            let i = item.data()
-                            let item = AddModel(postKey: item.documentID, Game_model: i)
+                            self.itemList.insert(item, at: 0)
                             
-                            if i["name"] as? String != "Others" {
-                             
-                                
-                                self.itemList.insert(item, at: 0)
-                                
-                            } else {
-                                
-                                self.itemList.append(item)
-                                
-                            }
+                        } else {
                             
-                            self.collectionView.reloadData()
+                            self.itemList.append(item)
                             
                         }
                         
+                        self.collectionView.reloadData()
                         
                         
                     }
@@ -336,40 +359,23 @@ class AddVC: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
 
                     if (diff.type == .modified) {
         
-                        if diff.document.data()["status"] as! Bool == true {
-                               
+                        let isIn = findDataInList(item: item)
                         
+                        if isIn == false {
                             
-                            let isIn = findDataInList(item: item)
-                            
-                            if isIn == false {
-                                
-                                self.itemList.insert(item, at: 0)
-                                
-                            } else {
-                                
-                                let index = findDataIndex(item: item)
-                                self.itemList.remove(at: index)
-                                self.itemList.insert(item, at: index)
-                                
-                                
-                            }
-                            
-                            
-                            self.collectionView.reloadData()
-                            // add new item processing goes here
+                            self.itemList.insert(item, at: 0)
                             
                         } else {
                             
-                            
-                            // removed
-                            
                             let index = findDataIndex(item: item)
                             self.itemList.remove(at: index)
-                            self.collectionView.reloadData()
+                            self.itemList.insert(item, at: index)
                             
                             
                         }
+                        
+                        
+                        self.collectionView.reloadData()
                         
                     } else if (diff.type == .removed) {
                         

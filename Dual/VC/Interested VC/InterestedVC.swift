@@ -15,6 +15,7 @@ class InterestedVC: UIViewController, UICollectionViewDataSource, UICollectionVi
     
     var itemList = [InterestedModel]()
     var selectedList = [InterestedModel]()
+    var caseLoad = 0
     
     @IBOutlet weak var collectionView: UICollectionView!
 
@@ -71,18 +72,69 @@ class InterestedVC: UIViewController, UICollectionViewDataSource, UICollectionVi
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 
         
-        let randomInt = Int.random(in: 0..<4)
-        
-        
-        if randomInt == 0 {
-            return CGSize(width: (view.frame.width - 75 ) / 2 , height: 47)
-        } else if randomInt == 1 {
-            return CGSize(width: (view.frame.width - 100 ) / 2 , height: 47)
-        } else if randomInt == 2 {
-            return CGSize(width: (view.frame.width - 125 ) / 2 , height: 47)
+        if indexPath.row % 2 == 0 {
+            
+            let randomInt = Int.random(in: 0..<4)
+            
+            if randomInt == 0 {
+                caseLoad = 0
+                return CGSize(width: (view.frame.width - 70 ) / 2 , height: 47)
+            } else if randomInt == 1 {
+                caseLoad = 1
+                return CGSize(width: (view.frame.width - 90 ) / 2 , height: 47)
+            } else if randomInt == 2 {
+                caseLoad = 2
+                return CGSize(width: (view.frame.width - 110 ) / 2 , height: 47)
+            } else {
+                caseLoad = 3
+                return CGSize(width: (view.frame.width - 120 ) / 2 , height: 47)
+            }
+            
         } else {
-            return CGSize(width: (view.frame.width - 145 ) / 2 , height: 47)
+            
+            if caseLoad == 2 || caseLoad == 3 {
+                
+                let randomInt = Int.random(in: 0..<2)
+                
+                if randomInt == 0 {
+                    caseLoad = 0
+                    return CGSize(width: (view.frame.width - 70) / 2 , height: 47)
+                } else if randomInt == 1 {
+                    caseLoad = 1
+                    return CGSize(width: (view.frame.width - 90 ) / 2 , height: 47)
+                } else {
+                    
+                    caseLoad = 0
+                    return CGSize(width: (view.frame.width - 70 ) / 2 , height: 47)
+                    
+                }
+                
+                
+            } else {
+                
+                let randomInt = Int.random(in: 2..<4)
+                
+                if randomInt == 2 {
+                    caseLoad = 2
+                    return CGSize(width: (view.frame.width - 110 ) / 2 , height: 47)
+                } else if randomInt == 3 {
+                    caseLoad = 3
+                    return CGSize(width: (view.frame.width - 120 ) / 2 , height: 47)
+                } else {
+                    
+                    caseLoad = 2
+                    return CGSize(width: (view.frame.width - 110 ) / 2 , height: 47)
+                    
+                }
+                
+                
+                
+            }
+            
+            
+            
         }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -93,8 +145,7 @@ class InterestedVC: UIViewController, UICollectionViewDataSource, UICollectionVi
     func loadGame() {
         
         DataService.instance.mainFireStoreRef.collection("Support_game").order(by: "name", descending: true).getDocuments { (snap, err) in
-            
-            
+   
             if err != nil {
                 
                 self.showErrorAlert("Opss !", msg: err!.localizedDescription)
@@ -106,11 +157,17 @@ class InterestedVC: UIViewController, UICollectionViewDataSource, UICollectionVi
             
                 let i = item.data()
                 
+                let item  = InterestedModel(postKey: item.documentID, Game_model: i)
+                
                 if i["name"] as? String != "Others" {
                     
-                    let item  = InterestedModel(postKey: item.documentID, Game_model: i)
+                    
                     
                     self.itemList.insert(item, at: 0)
+                    
+                } else {
+                    
+                    self.itemList.append(item)
                     
                 }
                 

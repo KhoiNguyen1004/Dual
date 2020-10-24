@@ -302,7 +302,7 @@ open class ViewModelMapping<View: AnyObject, Model> : ViewModelMappingProtocol
                             cellConfiguration(cell, model, indexPath)
                         })
                     }
-                    return collectionView.dequeueConfiguredReusableCell(using: registration, for: indexPath, item: model)
+                   return collectionView.dequeueConfiguredReusableCell(using: registration, for: indexPath, item: model)
                 #else
                     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.reuseIdentifier, for: indexPath)
                 if let cell = cell as? T {
