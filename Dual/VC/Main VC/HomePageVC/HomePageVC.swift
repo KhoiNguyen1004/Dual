@@ -51,10 +51,5 @@ class HomePageVC: UITabBarController {
         
     }
     
-    
-    
-    
-
-   
 
 }

@@ -29,8 +29,7 @@ target 'Dual' do
   pod 'Mux-Stats-AVPlayer', '~>1.3.0'
   pod 'TransitionButton'
   pod "Texture"
-  
-  
+ 
   
  # pod 'SinchVerification-Swift'
 

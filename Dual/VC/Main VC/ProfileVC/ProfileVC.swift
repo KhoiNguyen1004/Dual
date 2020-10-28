@@ -37,25 +37,37 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionV
 
         // Do any additional setup after loading the view.
         
-        
-        
-        
+        if Auth.auth().currentUser?.isAnonymous == true {
+            
+            print("Login anonymously")
+            /*
+            let Lview = LoginView()
+            Lview.frame = self.view.layer.bounds
+            Lview.SignUpBtn.addTarget(self, action: #selector(ProfileVC.SignUpBtnPressed), for: .touchUpInside)
+            self.view.addSubview(Lview)
+            
+            return
+             */
+        }
         
         manager.register(HighlightsCollectionCell.self) { [weak self] mapping in
             
             mapping.sizeForCell { cell, model in
                 self?.itemSize(for: self?.collectionView.bounds.size.width ?? .zero) ?? .zero
             }
-            
-            
-            
-            
+                      
         }
-        
-
-        
+     
         loadVideo()
         
+        
+        
+        
+    }
+    
+    @objc func SignUpBtnPressed() {
+        
+        self.performSegue(withIdentifier: "moveToLoginVC2", sender: nil)
         
         
     }
@@ -190,8 +202,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionV
                     return
                 }
                 
-            
-                
+
                 if firstLoad == true {
                     
                     for item in snapshot.documents {

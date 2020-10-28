@@ -15,6 +15,7 @@ import SwiftEntryKit
 
 typealias DownloadComplete = () -> ()
 
+
 let diskConfig = DiskConfig(
   // The name of disk storage, this will be used as folder name within directory
   name: "Floppy",
@@ -250,3 +251,83 @@ extension UITextField {
 
 var pixel_key = "dUx7ImsiOiI1TUx4b3gpUj05dHM2Vmh0OlcpI2ZgTlQiLCJ2IjoiZjhGRGoiLCJpIjoiMjgifTF2"
 var env_key = "v9s48ds44jmrgnqgmp666jcpe"
+var applicationKey = "2c3ccae1-c080-467b-b989-d1d70aaf159c"
+var should_Play = false
+
+extension UIView
+{
+    func fixInView(_ container: UIView!) -> Void{
+        self.translatesAutoresizingMaskIntoConstraints = false;
+        self.frame = container.frame;
+        container.addSubview(self);
+        NSLayoutConstraint(item: self, attribute: .leading, relatedBy: .equal, toItem: container, attribute: .leading, multiplier: 1.0, constant: 0).isActive = true
+        NSLayoutConstraint(item: self, attribute: .trailing, relatedBy: .equal, toItem: container, attribute: .trailing, multiplier: 1.0, constant: 0).isActive = true
+        NSLayoutConstraint(item: self, attribute: .top, relatedBy: .equal, toItem: container, attribute: .top, multiplier: 1.0, constant: 0).isActive = true
+        NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: container, attribute: .bottom, multiplier: 1.0, constant: 0).isActive = true
+    }
+}
+
+extension UITextField{
+    @IBInspectable var placeHolderColor: UIColor? {
+        get {
+            return self.placeHolderColor
+        }
+        set {
+            self.attributedPlaceholder = NSAttributedString(string:self.placeholder != nil ? self.placeholder! : "", attributes:[NSAttributedString.Key.foregroundColor: newValue!])
+        }
+    }
+}
+
+
+extension UIView {
+
+    @IBInspectable var shadow: Bool {
+        get {
+            return layer.shadowOpacity > 0.0
+        }
+        set {
+            if newValue == true {
+                self.addShadow()
+            }
+        }
+    }
+
+    @IBInspectable var cornerRadius: CGFloat {
+        get {
+            return self.layer.cornerRadius
+        }
+        set {
+            self.layer.cornerRadius = newValue
+
+            // Don't touch the masksToBound property if a shadow is needed in addition to the cornerRadius
+            if shadow == false {
+                self.layer.masksToBounds = true
+            }
+        }
+    }
+
+
+    func addShadow(shadowColor: CGColor = UIColor.orange.cgColor,
+               shadowOffset: CGSize = CGSize(width: 3.0, height: 4.0),
+               shadowOpacity: Float = 0.7,
+               shadowRadius: CGFloat = 4.5) {
+        layer.shadowColor = shadowColor
+        layer.shadowOffset = shadowOffset
+        layer.shadowOpacity = shadowOpacity
+        layer.shadowRadius = shadowRadius
+    }
+}
+
+extension UIView {
+    func addBottomBorderWithColor(color: UIColor, height: CGFloat) -> CALayer {
+        
+        let border = CALayer()
+        border.backgroundColor = color.cgColor
+        border.frame = CGRect(x: 0, y: self.frame.size.height - height,
+                              width: self.frame.size.width, height: height)
+        
+        
+        return border
+        
+    }
+}

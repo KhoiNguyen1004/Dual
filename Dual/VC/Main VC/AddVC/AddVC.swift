@@ -27,16 +27,39 @@ class AddVC: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-         
-            collectionView.dataSource = self
-            collectionView.delegate = self
-            collectionView.allowsSelection = true
-                 
-            self.collectionView?.contentInset = UIEdgeInsets(top: 23, left: 16, bottom: 10, right: 16)
+        
+        
+        if Auth.auth().currentUser?.isAnonymous == true {
             
+            /*
+            print("Login anonymously")
             
-
+            let Lview = LoginView()
+            Lview.frame = self.view.layer.bounds
+            Lview.SignUpBtn.addTarget(self, action: #selector(AddVC.SignUpBtnPressed), for: .touchUpInside)
+            self.view.addSubview(Lview)
+            
+            return
+            */
+        }
+    
+        
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.allowsSelection = true
+             
+        self.collectionView?.contentInset = UIEdgeInsets(top: 23, left: 16, bottom: 10, right: 16)
+        
         loadAddGame()
+        
+         
+        
+    }
+    
+    @objc func SignUpBtnPressed() {
+        
+        
+        self.performSegue(withIdentifier: "moveToLoginVC1", sender: nil)
         
     }
     

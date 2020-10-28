@@ -19,7 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
         
-        
         FirebaseApp.configure()
         PixelSDK.setup(pixel_key)
         PixelSDK.shared.maxVideoDuration = 60
@@ -77,11 +76,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     override init() {
         super.init()
         
-        
-
         // Main API client configuration
         MainAPIClient.shared.baseURLString = baseURLString
-        
         
     }
 

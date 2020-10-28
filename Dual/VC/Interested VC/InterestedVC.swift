@@ -29,8 +29,6 @@ class InterestedVC: UIViewController, UICollectionViewDataSource, UICollectionVi
         
         collectionView.allowsMultipleSelection = true
         
-        
-       
         self.collectionView?.contentInset = UIEdgeInsets(top: 23, left: 16, bottom: 10, right: 16)
         
         

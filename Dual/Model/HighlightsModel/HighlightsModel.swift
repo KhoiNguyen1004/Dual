@@ -27,9 +27,19 @@ class HighlightsModel {
     fileprivate var _stream_link: String!
     fileprivate var _highlight_id: String!
     fileprivate var _post_time: Timestamp!
+    fileprivate var _ratio: CGFloat!
     
     
     
+    var ratio: CGFloat! {
+        get {
+            if _ratio == nil {
+                _ratio = 0.0
+            }
+            return _ratio
+        }
+        
+    }
     
     
     var Mux_assetID: String! {
@@ -179,6 +189,11 @@ class HighlightsModel {
         
         self._highlight_id = postKey
        
+        
+        
+        if let ratio = Highlight_model["ratio"] as? CGFloat {
+            self._ratio = ratio
+        }
         
         if let Mux_assetID = Highlight_model["Mux_assetID"] as? String {
             self._Mux_assetID = Mux_assetID

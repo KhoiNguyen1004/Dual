@@ -50,7 +50,6 @@ class HighlightsCollectionCell: UICollectionViewCell, ModelTransfer {
      
         let url = "https://image.mux.com/\(playbackID!)/animated.gif?start=0&end=2&fit_mode=pad"
         
-    
         imageNode.contentMode = .scaleAspectFill
         imageNode.shouldRenderProgressImages = true
         imageNode.animatedImagePaused = false

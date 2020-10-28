@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ChallengeView" customModule="Dual" customModuleProvider="target">
+            <connections>
+                <outlet property="challengeBtn" destination="zBy-bl-aUe" id="Rno-IO-PEU"/>
+                <outlet property="contentView" destination="iN0-l3-epB" id="Tqy-Yf-Lly"/>
+                <outlet property="shareBtn" destination="fQz-Un-0GK" id="dYL-GR-wSA"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="70" height="130"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="share" translatesAutoresizingMaskIntoConstraints="NO" id="fQz-Un-0GK">
+                    <rect key="frame" x="0.0" y="0.0" width="70" height="65"/>
+                </imageView>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="challengeIcon" translatesAutoresizingMaskIntoConstraints="NO" id="zBy-bl-aUe">
+                    <rect key="frame" x="0.0" y="65" width="70" height="65"/>
+                </imageView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="zBy-bl-aUe" secondAttribute="bottom" id="1zK-Dw-eDA"/>
+                <constraint firstItem="zBy-bl-aUe" firstAttribute="height" secondItem="fQz-Un-0GK" secondAttribute="height" id="8TS-sj-BIk"/>
+                <constraint firstAttribute="trailing" secondItem="fQz-Un-0GK" secondAttribute="trailing" id="A9e-n2-xgc"/>
+                <constraint firstItem="zBy-bl-aUe" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="Aay-Dj-kUB"/>
+                <constraint firstItem="zBy-bl-aUe" firstAttribute="width" secondItem="fQz-Un-0GK" secondAttribute="width" id="EHS-Na-c5Z"/>
+                <constraint firstItem="fQz-Un-0GK" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="JXB-7s-KJC"/>
+                <constraint firstItem="fQz-Un-0GK" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="O2T-BS-xrN"/>
+                <constraint firstItem="fQz-Un-0GK" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="R2c-P0-UPd"/>
+                <constraint firstItem="zBy-bl-aUe" firstAttribute="top" secondItem="fQz-Un-0GK" secondAttribute="bottom" id="bgH-I5-Ss8"/>
+                <constraint firstItem="fQz-Un-0GK" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="c85-UK-iD3"/>
+                <constraint firstItem="zBy-bl-aUe" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="ejJ-SL-zeE"/>
+                <constraint firstItem="fQz-Un-0GK" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="pWt-Tb-ULz"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="-165.21739130434784" y="282.58928571428572"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="challengeIcon" width="71.5" height="71.5"/>
+        <image name="share" width="73" height="73"/>
+    </resources>
+</document>

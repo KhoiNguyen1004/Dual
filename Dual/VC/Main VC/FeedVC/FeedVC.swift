@@ -10,8 +10,7 @@ import AsyncDisplayKit
 import AlamofireImage
 import Firebase
 
-class FeedVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
+class FeedVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIAdaptivePresentationControllerDelegate {
     
     struct State {
        var itemCount: Int
@@ -62,7 +61,7 @@ class FeedVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         
         loadAddGame()
         
-        pullControl.tintColor = UIColor.white
+        pullControl.tintColor = UIColor.systemOrange
         pullControl.addTarget(self, action: #selector(refreshListData(_:)), for: .valueChanged)
         if #available(iOS 10.0, *) {
             tableNode.view.refreshControl = pullControl
@@ -71,6 +70,22 @@ class FeedVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         }
         
     }
+    
+   
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        should_Play = false
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        should_Play = true
+    }
+  
+   
     
     @objc private func refreshListData(_ sender: Any) {
        // self.pullControl.endRefreshing() // You can stop after API Call
@@ -323,7 +338,6 @@ class FeedVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
                             
                             if isIn == false {
                                 
-                                
                                 if diff.document["name"] as? String != "Others" {
                                     
                                     self.itemList.insert(item, at: 1)
@@ -333,8 +347,7 @@ class FeedVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
                                     self.itemList.append(item)
                                     
                                 }
-                                
-                                
+ 
                                                       
                             }
                             
@@ -406,7 +419,65 @@ class FeedVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         }
         
     }
+    
+    
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        print("Dismiss")
+    }
 
+    // functions
+    
+    
+    func shareVideo(item: HighlightsModel) {
+        
+        if let id = item.highlight_id, id != "" {
+            
+            let items: [Any] = ["Check out this highlight", URL(string: "https://www.dual.so/\(id)")!]
+            let ac = UIActivityViewController(activityItems: items, applicationActivities: nil)
+            
+            ac.completionWithItemsHandler = { (activityType, completed:Bool, returnedItems:[Any]?, error: Error?) in
+                
+                NotificationCenter.default.post(name: (NSNotification.Name(rawValue: "resumeVideo")), object: nil)
+                
+            }
+           
+           
+           present(ac, animated: true, completion: nil)
+           NotificationCenter.default.post(name: (NSNotification.Name(rawValue: "pauseVideo")), object: nil)
+        
+            
+        }
+        
+       
+        
+    }
+    
+    func challenge(item: HighlightsModel) {
+        
+        print("Challenge to user: \(item.userUID) for assets \(item.Mux_assetID)")
+
+    }
+    
+    func openLink(item: HighlightsModel) {
+        
+        if let link = item.stream_link, link != ""
+        {
+            guard let requestUrl = URL(string: link) else {
+                return
+            }
+
+            if UIApplication.shared.canOpenURL(requestUrl) {
+                 UIApplication.shared.open(requestUrl, options: [:], completionHandler: nil)
+            }
+            
+        } else {
+            
+            print("Empty link")
+            
+        }
+
+    }
+    
         
 }
 extension FeedVC: ASTableDelegate {
@@ -432,12 +503,7 @@ extension FeedVC: ASTableDelegate {
         
         self.retrieveNextPageWithCompletion { (newPosts) in
             
-            if newPosts.count > 0 {
-                
-                self.insertNewRowsInTableNode(newPosts: newPosts)
-                
-            }
-        
+            self.insertNewRowsInTableNode(newPosts: newPosts)
             if self.pullControl.isRefreshing == true {
                 self.pullControl.endRefreshing()
             }
@@ -469,12 +535,63 @@ extension FeedVC: ASTableDataSource {
             let node = PostNode(with: post)
             node.neverShowPlaceholders = true
             node.debugName = "Node \(indexPath.row)"
+            
+            node.shareBtn = { (node) in
+                
+                self.shareVideo(item: post)
+                  
+            }
+            
+            node.challengeBtn = { (node) in
+                
+                self.challenge(item: post)
+                
+            }
+            
+            
+            node.linkBtn = { (node) in
+                
+                self.openLink(item: post)
+                
+            }
+            
             return node
         }
         
    
             
     }
+    
+
+    func tableNode(_ tableNode: ASTableNode, willDisplayRowWith node: ASCellNode) {
+        
+        guard let cell = node as? PostNode else { return }
+        
+        if cell.animatedLabel != nil {
+            
+            cell.animatedLabel.restartLabel()
+            
+        }
+        
+        cell.startObserve()
+    
+        
+    }
+    
+    func tableNode(_ tableNode: ASTableNode, didEndDisplayingRowWith node: ASCellNode) {
+    
+        
+        guard let cell = node as? PostNode else { return }
+        
+        if cell.PlayViews != nil {
+            cell.PlayViews.playImg.image = nil
+        }
+        
+        
+        cell.removeAllobserve()
+        
+    }
+    
 
     
 }

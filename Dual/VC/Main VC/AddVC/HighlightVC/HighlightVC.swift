@@ -39,7 +39,7 @@ class HighlightVC: UIViewController {
     var isAllowComment: Bool!
     var Htitle: String!
     var StreamLink: String!
-    
+    var ratio: CGFloat!
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -112,6 +112,8 @@ class HighlightVC: UIViewController {
         isAllowComment = true
         isComment.setOn(true, animated: false)
         
+        
+
         loadLastMode()
         
     }
@@ -314,6 +316,7 @@ class HighlightVC: UIViewController {
     
     func exportVideo(video: SessionVideo, completed: @escaping DownloadComplete) {
         
+        
         VideoExporter.shared.export(video: video, progress: { progress in
             print("Export progress: \(progress)")
         }, completion: { [self] error in
@@ -324,6 +327,7 @@ class HighlightVC: UIViewController {
             }
             
             self.exportedURL = video.exportedVideoURL
+            ratio = video.renderSize.width / video.renderSize.height
            
             completed()
 
@@ -373,7 +377,7 @@ class HighlightVC: UIViewController {
         uploadTask.observe(.success) { snapshot in
           // Upload completed successfully
             
-            uploadUrl.downloadURL(completion: { (url, err) in
+            uploadUrl.downloadURL(completion: { [self] (url, err) in
                  
                  
                  guard let Url = url?.absoluteString else { return }
@@ -387,7 +391,7 @@ class HighlightVC: UIViewController {
                 
                 
                  
-                let higlightVideo = ["category": self.item.name as Any, "url": downloadedUrl as Any, "status": "Pending" as Any, "userUID": Auth.auth().currentUser!.uid as Any, "post_time": FieldValue.serverTimestamp() , "mode": self.mode as Any, "music": self.music as Any, "Mux_processed": false, "Mux_playbackID": "nil", "Allow_comment": self.isAllowComment!, "highlight_title": self.Htitle!, "stream_link": self.StreamLink!]
+                let higlightVideo = ["category": self.item.name as Any, "url": downloadedUrl as Any, "status": "Pending" as Any, "userUID": Auth.auth().currentUser!.uid as Any, "post_time": FieldValue.serverTimestamp() , "mode": self.mode as Any, "music": self.music as Any, "Mux_processed": false, "Mux_playbackID": "nil", "Allow_comment": self.isAllowComment!, "highlight_title": self.Htitle!, "stream_link": self.StreamLink!,"ratio": self.ratio!]
                 
                 
                 // update last mode
@@ -423,6 +427,19 @@ class HighlightVC: UIViewController {
 
         if selectedVideo != nil {
             
+            if creatorLink.text != "" {
+                
+                
+                if verifyUrl(urlString: creatorLink.text) != true {
+                    
+                    creatorLink.text = ""
+                    self.showErrorAlert("Oops!", msg: "Seem like it's not a valid url, please correct yours")
+                    return
+                    
+                }
+             
+            }
+            
             swiftLoader()
             
             
@@ -452,6 +469,7 @@ class HighlightVC: UIViewController {
                     self.selectedVideo = nil
                     let img = UIImage(named: "Icon awesome-photo-video")
                     self.checkImg.image = img
+                    self.creatorLink.text = ""
                     SwiftLoader.hide()
                 }
                 
@@ -514,6 +532,15 @@ class HighlightVC: UIViewController {
  
     }
   
+    func verifyUrl (urlString: String?) -> Bool {
+        if let urlString = urlString {
+            if let url = NSURL(string: urlString) {
+                return UIApplication.shared.canOpenURL(url as URL)
+            }
+        }
+        return false
+    }
+
     
 }
 
