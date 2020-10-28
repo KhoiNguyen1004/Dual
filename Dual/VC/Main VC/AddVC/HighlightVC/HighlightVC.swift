@@ -115,6 +115,7 @@ class HighlightVC: UIViewController {
         
 
         loadLastMode()
+        loadLastLink()
         
     }
     
@@ -134,6 +135,37 @@ class HighlightVC: UIViewController {
         
         
         soundText.pauseLabel()
+        
+    }
+    
+    func loadLastLink() {
+        
+        
+        DataService.instance.mainRealTimeDataBaseRef.child("Last_link").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { [self] (snapData) in
+            
+            
+            if snapData.exists() {
+                
+                if let dict = snapData.value as? Dictionary<String, Any> {
+                    
+                    if let SavedLink = dict["stream_link"] as? String {
+                        
+                        if SavedLink != "nil" {
+                            
+                            creatorLink.text = SavedLink
+                            
+                        }
+                        
+                    }
+                
+                
+            }
+            
+            
+        }
+            
+        })
+        
         
     }
     
@@ -396,6 +428,10 @@ class HighlightVC: UIViewController {
                 
                 // update last mode
                 DataService.instance.mainRealTimeDataBaseRef.child("Last_mode").child(Auth.auth().currentUser!.uid).setValue(["mode": self.mode as Any])
+                
+                DataService.instance.mainRealTimeDataBaseRef.child("Last_link").child(Auth.auth().currentUser!.uid).setValue(["stream_link": self.StreamLink as Any])
+                
+               
                  
                 let db = DataService.instance.mainFireStoreRef.collection("Highlights")
                  
@@ -469,7 +505,6 @@ class HighlightVC: UIViewController {
                     self.selectedVideo = nil
                     let img = UIImage(named: "Icon awesome-photo-video")
                     self.checkImg.image = img
-                    self.creatorLink.text = ""
                     SwiftLoader.hide()
                 }
                 

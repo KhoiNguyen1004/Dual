@@ -94,8 +94,8 @@
             filePath = "Dual/VC/Main VC/AddVC/HighlightVC/HighlightVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "402"
-            endingLineNumber = "402"
+            startingLineNumber = "438"
+            endingLineNumber = "438"
             landmarkName = "uploadVideo(url:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -862,8 +862,8 @@
             filePath = "Dual/VC/Main VC/AddVC/HighlightVC/HighlightVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "331"
-            endingLineNumber = "331"
+            startingLineNumber = "363"
+            endingLineNumber = "363"
             landmarkName = "exportVideo(video:completed:)"
             landmarkType = "7">
          </BreakpointContent>
