@@ -19,9 +19,12 @@ import DTCollectionViewManager
 class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionViewManageable, UICollectionViewDelegateFlowLayout {
     
     
+    @IBOutlet weak var usernameLbl: UILabel!
+    @IBOutlet weak var nameLbl: UILabel!
+    var SelectedUserName = ""
+    var SelectedAvatarUrl = ""
     var selectedItem: HighlightsModel!
     
-    @IBOutlet weak var imgTest: UIImageView!
     
     @IBOutlet weak var avatarImg: borderAvatarView!
     @IBOutlet weak var profileImgBtn: UIButton!
@@ -31,6 +34,11 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionV
     
     var Highlight_list = [HighlightsModel]()
     var firstLoad = true
+    var firstLoadProfile = true
+    
+    private var pullControl = UIRefreshControl()
+    
+    //
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,14 +48,14 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionV
         if Auth.auth().currentUser?.isAnonymous == true {
             
             print("Login anonymously")
-            /*
+            
             let Lview = LoginView()
             Lview.frame = self.view.layer.bounds
             Lview.SignUpBtn.addTarget(self, action: #selector(ProfileVC.SignUpBtnPressed), for: .touchUpInside)
             self.view.addSubview(Lview)
             
             return
-             */
+             
         }
         
         manager.register(HighlightsCollectionCell.self) { [weak self] mapping in
@@ -59,17 +67,103 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionV
         }
      
         loadVideo()
+        loadProfile()
         
         
+        pullControl.tintColor = UIColor.systemOrange
+        pullControl.addTarget(self, action: #selector(refreshListData(_:)), for: .valueChanged)
+        if #available(iOS 10.0, *) {
+            collectionView.refreshControl = pullControl
+        } else {
+            collectionView.addSubview(pullControl)
+        }
         
+        
+    }
+    
+    @objc private func refreshListData(_ sender: Any) {
+      
+        // stop after API Call
+        // Call API
+                
+        self.Highlight_list.removeAll()
+        self.firstLoad = true
+        loadVideo()
+              
+    }
+    
+    func loadProfile() {
+        
+        
+        let db = DataService.instance.mainFireStoreRef
+        let uid = Auth.auth().currentUser?.uid
+        
+        db.collection("Users").whereField("userUID", isEqualTo: uid!).addSnapshotListener { [self] querySnapshot, error in
+                guard let snapshot = querySnapshot else {
+                    print("Error fetching snapshots: \(error!)")
+                    return
+                }
+                
+
+                if firstLoadProfile == true {
+                    
+                    
+                    
+                    for item in snapshot.documents {
+                        
+                        
+                        
+                        self.assignProfile (item: item.data())
+                        
+                    }
+                    
+                    firstLoadProfile =  false
+                    
+                }
+                
+          
+                snapshot.documentChanges.forEach { diff in
+                    
+                   
+
+                    if (diff.type == .modified) {
+                       
+                        self.assignProfile (item: diff.document.data())
+                        
+                    }
+                  
+                }
+            }
+        
+    }
+    
+    func assignProfile(item: [String: Any]) {
+        
+        if let username = item["username"] as? String, let name = item["name"] as? String, let avatarUrl = item["avatarUrl"] as? String  {
+            
+           
+            self.SelectedUserName = username
+            self.SelectedAvatarUrl = avatarUrl
+            nameLbl.text = name
+            usernameLbl.text = "@\(username)"
+            let imageNode = ASNetworkImageNode()
+            imageNode.contentMode = .scaleAspectFit
+            imageNode.shouldRenderProgressImages = true
+            imageNode.url = URL.init(string: avatarUrl)
+            imageNode.frame = self.avatarImg.layer.bounds
+            self.avatarImg.image = nil
+            
+            
+            self.avatarImg.addSubnode(imageNode)
+            
+        }
         
     }
     
     @objc func SignUpBtnPressed() {
         
         self.performSegue(withIdentifier: "moveToLoginVC2", sender: nil)
-        
-        
+      
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -79,25 +173,17 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionV
         } completion: { _ in }
     }
     
-    
-    
  
     @IBAction func ImgBtnPressed(_ sender: Any) {
         
-        
         let sheet = UIAlertController(title: "Upload your profile photo", message: "", preferredStyle: .actionSheet)
         
-        
         let camera = UIAlertAction(title: "Take a new photo", style: .default) { (alert) in
-            
             self.camera()
-            
         }
         
         let album = UIAlertAction(title: "Upload from album", style: .default) { (alert) in
-            
             self.album()
-            
         }
         
         let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (alert) in
@@ -116,13 +202,10 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionV
     func album() {
         
         self.getMediaFrom(kUTTypeImage as String)
-        
-        
+       
     }
     
     func camera() {
-        
-        
         
         self.getMediaCamera(kUTTypeImage as String)
         
@@ -131,6 +214,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionV
     // get media
     
     func getMediaFrom(_ type: String) {
+        
         let mediaPicker = UIImagePickerController()
         mediaPicker.delegate = self
         mediaPicker.allowsEditing = true
@@ -139,8 +223,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionV
     }
     
     func getMediaCamera(_ type: String) {
-        
-        
+           
         let mediaPicker = UIImagePickerController()
         mediaPicker.delegate = self
         mediaPicker.allowsEditing = true
@@ -154,20 +237,125 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionV
         
         profileImgBtn.setTitle("", for: .normal)
         avatarImg.image = image
-       
+  
+        uploadImg(image: image)
 
     }
+    
+    func uploadImg(image: UIImage) {
+
+        swiftLoader()
+        
+        self.swiftLoader()
+        let metaData = StorageMetadata()
+        let imageUID = UUID().uuidString
+        metaData.contentType = "image/jpeg"
+        var imgData = Data()
+        imgData = image.jpegData(compressionQuality: 1.0)!
+         
+        DataService.instance.AvatarStorageRef.child(imageUID).putData(imgData, metadata: metaData) { (meta, err) in
+            
+            if err != nil {
+                
+                SwiftLoader.hide()
+                self.showErrorAlert("Oopss !!!", msg: "Error while saving your image, please try again")
+                print(err?.localizedDescription as Any)
+                
+            } else {
+                
+                DataService.instance.AvatarStorageRef.child(imageUID).downloadURL(completion: { (url, err) in
+               
+                    guard let Url = url?.absoluteString else { return }
+                    
+                    let downUrl = Url as String
+                    let downloadUrl = downUrl as NSString
+                    let downloadedUrl = downloadUrl as String
+                    
+                    
+                    DataService.instance.mainFireStoreRef.collection("Users").whereField("userUID", isEqualTo: Auth.auth().currentUser?.uid as Any).getDocuments { (snap, err) in
+                    
+                    
+                        if err != nil {
+                        
+                            self.showErrorAlert("Opss !", msg: err.debugDescription)
+      
+                        } else {
+                            if snap?.isEmpty != true {
+                                
+                                for dict in (snap?.documents)! {
+                                    
+                                    let id = dict.documentID
+                                    DataService.instance.mainFireStoreRef.collection("Users").document(id).updateData(["avatarUrl": downloadedUrl])
+                                    SwiftLoader.hide()
+                                    break
+                                                      
+                                    
+                                }
+                                
+                            } else {
+                                
+                                self.showErrorAlert("Opss !", msg: "Can't find user")
+                                
+                            }
+                        }
+                        
+                    }
+                    
+                })
+                      
+                
+            }
+            
+            
+        }
+        
+              
+    }
+    
+    func showErrorAlert(_ title: String, msg: String) {
+                                                                                                                                           
+        let alert = UIAlertController(title: title, message: msg, preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alert.addAction(action)
+        
+                                                                                       
+        present(alert, animated: true, completion: nil)
+        
+    }
+    
+    func swiftLoader() {
+        
+        var config : SwiftLoader.Config = SwiftLoader.Config()
+        config.size = 170
+        
+        config.backgroundColor = UIColor.clear
+        config.spinnerColor = UIColor.white
+        config.titleTextColor = UIColor.white
+        
+        
+        config.spinnerLineWidth = 3.0
+        config.foregroundColor = UIColor.black
+        config.foregroundAlpha = 0.7
+        
+        
+        SwiftLoader.setConfig(config: config)
+        
+        
+        SwiftLoader.show(title: "", animated: true)
+        
+                                                                                                                                      
+        
+    }
+    
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     
         manager.didSelect(HighlightsCollectionCell.self) { cell, model, indexPath in
             
-            
             // React to selection
             
             self.selectedItem = model
             self.performSegue(withIdentifier: "MoveToEditVideoVC", sender: nil)
-            
             
         }
         
@@ -182,6 +370,8 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionV
             {
                 
                 destination.selectedItem = self.selectedItem
+                destination.SelectedUserName = self.SelectedUserName
+                destination.SelectedAvatarUrl = self.SelectedAvatarUrl
                
                 
             }
@@ -218,6 +408,10 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionV
                             
                         }
                         
+                    }
+                    
+                    if self.pullControl.isRefreshing == true {
+                        self.pullControl.endRefreshing()
                     }
                     
                     firstLoad =  false
@@ -325,7 +519,17 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionV
         return UIEdgeInsets(top: 0,left: 0,bottom: 0,right: 0);
     }
     
-
+    @IBAction func settingBtnPressed(_ sender: Any) {
+        
+        self.performSegue(withIdentifier: "moveToSettingVC", sender: nil)
+        
+    }
+    
+    @IBAction func setting1BtnPressed(_ sender: Any) {
+        
+        self.performSegue(withIdentifier: "moveToSettingVC", sender: nil)
+        
+    }
 }
 
 extension ProfileVC: UIImagePickerControllerDelegate {

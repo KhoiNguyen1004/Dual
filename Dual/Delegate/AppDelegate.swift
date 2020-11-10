@@ -9,6 +9,9 @@ import UIKit
 import Firebase
 import PixelSDK
 import Alamofire
+import FBSDKCoreKit
+import GoogleSignIn
+import TwitterKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -20,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         FirebaseApp.configure()
-        PixelSDK.setup(pixel_key)
+        PixelSDK.setup("test")
         PixelSDK.shared.maxVideoDuration = 60
         
         
@@ -46,10 +49,45 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // Run code here for every other launch but the first
         }
         
+        ApplicationDelegate.shared.application(
+                   application,
+                   didFinishLaunchingWithOptions: launchOptions
+               )
+        GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
         
+        TWTRTwitter.sharedInstance().start(withConsumerKey: twApiKey, consumerSecret: twSecretKey)
+           
         
         return true
     }
+    
+    func application(_ app: UIApplication,open url: URL,options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        
+        if login_type == "Facebook" {
+            
+           return ApplicationDelegate.shared.application (
+                app,
+                open: url,
+                sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
+                annotation: options[UIApplication.OpenURLOptionsKey.annotation]
+            )
+            
+        } else if login_type == "Google" {
+            
+            return GIDSignIn.sharedInstance().handle(url)
+            
+        } else {
+            
+            
+            return TWTRTwitter.sharedInstance().application(app, open: url, options: options)
+            
+        }
+
+            
+
+    }
+    
+   
 
     // MARK: UISceneSession Lifecycle
 
@@ -73,6 +111,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
     }
     
+
     override init() {
         super.init()
         

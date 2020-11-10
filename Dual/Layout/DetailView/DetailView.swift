@@ -9,6 +9,7 @@ import UIKit
 import MarqueeLabel
 class DetailView: UIView {
     
+   @IBOutlet weak var avatarImg: borderAvatarView!
    @IBOutlet weak var InfoView: UIStackView!
    @IBOutlet var contentView: UIView!
    @IBOutlet weak var username: UILabel!

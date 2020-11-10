@@ -11,6 +11,7 @@ import Alamofire
 import AlamofireImage
 import Firebase
 
+
 class AddVC: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
 
     @IBOutlet weak var continueBtn: UIButton!
@@ -31,16 +32,15 @@ class AddVC: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
         
         if Auth.auth().currentUser?.isAnonymous == true {
             
-            /*
             print("Login anonymously")
-            
+    
             let Lview = LoginView()
             Lview.frame = self.view.layer.bounds
             Lview.SignUpBtn.addTarget(self, action: #selector(AddVC.SignUpBtnPressed), for: .touchUpInside)
             self.view.addSubview(Lview)
             
             return
-            */
+        
         }
     
         

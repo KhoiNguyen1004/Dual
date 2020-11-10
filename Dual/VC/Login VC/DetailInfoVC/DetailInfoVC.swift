@@ -14,6 +14,7 @@ class DetailInfoVC: UIViewController, UITextFieldDelegate {
     var finalCode: String?
     var finalName: String?
     var finalBirthday: String?
+    var Create_mode: String?
     var dView = DetailInfo()
     var datePicker = UIDatePicker()
     
@@ -58,6 +59,7 @@ class DetailInfoVC: UIViewController, UITextFieldDelegate {
             
             finalName = name
             finalBirthday = birthday
+            Create_mode = "Original"
             self.performSegue(withIdentifier: "MoveToFinalAccount", sender: nil)
             
         } else {
@@ -79,7 +81,8 @@ class DetailInfoVC: UIViewController, UITextFieldDelegate {
                 destination.finalCode = self.finalCode
                 destination.finalName = self.finalName
                 destination.finalBirthday = self.finalBirthday
-               
+                destination.Create_mode = self.Create_mode
+                
             }
         }
         
@@ -93,7 +96,7 @@ class DetailInfoVC: UIViewController, UITextFieldDelegate {
             // Fallback on earlier versions
         }
         datePicker.datePickerMode = UIDatePicker.Mode.date
-        datePicker.maximumDate = Calendar.current.date(byAdding: .year, value: -10, to: Date())
+        datePicker.maximumDate = Calendar.current.date(byAdding: .year, value: -8, to: Date())
         dView.BirthdayLbl.inputView = datePicker
         datePicker.addTarget(self, action: #selector(DetailInfoVC.datePickerValueChanged), for: UIControl.Event.valueChanged)
         

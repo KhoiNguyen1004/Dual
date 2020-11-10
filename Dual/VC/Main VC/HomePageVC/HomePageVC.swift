@@ -19,6 +19,8 @@ class HomePageVC: UITabBarController {
         tabBar.barTintColor = .black
         tabBar.isTranslucent = false
         
+        //try? Auth.auth().signOut()
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -36,7 +38,7 @@ class HomePageVC: UITabBarController {
         
         if let uid = Auth.auth().currentUser?.uid, uid != "" {
         
-            print(uid)
+          
                  
         } else {
                  

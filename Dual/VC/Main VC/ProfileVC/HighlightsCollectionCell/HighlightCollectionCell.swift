@@ -9,6 +9,7 @@ import UIKit
 import DTCollectionViewManager
 import Alamofire
 import AsyncDisplayKit
+import Firebase
 
 class HighlightsCollectionCell: UICollectionViewCell, ModelTransfer {
     
@@ -56,13 +57,48 @@ class HighlightsCollectionCell: UICollectionViewCell, ModelTransfer {
         imageNode.url = URL.init(string: url)
         imageNode.frame = self.thumbnailView.layer.bounds
         
-        
-        
+
         self.thumbnailView.addSubnode(imageNode)
+        
+        if let uid = Auth.auth().currentUser?.uid {
+            
+            calViewCount(assetID: model.Mux_assetID, uid: uid)
+            
+        }
         
         
     }
     
+    func calViewCount(assetID: String, uid: String) {
+        
+        
+        DataService.instance.mainFireStoreRef.collection("Views").whereField("assetID", isEqualTo: assetID).whereField("ownerUID", isEqualTo: uid).getDocuments { querySnapshot, error in
+            guard querySnapshot != nil else {
+                print("Error fetching snapshots: \(error!)")
+                return
+            }
+            
+            if querySnapshot?.isEmpty == true {
+                
+                self.ViewCount.text = "0"
+                
+            } else
+            {
+                
+                if let count = querySnapshot?.count {
+                    
+                    self.ViewCount.text = "\(count)"
+                    
+                }
+                
+            }
+            
+            
+            
+        }
+        
+        
+    }
 
     
     

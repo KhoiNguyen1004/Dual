@@ -11,6 +11,7 @@ class usernamePwdView: UIView {
 
     @IBOutlet var contentView: UIView!
     
+    @IBOutlet weak var nextBtn: UIButton!
     @IBOutlet weak var userNameCheck: UIImageView!
     @IBOutlet weak var pwdLbl: UITextField!
     @IBOutlet weak var usernameLbl: UITextField!

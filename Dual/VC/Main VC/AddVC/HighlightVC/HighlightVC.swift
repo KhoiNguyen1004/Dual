@@ -12,6 +12,7 @@ import MarqueeLabel
 import PixelSDK
 import PhotosUI
 import Firebase
+import SwiftPublicIP
 
 class HighlightVC: UIViewController {
     
@@ -20,18 +21,14 @@ class HighlightVC: UIViewController {
     @IBOutlet weak var publicBtn: UIButton!
     @IBOutlet weak var FriendsBtn: UIButton!
     @IBOutlet weak var OnlyMeBtn: UIButton!
-    
-    @IBOutlet weak var soundText: MarqueeLabel!
+    @IBOutlet weak var soundText: UILabel!
     @IBOutlet weak var highlightTitle: UITextField!
-    var item: AddModel!
-    
-
     @IBOutlet weak var checkImg: UIImageView!
     @IBOutlet weak var HighlightName: UILabel!
     @IBOutlet weak var HighlightImg: UIImageView!
-    
     @IBOutlet weak var creatorLink: UITextField!
     
+    //
     var selectedVideo: SessionVideo!
     var exportedURL: URL!
     var mode: String!
@@ -40,6 +37,10 @@ class HighlightVC: UIViewController {
     var Htitle: String!
     var StreamLink: String!
     var ratio: CGFloat!
+    var item: AddModel!
+    var animatedLabel: MarqueeLabel!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -53,19 +54,15 @@ class HighlightVC: UIViewController {
                 if case .value(let image) = result {
                     
                     DispatchQueue.main.async { // Make sure you're on the main thread here
-                        
-                
+
                         self.HighlightImg.image = image
-                        
-      
+
                     }
                     
                 } else {
-                    
-                    
+        
                     AF.request(self.item.url2).responseImage { response in
-                        
-                        
+                               
                         switch response.result {
                         case let .success(value):
                             HighlightImg.image = value
@@ -91,59 +88,62 @@ class HighlightVC: UIViewController {
         creatorLink.borderStyle = .none
         
         
-        // sound text
-        
-        soundText.type = .continuous
-        soundText.speed = .rate(80)
-        soundText.fadeLength = 10.0
-        soundText.leadingBuffer = 30.0
-        soundText.trailingBuffer = 20.0
-        soundText.animationDelay = 0.0
-        soundText.textAlignment = .center
-        soundText.text = "Original sound - Kai1004pro                                   "
-        
-        
-        
-        
-        
-        
         // default setting
         music = "Original sound"
         isAllowComment = true
         isComment.setOn(true, animated: false)
         
         
-
+        
+        loadProfile()
         loadLastMode()
         loadLastLink()
         
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    func loadProfile() {
         
-        if soundText.isPaused == true {
+        if let uid = Auth.auth().currentUser?.uid {
             
-            soundText.unpauseLabel()
-            
+            DataService.init().mainFireStoreRef.collection("Users").whereField("userUID", isEqualTo: uid).addSnapshotListener { [self] querySnapshot, error in
+                    guard let snapshot = querySnapshot else {
+                        print("Error fetching snapshots: \(error!)")
+                        return
+                    }
+                    
+                    for item in snapshot.documents {
+                    
+                        if let username = item.data()["username"] as? String {
+                        
+                            soundText.text = ""
+                            animatedLabel = MarqueeLabel.init(frame: CGRect(x: soundText.layer.bounds.minX, y: soundText.layer.bounds.minY + 10, width: soundText.layer.bounds.width, height: 16.0), rate: 60.0, fadeLength: 10.0)
+                            animatedLabel.type = .continuous
+                            animatedLabel.leadingBuffer = 20.0
+                            animatedLabel.trailingBuffer = 10.0
+                            animatedLabel.animationDelay = 0.0
+                            animatedLabel.textAlignment = .center
+                            animatedLabel.font = UIFont.systemFont(ofSize: 13)
+                            animatedLabel.text = "Original sound - \(username)                                            "
+                            soundText.addSubview(animatedLabel)
+                            break
+
+                    }
+      
+                }
+                
+            }
             
         }
+        
+  
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        
-        
-        soundText.pauseLabel()
-        
-    }
+    
     
     func loadLastLink() {
-        
-        
+
         DataService.instance.mainRealTimeDataBaseRef.child("Last_link").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { [self] (snapData) in
-            
-            
+                     
             if snapData.exists() {
                 
                 if let dict = snapData.value as? Dictionary<String, Any> {
@@ -155,14 +155,10 @@ class HighlightVC: UIViewController {
                             creatorLink.text = SavedLink
                             
                         }
-                        
                     }
-                
-                
+                }
+     
             }
-            
-            
-        }
             
         })
         
@@ -180,9 +176,7 @@ class HighlightVC: UIViewController {
                 if let dict = snapData.value as? Dictionary<String, Any> {
                     
                     if let SavedMode = dict["mode"] as? String {
-                        
-                       
-                        
+     
                         if SavedMode == "Public" {
                             
                             self.mode = SavedMode
@@ -224,8 +218,7 @@ class HighlightVC: UIViewController {
                 }
                 
             } else {
-                
-                
+         
                 self.mode = "Public"
                 
                 // defaults mode
@@ -237,8 +230,6 @@ class HighlightVC: UIViewController {
             }
             
         })
-        
-        
         
     }
     
@@ -259,8 +250,7 @@ class HighlightVC: UIViewController {
     @IBAction func isCommentBtnPressed(_ sender: Any) {
         
         if isAllowComment == true {
-            
-            
+                  
             isAllowComment =  false
             isComment.setOn(false, animated: true)
             
@@ -317,14 +307,13 @@ class HighlightVC: UIViewController {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
-        
-        
+
         self.view.endEditing(true)
+        
     }
     
     @IBAction func cameraBtnPressed(_ sender: Any) {
-        
-        
+            
         PixelSDK.shared.primaryFilters = PixelSDK.defaultInstaFilters + PixelSDK.defaultVisualEffectFilters
         
         
@@ -341,14 +330,12 @@ class HighlightVC: UIViewController {
         
         self.present(nav, animated: true, completion: nil)
        
-        
-        
+
     }
  
     
     func exportVideo(video: SessionVideo, completed: @escaping DownloadComplete) {
-        
-        
+            
         VideoExporter.shared.export(video: video, progress: { progress in
             print("Export progress: \(progress)")
         }, completion: { [self] error in
@@ -362,22 +349,17 @@ class HighlightVC: UIViewController {
             ratio = video.renderSize.width / video.renderSize.height
            
             completed()
-
-    
+ 
         })
         
     }
-    
-    
     
     
     // upload video to firebase
     
     
     func uploadVideo(url: URL) {
-        
-        
-        
+           
         let data = try! Data(contentsOf: url)
         let metaData = StorageMetadata()
         let vidUID = UUID().uuidString
@@ -386,16 +368,12 @@ class HighlightVC: UIViewController {
         
         let uploadTask = uploadUrl.putData(data , metadata: metaData) { (metaData, err) in
             
-            
-            
             if err != nil {
 
                 print(err?.localizedDescription as Any)
                 return
             }
-            
-            
-            
+                
         }
         
         uploadTask.observe(.progress) { snapshot in
@@ -410,44 +388,71 @@ class HighlightVC: UIViewController {
           // Upload completed successfully
             
             uploadUrl.downloadURL(completion: { [self] (url, err) in
-                 
-                 
+    
                  guard let Url = url?.absoluteString else { return }
                  
                  let downUrl = Url as String
                  let downloadUrl = downUrl as NSString
                  let downloadedUrl = downloadUrl as String
-                 
+                 let device = UIDevice().type.rawValue
                  
                  // put in firestore here
+                      
+                var higlightVideo = ["category": self.item.name as Any, "url": downloadedUrl as Any, "status": "Pending" as Any, "userUID": Auth.auth().currentUser!.uid as Any, "post_time": FieldValue.serverTimestamp() , "mode": self.mode as Any, "music": self.music as Any, "Mux_processed": false, "Mux_playbackID": "nil", "Allow_comment": self.isAllowComment!, "highlight_title": self.Htitle!, "stream_link": self.StreamLink!,"ratio": self.ratio!, "Device": device]
                 
+                //
                 
-                 
-                let higlightVideo = ["category": self.item.name as Any, "url": downloadedUrl as Any, "status": "Pending" as Any, "userUID": Auth.auth().currentUser!.uid as Any, "post_time": FieldValue.serverTimestamp() , "mode": self.mode as Any, "music": self.music as Any, "Mux_processed": false, "Mux_playbackID": "nil", "Allow_comment": self.isAllowComment!, "highlight_title": self.Htitle!, "stream_link": self.StreamLink!,"ratio": self.ratio!]
-                
-                
-                // update last mode
-                DataService.instance.mainRealTimeDataBaseRef.child("Last_mode").child(Auth.auth().currentUser!.uid).setValue(["mode": self.mode as Any])
-                
-                DataService.instance.mainRealTimeDataBaseRef.child("Last_link").child(Auth.auth().currentUser!.uid).setValue(["stream_link": self.StreamLink as Any])
-                
+                SwiftPublicIP.getPublicIP(url: PublicIPAPIURLs.ipv4.icanhazip.rawValue) { [self] (string, error) in
+                    if let error = error {
+                        print(error.localizedDescription)
+                    } else if let string = string {
+                          
+                        let urls = URL(string: "http://ip-api.com/json/")!.appendingPathComponent(string)
+                          
+                        AF.request(urls, method: .get)
+                            .validate(statusCode: 200..<500)
+                            .responseJSON { responseJSON in
+                                
+                                switch responseJSON.result {
+                                    
+                                case .success(let json):
+                                    
+                                    if let dict = json as? Dictionary<String, Any> {
+                                        
+                                        if let status = dict["status"] as? String, status == "success" {
+                                            
+                                            higlightVideo.merge(dict: dict)
+                                            
+                                            // update last mode
+                                            self.writeToDb(higlightVideo: higlightVideo, downloadedUrl: downloadedUrl)
+                                            // update last mode
+                                            
+                                        } else {
+                                            
+                                            print("Fail to get IP")
+                                            
+                                            // update last mode
+                                            self.writeToDb(higlightVideo: higlightVideo, downloadedUrl: downloadedUrl)
+                                            // update last mode
                
-                 
-                let db = DataService.instance.mainFireStoreRef.collection("Highlights")
-                 
-                print("Writing to database")
-                
-                let id = db.addDocument(data: higlightVideo)
-                
-                print("Finished writting")
-                
-                print("Send data to backend for mux processing!")
-                
-                DataService.instance.mainRealTimeDataBaseRef.child("Mux-Processing").child(id.documentID).setValue(["url": downloadedUrl])
-                
-                print("Sent")
-                
-                
+                                        }
+                                    }
+                                    
+                                case .failure(let error):
+              
+                                    print(error.localizedDescription)
+                                    
+                                    self.writeToDb(higlightVideo: higlightVideo, downloadedUrl: downloadedUrl)
+                                    // update last mode
+                                    
+      
+                                }
+                                
+                            }
+
+                    }
+                }
+                            
              })
             
         }
@@ -455,9 +460,29 @@ class HighlightVC: UIViewController {
         
     }
     
+    func writeToDb(higlightVideo: [String: Any], downloadedUrl: String) {
+        
+        // update last mode
+        DataService.instance.mainRealTimeDataBaseRef.child("Last_mode").child(Auth.auth().currentUser!.uid).setValue(["mode": self.mode as Any])
+        DataService.instance.mainRealTimeDataBaseRef.child("Last_link").child(Auth.auth().currentUser!.uid).setValue(["stream_link": self.StreamLink as Any])
+        
+        let db = DataService.instance.mainFireStoreRef.collection("Highlights")
+         
+        print("Writing to database")
+        
+        let id = db.addDocument(data: higlightVideo)
+        
+        print("Finished writting")
+        
+        print("Send data to backend for mux processing!")
+        
+        DataService.instance.mainRealTimeDataBaseRef.child("Mux-Processing").child(id.documentID).setValue(["url": downloadedUrl])
+        
+        print("Sent")
+        
+    }
     
-    
-    
+
     @IBAction func postBtnPressed(_ sender: Any) {
         
 
@@ -477,8 +502,7 @@ class HighlightVC: UIViewController {
             }
             
             swiftLoader()
-            
-            
+          
             if let title = highlightTitle.text, title != "" {
                 
                 Htitle = title
@@ -496,8 +520,7 @@ class HighlightVC: UIViewController {
                 
                 StreamLink = "nil"
             }
-            
-            
+     
             print("Start exporting")
             exportVideo(video: selectedVideo){
                 // add watermark
@@ -508,15 +531,13 @@ class HighlightVC: UIViewController {
                     SwiftLoader.hide()
                 }
                 
-
                 print("Start uploading")
                 
                 Dispatch.background {
                     
                     print("Run on background thread")
                     self.uploadVideo(url: self.exportedURL)
-                    
-                    
+        
                 }
                 
             }
@@ -526,9 +547,8 @@ class HighlightVC: UIViewController {
             self.showErrorAlert("Oops!", msg: "Please upload or record your highlight")
             
         }
-        
 
-}
+    }
     
     
     // func show error alert
@@ -552,16 +572,10 @@ class HighlightVC: UIViewController {
         config.backgroundColor = UIColor.clear
         config.spinnerColor = UIColor.white
         config.titleTextColor = UIColor.white
-        
-        
         config.spinnerLineWidth = 3.0
         config.foregroundColor = UIColor.black
         config.foregroundAlpha = 0.7
-        
-        
         SwiftLoader.setConfig(config: config)
-        
-        
         SwiftLoader.show(title: "", animated: true)
         
  
@@ -573,6 +587,7 @@ class HighlightVC: UIViewController {
                 return UIApplication.shared.canOpenURL(url as URL)
             }
         }
+        
         return false
     }
 
@@ -580,7 +595,6 @@ class HighlightVC: UIViewController {
 }
 
 extension HighlightVC: EditControllerDelegate {
-    
     
     func editController(_ editController: EditController, didLoadEditing session: PixelSDKSession) {
         // Called after the EditController's view did load.
@@ -592,7 +606,6 @@ extension HighlightVC: EditControllerDelegate {
         // Called when the Next button in the EditController is pressed.
         // Use this time to either dismiss the UINavigationController, or push a new controller on.
         
-        
         if let video = session.video {
             
             selectedVideo = video
@@ -602,6 +615,7 @@ extension HighlightVC: EditControllerDelegate {
         }
         
         self.dismiss(animated: true, completion: nil)
+        
     }
     
     func editController(_ editController: EditController, didCancelEditing session: PixelSDKSession?) {

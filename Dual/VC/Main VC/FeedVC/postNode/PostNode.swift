@@ -8,6 +8,9 @@
 import UIKit
 import AsyncDisplayKit
 import MarqueeLabel
+import SwiftPublicIP
+import Alamofire
+import Firebase
 
 class PostNode: ASCellNode {
     
@@ -20,15 +23,13 @@ class PostNode: ASCellNode {
     var PlayViews: PlayView!
     var DetailViews: DetailView!
     
- 
-    
     // btn
     
     var shareBtn : ((ASCellNode) -> Void)?
     var challengeBtn : ((ASCellNode) -> Void)?
     var linkBtn : ((ASCellNode) -> Void)?
     
-    
+    //
     init(with post: HighlightsModel) {
         
         self.post = post
@@ -257,7 +258,69 @@ class PostNode: ASCellNode {
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToactive), name: UIApplication.didBecomeActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(fileComplete),name: NSNotification.Name.AVPlayerItemDidPlayToEndTime,object: nil)
       
+    }
+    
+    @objc func fileComplete() {
+        
+        SwiftPublicIP.getPublicIP(url: PublicIPAPIURLs.ipv4.icanhazip.rawValue) { [self] (string, error) in
+            if let error = error {
+                print(error.localizedDescription)
+            } else if let string = string {
+                
+                getIPInformation(IP: string)
+               
+            }
+        }
+        
+    }
+    
+    func getIPInformation(IP: String) {
+        
+        let device = UIDevice().type.rawValue
+        let urls = URL(string: "http://ip-api.com/json/")!.appendingPathComponent(IP)
+        var data = ["assetID": post.Mux_assetID!, "ViewerID": Auth.auth().currentUser!.uid, "ownerUID": post.userUID!, "timeStamp": FieldValue.serverTimestamp(), "Device": device] as [String : Any]
+        
+        AF.request(urls, method: .get)
+            .validate(statusCode: 200..<500)
+            .responseJSON { responseJSON in
+                
+                switch responseJSON.result {
+                    
+                case .success(let json):
+                    
+                    if let dict = json as? Dictionary<String, Any> {
+                        
+                        if let status = dict["status"] as? String, status == "success" {
+                            
+                            data.merge(dict: dict)
+                            
+                            DataService.instance.mainFireStoreRef.collection("Views").addDocument(data: data)
+                            
+                        } else {
+                            
+                            print("Fail to get IP")
+                            DataService.instance.mainFireStoreRef.collection("Views").addDocument(data: data)
+                            
+                        }
+                        
+                        
+                    }
+                    
+                case .failure(let error):
+                    
+                    
+                    print(error.localizedDescription)
+                    DataService.instance.mainFireStoreRef.collection("Views").addDocument(data: data)
+                    
+                    
+                }
+                
+            }
+      
+     
+        
     }
     
     @objc func appMovedToBackground() {
@@ -284,6 +347,7 @@ class PostNode: ASCellNode {
                 videoNode.play()
             }
        
+        
             
         }
 
@@ -317,55 +381,7 @@ class PostNode: ASCellNode {
     func gameInfoSetting(post: HighlightsModel, Dview: DetailView) {
         
         
-        if post.stream_link != "nil" {
-            
-            
-            Dview.streamLink.text = ""
-            animatedLabel = MarqueeLabel.init(frame: Dview.streamLink.layer.bounds, rate: 60.0, fadeLength: 10.0)
-            animatedLabel.type = .continuous
-            animatedLabel.leadingBuffer = 20.0
-            animatedLabel.trailingBuffer = 10.0
-            animatedLabel.animationDelay = 0.0
-            animatedLabel.textAlignment = .center
-            animatedLabel.font = UIFont.systemFont(ofSize: 13)
-            
-            
-            if let text = post.stream_link {
-                animatedLabel.text = "\(text)                      "
-            }
-            
-            
-           
-            Dview.streamLink.addSubview(animatedLabel)
-        
-            //
-            
-            Dview.soundLbl.text = "Original sound"
-            Dview.soundLbl.textAlignment = .right
-            
-            
-        } else {
-
-            Dview.soundLbl.text = ""
-            animatedLabel = MarqueeLabel.init(frame: Dview.soundLbl.layer.bounds, rate: 60.0, fadeLength: 10.0)
-            animatedLabel.type = .continuous
-            animatedLabel.leadingBuffer = 20.0
-            animatedLabel.trailingBuffer = 10.0
-            animatedLabel.animationDelay = 0.0
-            animatedLabel.textAlignment = .center
-            animatedLabel.font = UIFont.systemFont(ofSize: 13)
-            
-            animatedLabel.text = "Original sound - kai1004pro                      "
-           
-            Dview.soundLbl.addSubview(animatedLabel)
-            
-            //
-            
-            Dview.streamLink.text = ""
-            
-            
-        }
-        
+        self.loadInfo(uid: post.userUID, Dview: Dview)
         
         Dview.gameName.text = post.category
         
@@ -374,6 +390,100 @@ class PostNode: ASCellNode {
         Dview.timeStamp.text = timeAgoSinceDate(date, numericDates: true)
 
         getLogo(category: post.category, Dview: Dview)
+        
+    }
+    
+    func loadInfo(uid: String, Dview: DetailView) {
+        
+        DataService.init().mainFireStoreRef.collection("Users").whereField("userUID", isEqualTo: uid).getDocuments { [self] querySnapshot, error in
+                guard let snapshot = querySnapshot else {
+                    print("Error fetching snapshots: \(error!)")
+                    return
+                }
+                
+                for item in snapshot.documents {
+                
+                    if let username = item.data()["username"] as? String {
+                        
+                        //
+                        
+                        Dview.username.text = username
+                        
+                        if let avatarUrl = item["avatarUrl"] as? String {
+                            
+                            let imageNode = ASNetworkImageNode()
+                            imageNode.contentMode = .scaleAspectFit
+                            imageNode.shouldRenderProgressImages = true
+                            imageNode.url = URL.init(string: avatarUrl)
+                            imageNode.frame = Dview.avatarImg.layer.bounds
+                            Dview.avatarImg.image = nil
+                            
+                            
+                            Dview.avatarImg.addSubnode(imageNode)
+                            
+                        }
+                        
+                  
+                        
+                        
+                        if post.stream_link != "nil" {
+                            
+                            
+                            Dview.streamLink.text = ""
+                            animatedLabel = MarqueeLabel.init(frame: Dview.streamLink.layer.bounds, rate: 60.0, fadeLength: 10.0)
+                            animatedLabel.type = .continuous
+                            animatedLabel.leadingBuffer = 20.0
+                            animatedLabel.trailingBuffer = 10.0
+                            animatedLabel.animationDelay = 0.0
+                            animatedLabel.textAlignment = .center
+                            animatedLabel.font = UIFont.systemFont(ofSize: 13)
+                            
+                            
+                            if let text = post.stream_link {
+                                animatedLabel.text = "\(text)                      "
+                            }
+                            
+                            
+                           
+                            Dview.streamLink.addSubview(animatedLabel)
+                        
+                            //
+                            
+                            Dview.soundLbl.text = "Original sound"
+                            Dview.soundLbl.textAlignment = .right
+                            
+                            
+                        } else {
+
+                            
+                        
+                            Dview.soundLbl.text = ""
+                            animatedLabel = MarqueeLabel.init(frame: Dview.soundLbl.layer.bounds, rate: 60.0, fadeLength: 10.0)
+                            animatedLabel.type = .continuous
+                            animatedLabel.leadingBuffer = 20.0
+                            animatedLabel.trailingBuffer = 10.0
+                            animatedLabel.animationDelay = 0.0
+                            animatedLabel.textAlignment = .center
+                            animatedLabel.font = UIFont.systemFont(ofSize: 13)
+                            
+                            animatedLabel.text = "Original sound - \(username)                      "
+                           
+                            Dview.soundLbl.addSubview(animatedLabel)
+                            
+                            //
+                            
+                            Dview.streamLink.text = ""
+                            
+                        }
+   
+                }
+                
+                
+            }
+            
+        }
+       
+        
     }
     
     func getLogo(category: String, Dview: DetailView) {

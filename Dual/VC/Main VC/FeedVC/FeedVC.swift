@@ -9,6 +9,7 @@ import UIKit
 import AsyncDisplayKit
 import AlamofireImage
 import Firebase
+import SwiftPublicIP
 
 class FeedVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIAdaptivePresentationControllerDelegate {
     
@@ -40,9 +41,11 @@ class FeedVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     private var pullControl = UIRefreshControl()
     
     required init?(coder aDecoder: NSCoder) {
+        
         super.init(coder: aDecoder)
         self.tableNode = ASTableNode(style: .plain)
         self.wireDelegates()
+  
     }
     
     override func viewDidLoad() {
@@ -68,6 +71,8 @@ class FeedVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         } else {
             tableNode.view.addSubview(pullControl)
         }
+        
+        
         
     }
     
@@ -509,8 +514,7 @@ extension FeedVC: ASTableDelegate {
             }
       
             context.completeBatchFetching(true)
-            
-            
+    
         }
  
     }

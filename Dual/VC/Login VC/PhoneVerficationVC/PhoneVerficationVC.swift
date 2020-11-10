@@ -7,6 +7,7 @@
 
 import UIKit
 import Alamofire
+import Firebase
 
 class PhoneVerficationVC: UIViewController, UITextFieldDelegate {
     
@@ -213,7 +214,10 @@ class PhoneVerficationVC: UIViewController, UITextFieldDelegate {
             border6.backgroundColor = emptyColor.cgColor
             
            
+            
             vView.label4.text = getTextInPosition(text: HidenTxtView.text!, position: 3)
+            vView.label5.text = ""
+            vView.label6.text = ""
             
             
         } else if HidenTxtView.text?.count == 5 {
@@ -227,6 +231,7 @@ class PhoneVerficationVC: UIViewController, UITextFieldDelegate {
             
            
             vView.label5.text = getTextInPosition(text: HidenTxtView.text!, position: 4)
+            vView.label6.text = ""
             
         } else if HidenTxtView.text?.count == 6 {
             
@@ -346,7 +351,7 @@ class PhoneVerficationVC: UIViewController, UITextFieldDelegate {
             
         ])
         .validate(statusCode: 200..<500)
-        .responseJSON { responseJSON in
+        .responseJSON { [self] responseJSON in
             
             switch responseJSON.result {
                 
@@ -360,7 +365,7 @@ class PhoneVerficationVC: UIViewController, UITextFieldDelegate {
                         
                         if valid == true {
                             
-                            self.performSegue(withIdentifier: "moveToDetailInfoVC", sender: nil)
+                            self.processSignIn(phone: phone, code: countryCode)
                             
                         } else {
                             
@@ -429,7 +434,6 @@ class PhoneVerficationVC: UIViewController, UITextFieldDelegate {
         
         swiftLoader()
         
-        
         AF.request(urls!, method: .post, parameters: [
             
             "phone": phone,
@@ -471,6 +475,97 @@ class PhoneVerficationVC: UIViewController, UITextFieldDelegate {
                
             }
         }
+        
+    }
+    
+    func processSignIn(phone: String, code: String) {
+        
+        swiftLoader()
+        
+        DataService.instance.mainFireStoreRef.collection("Users").whereField("phone", isEqualTo: phone).whereField("code", isEqualTo: code).getDocuments { (snap, err) in
+            
+            if err != nil {
+                
+                SwiftLoader.hide()
+                self.showErrorAlert("Opss !", msg: err!.localizedDescription)
+                return
+            }
+            
+            if snap?.isEmpty == true {
+                
+                SwiftLoader.hide()
+                self.performSegue(withIdentifier: "moveToDetailInfoVC", sender: nil)
+                
+            } else {
+                
+                for item in snap!.documents {
+           
+                    let i = item.data()
+                    
+                    if let encryptedKey = i["encryptedKey"] as? String {
+                        
+                        self.processFinalSignIn(key: encryptedKey)
+                        
+                        
+                    }
+                    
+                }
+                           
+            }
+            
+     
+            
+        }
+        
+        
+    }
+    
+    
+    
+    
+    func processFinalSignIn(key: String) {
+        
+        
+        DataService.instance.mainFireStoreRef.collection("Pwd_users").whereField("secret_key", isEqualTo: key).getDocuments { (snap, err) in
+            
+            if err != nil {
+                SwiftLoader.hide()
+                self.showErrorAlert("Opss !", msg: err!.localizedDescription)
+                return
+            }
+            
+            for item in snap!.documents {
+       
+                let i = item.data()
+                
+                if let pwd = i["password"] as? String {
+                    
+                   let encryptedRandomEmail = "\(key)@credential-dual.so"
+                    
+                    Auth.auth().signIn(withEmail: encryptedRandomEmail, password: pwd) { (result, error) in
+                        
+                        if error != nil {
+                            
+                            SwiftLoader.hide()
+                            self.showErrorAlert("Opss !", msg: error!.localizedDescription)
+                            return
+                            
+                        }
+                        SwiftLoader.hide()
+                        self.performSegue(withIdentifier: "moveToMainVC4", sender: nil)
+                        
+                    }
+                    
+                    
+                }
+                
+            }
+            
+            
+            
+            
+        }
+        
         
     }
 

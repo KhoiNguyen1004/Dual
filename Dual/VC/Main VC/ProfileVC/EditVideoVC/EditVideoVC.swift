@@ -16,6 +16,8 @@ import Firebase
 
 class EditVideoVC: UIViewController {
     
+    @IBOutlet weak var avatarUrl: borderAvatarView!
+    @IBOutlet weak var usernameLbl: UILabel!
     @IBOutlet weak var InfoView: UIStackView!
     @IBOutlet weak var playBtn: UIButton!
     @IBOutlet weak var streamLink: MarqueeLabel!
@@ -29,6 +31,8 @@ class EditVideoVC: UIViewController {
     var selectedItem: HighlightsModel!
     var animatedLabel: MarqueeLabel!
     var videoNode = ASVideoNode()
+    var SelectedUserName: String!
+    var SelectedAvatarUrl: String!
     
     @IBOutlet weak var videoHeight: NSLayoutConstraint!
     
@@ -79,7 +83,13 @@ class EditVideoVC: UIViewController {
             animatedLabel.textAlignment = .center
             animatedLabel.font = UIFont.systemFont(ofSize: 13)
             
-            animatedLabel.text = "Original sound - kai1004pro                      "
+            
+            if let username = SelectedUserName {
+                animatedLabel.text = "Original sound - \(username)                      "
+            } else {
+                animatedLabel.text = "Original sound                               "
+            }
+           
            
             soundLbl.addSubview(animatedLabel)
             
@@ -91,7 +101,23 @@ class EditVideoVC: UIViewController {
         }
         
         
+        if SelectedAvatarUrl != "", let url =  SelectedAvatarUrl {
+            
+            let imageNode = ASNetworkImageNode()
+            imageNode.contentMode = .scaleAspectFit
+            imageNode.shouldRenderProgressImages = true
+            imageNode.url = URL.init(string: url)
+            imageNode.frame = self.avatarUrl.layer.bounds
+            self.avatarUrl.image = nil
+            
+            
+            self.avatarUrl.addSubnode(imageNode)
+            
+            
+        }
         
+        
+        usernameLbl.text = SelectedUserName
         gameName.text = selectedItem.category
        
         let date = selectedItem.post_time.dateValue()

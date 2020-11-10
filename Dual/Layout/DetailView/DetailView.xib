@@ -12,6 +12,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DetailView" customModule="Dual" customModuleProvider="target">
             <connections>
                 <outlet property="InfoView" destination="Xe4-cF-jWw" id="R0A-Az-Gdv"/>
+                <outlet property="avatarImg" destination="ksT-Zp-3zt" id="ftq-n5-txO"/>
                 <outlet property="contentView" destination="sjU-3o-Mcs" id="hbi-On-2GZ"/>
                 <outlet property="gameLogo" destination="Xn7-Vt-MKW" id="Sca-fa-YGI"/>
                 <outlet property="gameName" destination="wtZ-lT-nIX" id="lSY-vC-AzX"/>

@@ -40,8 +40,7 @@ class NormalLoginVC: UIViewController, UITextFieldDelegate {
         usernameBtn.setTitleColor(UIColor.lightGray, for: .normal)
         
        
-        Pview.areaCodeBtn.attributedPlaceholder = NSAttributedString(string: "Code",
-                                                                        attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15)])
+        
         loadPhoneBook()
         
     }
@@ -62,6 +61,9 @@ class NormalLoginVC: UIViewController, UITextFieldDelegate {
         
         Pview.frame = self.ContentView.layer.bounds
         self.ContentView.addSubview(Pview)
+        
+        Pview.areaCodeBtn.attributedPlaceholder = NSAttributedString(string: "Code",
+                                                                        attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15)])
         
         Pview.PhoneNumberLbl.attributedPlaceholder = NSAttributedString(string: "Phone number",
                                                                         attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15)])
@@ -106,6 +108,9 @@ class NormalLoginVC: UIViewController, UITextFieldDelegate {
         Uview.passwordLbl.attributedPlaceholder = NSAttributedString(string: "Password",
                                                                         attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15)])
         
+        Uview.NextBtn.addTarget(self, action: #selector(NormalLoginVC.userNameBtnPressed), for: .touchUpInside)
+        
+        
         Uview.usernameLbl.delegate = self
         Uview.usernameLbl.keyboardType = .default
         
@@ -119,6 +124,63 @@ class NormalLoginVC: UIViewController, UITextFieldDelegate {
         
     }
     
+    @objc func userNameBtnPressed() {
+        
+        if let username = Uview.usernameLbl.text, username != "", let pwd = Uview.passwordLbl.text, pwd != "", pwd.count >= 5 {
+            
+            
+            swiftLoader()
+            
+            DataService.instance.mainFireStoreRef.collection("Users").whereField("username", isEqualTo: username).getDocuments { (snap, err) in
+                
+                if err != nil {
+                    SwiftLoader.hide()
+                    self.showErrorAlert("Opss !", msg: err!.localizedDescription)
+                    return
+                }
+                
+                if snap?.isEmpty == true {
+                    
+                    SwiftLoader.hide()
+                    self.showErrorAlert("Oops!", msg: "It seems like your username isn't signed up yet, let's continue using phone number to create your account.")
+                    return
+                }
+                
+                for item in snap!.documents {
+           
+                    let i = item.data()
+                    
+                    if let encryptedKey = i["encryptedKey"] as? String {
+                        
+                        let encryptedRandomEmail = "\(encryptedKey)@credential-dual.so"
+                        
+                        Auth.auth().signIn(withEmail: encryptedRandomEmail, password: pwd) { (result, error) in
+                            
+                            if error != nil {
+                                
+                                SwiftLoader.hide()
+                                self.showErrorAlert("Opss !", msg: error!.localizedDescription)
+                                return
+                                
+                            }
+                            
+                            SwiftLoader.hide()
+                            self.performSegue(withIdentifier: "moveToMainVC5", sender: nil)
+                            
+                        }
+                        
+                        
+                    }
+                    
+                }
+                
+                
+            }
+            
+            
+        }
+        
+    }
    
     
     @IBAction func phoneBtnPressed(_ sender: Any) {
@@ -294,25 +356,6 @@ class NormalLoginVC: UIViewController, UITextFieldDelegate {
         
     }
     
-    func findDataIndex(code: String) -> Int {
-        
-        var count = 0
-        
-        for i in phoneBook {
-            
-            if i.code ==  code {
-                
-                break
-                
-            }
-            
-            count += 1
-            
-        }
-        
-        return count
-        
-    }
     
 }
 
@@ -339,7 +382,7 @@ extension NormalLoginVC: UIPickerViewDelegate, UIPickerViewDataSource {
             pickerLabel?.textAlignment = .center
         }
         if let code = phoneBook[row].code, let country = phoneBook[row].country {
-            pickerLabel?.text = "\(country)         +\(code)"
+            pickerLabel?.text = "\(country)            +\(code)"
         } else {
             pickerLabel?.text = "Error loading"
         }
