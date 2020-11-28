@@ -214,7 +214,7 @@ class LoginVC: UIViewController, ZSWTappableLabelTapDelegate, LoginButtonDelegat
             
             if err != nil {
                 SwiftLoader.hide()
-                self.showErrorAlert("Opss !", msg: err!.localizedDescription)
+                self.showErrorAlert("Oops !", msg: err!.localizedDescription)
                 return
             }
             
@@ -267,7 +267,7 @@ class LoginVC: UIViewController, ZSWTappableLabelTapDelegate, LoginButtonDelegat
             
             if err != nil {
                 SwiftLoader.hide()
-                self.showErrorAlert("Opss !", msg: err!.localizedDescription)
+                self.showErrorAlert("Oops !", msg: err!.localizedDescription)
                 return
             }
             
@@ -279,12 +279,14 @@ class LoginVC: UIViewController, ZSWTappableLabelTapDelegate, LoginButtonDelegat
                     
                    let encryptedRandomEmail = "\(key)@credential-dual.so"
                     
+                    print(encryptedRandomEmail, pwd)
+                    
                     Auth.auth().signIn(withEmail: encryptedRandomEmail, password: pwd) { (result, error) in
                         
                         if error != nil {
                             
                             SwiftLoader.hide()
-                            self.showErrorAlert("Opss !", msg: error!.localizedDescription)
+                            self.showErrorAlert("Oops !", msg: error!.localizedDescription)
                             return
                             
                         }
@@ -350,7 +352,7 @@ class LoginVC: UIViewController, ZSWTappableLabelTapDelegate, LoginButtonDelegat
                     }
                         
                 case .failure:
-                    self.showErrorAlert("Oops!", msg: "CRACC: Can't get information from Google")
+                    self.showErrorAlert("Oops!", msg: "Can't get information from Google")
                     return
                         
                     }
@@ -611,24 +613,39 @@ class LoginVC: UIViewController, ZSWTappableLabelTapDelegate, LoginButtonDelegat
             
             if err != nil {
                 
+                
                 print(err!.localizedDescription)
                 return
             }
             
             
             self.swiftLoader()
+            
    
             let client = TWTRAPIClient()
             client.loadUser(withID: session!.userID, completion: { [self] (user, error) in
                 
-                if let url = user?.profileImageURL, let name = user?.name {
+                if error != nil {
                     
-                    let dict = ["fullName": name as Any, "img_url": url] as Dictionary<String, Any>
+                    SwiftLoader.hide()
+                    self.showErrorAlert("Oops!", msg: error!.localizedDescription)
+                    return
                     
-                        checkForAlreadyAccount(field: "Twitter_id", id: "tw\(session!.userID)", dict: dict)
+                } else {
                     
+                    if let url = user?.profileImageURL, let name = user?.name {
                         
-                    }
+                        let dict = ["fullName": name as Any, "img_url": url] as Dictionary<String, Any>
+                        
+                            checkForAlreadyAccount(field: "Twitter_id", id: "tw\(session!.userID)", dict: dict)
+                        
+                            
+                        }
+                        
+                    
+                }
+                
+                
                     
                 })
                 

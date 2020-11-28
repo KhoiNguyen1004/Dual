@@ -39,7 +39,15 @@ class HighlightVC: UIViewController {
     var ratio: CGFloat!
     var item: AddModel!
     var animatedLabel: MarqueeLabel!
+    var region: String!
     
+    var playbackID = ["iTrAhcnYhFWOf3Gl6T01CsMpnBcBp01nXuTrirEYGpEk00", "0001k3PQ3JUnXay5fXEk9qqMdht2OO5wpZhG01FLU1G4cA", "KPPRb751xBDdJi21cX01lbd1fsedu901KAQX3RKIQdP8M", "KPPRb751xBDdJi21cX01lbd1fsedu901KAQX3RKIQdP8M", "Mx4WtrpOCJxw893awZgLZgDuKJ4HlRMiDBGmwGUEmZE", "xWo00JxS1Z4J26AUHRrBVQ4R6WBBQG8IOtmW7seY1u9U", "NpDROSj37C9nxo5GZS8rq86nZqQDga3IJ4Sno0101902Nw", "pxPdG94auSVCFSe62PLo74mUbC6jxJCHERNKfSPaeu4", "VVFZ3EYmNRlTCv0002iNBHNjWHW8eiLub0201AYSCrCzWaw", "Y36siveM02UxdKsVbrgTIJwvtBbwvP9DEBLf8jdmYYTo", "0001ugBIsT01ZpJmcKLwJztImtW5HBhRJZuO1UmB5YGT2o", "KPPRb751xBDdJi21cX01lbd1fsedu901KAQX3RKIQdP8M", "Mx4WtrpOCJxw893awZgLZgDuKJ4HlRMiDBGmwGUEmZE", "iTrAhcnYhFWOf3Gl6T01CsMpnBcBp01nXuTrirEYGpEk00", "0001k3PQ3JUnXay5fXEk9qqMdht2OO5wpZhG01FLU1G4cA"]
+    
+    var assetID = ["8QAxu6WAHicXFzLzR9u2HnANDBMAWsjJAL2N902F6K00M", "I01UCtORWXxqxyc02elRTV3wHoy00PxS2PnjVMzTqD74O4", "9uI7h01TPREEse00k8KqRLQEVTzD00TZMocDeSRT9U8NpE", "rlEZVpv00Q01vyvy1pW202bgdP02YiErZ02e01tiMlj5PGyQ8", "2szFt02ED00MFbtrPC3T802T01owM6cMxQwWitRlPCrg01ok", "oiheYU3T6bkWOj42Dqc3MX400uhmTZHSgyqIZFeCDr8s", "DyfqbhcApW2qwgWJhgsJpHQbUaeFAXKd4WWGUUMkvPA", "bWg5Ij9RlBpyQCRB00xTTcR0228Q4YSn5qZ02RfjU2f00Ao", "sLby7u4dENV6Pf5Bm6iZCSdr8rTqSAODkcS3rQR5jHg", "VSvBoyEwxBU6t2m02rsPmIqWJHUt68kjBlQ01gwsqnTc4", "9uI7h01TPREEse00k8KqRLQEVTzD00TZMocDeSRT9U8NpE", "rlEZVpv00Q01vyvy1pW202bgdP02YiErZ02e01tiMlj5PGyQ8", "8QAxu6WAHicXFzLzR9u2HnANDBMAWsjJAL2N902F6K00M", "I01UCtORWXxqxyc02elRTV3wHoy00PxS2PnjVMzTqD74O4"]
+    
+    var userUID = ["dP6ZLayQy5dN59Wkjd4jjF0h7BV2", "BeSO6rdwi5eLWoWzqCkx4MqsHNr2", "E3wt6vvY47SKiDHksauxKP2INVq2", "TjfFhKhxgNVcrngYjy9NweB5Ejw2", "ohz1pUuIsqdFkedSu6IhSwnw30I3", "Sd0Nex639OOAhuBoPVvw2eQwhnq2", "VuVdRPpm81gWYOeOCObpmFvuID63", "h7UOtTCva5SppfmrUQLOE0Ivugo1", "uvINdlCvkVeSCNxoGeqpcNtScnc2", "r1HDUHn24td8q3ywjPFjzojqUTn2"]
+
+    var count = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -98,8 +106,42 @@ class HighlightVC: UIViewController {
         loadProfile()
         loadLastMode()
         loadLastLink()
+        //UploadSample()
         
     }
+    
+    func UploadSample() {
+        
+        if count <= 100 {
+            
+            let time = FieldValue.serverTimestamp()
+            
+            let Dict = ["url": "https://firebasestorage.googleapis.com/v0/b/dual-71608.appspot.com/o/LOL%2F620FF6C4-5D8B-4D2D-A841-A5890511F5EC?alt=media&token=5608c437-a77e-4302-80ac-6a18c4a07f83", "ratio": 1.0, "status": "Ready", "userUID": userUID.randomElement()!, "org": "Comcast Cable Communications, LLC", "stream_link": "nil", "as": "AS7922 Comcast Cable Communications, LLC", "highlight_title": "nil", "countryCode": "US", "mode": "Friends", "region": "NH", "query": "50.204.100.194", "regionName": "New Hampshire", "city": "Durham", "category": "LOL", "Allow_comment": true, "timezone": "America/New_York", "country": "United States", "lon": -70.91970000000001, "zip": 03824, "Mux_processed": true, "lat": 43.1174, "music": "Original sound", "post_time": time, "isp": "Comcast Cable Communications, LLC", "Device": "iPhone 11 Pro Max", "Mux_playbackID": playbackID.randomElement()!, "Mux_assetID": assetID.randomElement()!, "AWS": false] as [String : Any]
+            
+            let db = DataService.instance.mainFireStoreRef.collection("Highlights")
+            
+            db.addDocument(data: Dict) { (err) in
+                if err != nil {
+                    
+                    print(err!.localizedDescription)
+                    
+                }
+                
+                
+                print("Uploaded to database \(self.count)")
+                self.count += 1
+                self.UploadSample()
+                
+            }
+            
+           
+        }
+        
+  
+        
+    }
+    
+  
     
     func loadProfile() {
         
@@ -348,6 +390,7 @@ class HighlightVC: UIViewController {
             self.exportedURL = video.exportedVideoURL
             ratio = video.renderSize.width / video.renderSize.height
            
+           
             completed()
  
         })
@@ -398,7 +441,7 @@ class HighlightVC: UIViewController {
                  
                  // put in firestore here
                       
-                var higlightVideo = ["category": self.item.name as Any, "url": downloadedUrl as Any, "status": "Pending" as Any, "userUID": Auth.auth().currentUser!.uid as Any, "post_time": FieldValue.serverTimestamp() , "mode": self.mode as Any, "music": self.music as Any, "Mux_processed": false, "Mux_playbackID": "nil", "Allow_comment": self.isAllowComment!, "highlight_title": self.Htitle!, "stream_link": self.StreamLink!,"ratio": self.ratio!, "Device": device]
+                var higlightVideo = ["category": self.item.name as Any, "url": downloadedUrl as Any, "status": "Pending" as Any, "userUID": Auth.auth().currentUser!.uid as Any, "post_time": FieldValue.serverTimestamp() , "mode": self.mode as Any, "music": self.music as Any, "Mux_processed": false, "Mux_playbackID": "nil", "Allow_comment": self.isAllowComment!, "highlight_title": self.Htitle!, "stream_link": self.StreamLink!,"ratio": self.ratio!, "Device": device, "AWS": false]
                 
                 //
                 
@@ -422,28 +465,18 @@ class HighlightVC: UIViewController {
                                         if let status = dict["status"] as? String, status == "success" {
                                             
                                             higlightVideo.merge(dict: dict)
-                                            
+                                            region = dict["country"] as? String
                                             // update last mode
                                             self.writeToDb(higlightVideo: higlightVideo, downloadedUrl: downloadedUrl)
                                             // update last mode
                                             
-                                        } else {
-                                            
-                                            print("Fail to get IP")
-                                            
-                                            // update last mode
-                                            self.writeToDb(higlightVideo: higlightVideo, downloadedUrl: downloadedUrl)
-                                            // update last mode
-               
                                         }
                                     }
                                     
                                 case .failure(let error):
               
                                     print(error.localizedDescription)
-                                    
-                                    self.writeToDb(higlightVideo: higlightVideo, downloadedUrl: downloadedUrl)
-                                    // update last mode
+                                   
                                     
       
                                 }
@@ -479,8 +512,9 @@ class HighlightVC: UIViewController {
         DataService.instance.mainRealTimeDataBaseRef.child("Mux-Processing").child(id.documentID).setValue(["url": downloadedUrl])
         
         print("Sent")
-        
+       
     }
+    
     
 
     @IBAction func postBtnPressed(_ sender: Any) {

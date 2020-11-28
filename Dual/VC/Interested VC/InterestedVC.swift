@@ -10,6 +10,7 @@ import Cache
 import Alamofire
 import AlamofireImage
 import Firebase
+import SwiftPublicIP
 
 class InterestedVC: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
@@ -305,7 +306,12 @@ class InterestedVC: UIViewController, UICollectionViewDataSource, UICollectionVi
                     
                     let dict = ["uid": uid!, "interested_list": list, "timeStamp": FieldValue.serverTimestamp()] as [String : Any]
                     
-                    DataService.instance.mainFireStoreRef.collection("interested_list").addDocument(data: dict) { err in
+                    
+                    let data = ["USER_ID": uid!, "LIKES_VALUE": 0, "VIEWS_VALUE": 0, "SUBSCRIBE_VALUE": 0, "CATEGORY_VALUE": list] as [String : Any]
+                    
+                    let db = DataService.instance.mainFireStoreRef.collection("interested_list")
+                    var ref: DocumentReference? = nil
+                    ref = db.addDocument(data: dict) { err in
                         
                         if let err = err {
                             
@@ -313,14 +319,12 @@ class InterestedVC: UIViewController, UICollectionViewDataSource, UICollectionVi
                             
                         } else {
                             
-                            SwiftLoader.hide()
-                            self.performSegue(withIdentifier: "moveToMainVC", sender: nil)
+                            let sessionId = ref!.documentID
+                            fileComplete(data: data, sessionId: sessionId)
                             
-                            
+    
                         }
-                    
-
-                    
+  
                 }
                 
             }
@@ -332,6 +336,92 @@ class InterestedVC: UIViewController, UICollectionViewDataSource, UICollectionVi
         
         
     }
+    
+    func fileComplete(data: [String : Any], sessionId: String) {
+        
+        SwiftPublicIP.getPublicIP(url: PublicIPAPIURLs.ipv4.icanhazip.rawValue) { [self] (string, error) in
+            if let error = error {
+                print(error.localizedDescription)
+            } else if let string = string {
+            
+                getIPInformation(IP: string, data: data, sessionId: sessionId)
+               
+            }
+        }
+        
+    }
+    
+    func getIPInformation(IP: String, data: [String : Any], sessionId: String) {
+        
+        let urls = URL(string: "http://ip-api.com/json/")!.appendingPathComponent(IP)
+        
+        AF.request(urls, method: .get)
+            .validate(statusCode: 200..<500)
+            .responseJSON { responseJSON in
+                
+                switch responseJSON.result {
+                    
+                case .success(let json):
+                    
+                    if let dict = json as? Dictionary<String, Any> {
+                        
+                        if let status = dict["status"] as? String, status == "success" {
+                            
+                            if let country = dict["country"] as? String {
+                                
+                                var newData = data
+                                newData.updateValue(country, forKey: "REGION_VALUE")
+                                self.callUsersPersonlize(data: newData, sessionId: sessionId)
+                            }
+                            
+                        } else {
+                            
+                            self.callUsersPersonlize(data: data, sessionId: sessionId)
+                            
+                        }
+                        
+                        
+                    }
+                    
+                case .failure( _):
+                    
+                    
+                    self.callUsersPersonlize(data: data, sessionId: sessionId)
+                    
+                    
+                    
+                }
+                
+            }
+      
+     
+        
+    }
+    
+    func callUsersPersonlize(data: [String : Any], sessionId: String) {
+        
+        let url = MainAPIClient.shared.baseURLString
+        let urls = URL(string: url!)?.appendingPathComponent("aws-personalize-send-users")
+        
+      
+        AF.request(urls!, method: .post, parameters: [
+            
+            "USER_ID": data["USER_ID"]!,
+            "SUBSCRIBE_VALUE": 0,
+            "REGION_VALUE": data["REGION_VALUE"]!
+
+        ])
+        .validate(statusCode: 200..<500)
+        .responseJSON { responseJSON in
+            
+            SwiftLoader.hide()
+            self.performSegue(withIdentifier: "moveToMainVC", sender: nil)
+            
+        }
+        
+        
+    }
+    
         
         func swiftLoader() {
             
@@ -355,6 +445,8 @@ class InterestedVC: UIViewController, UICollectionViewDataSource, UICollectionVi
             
             
         }
+    
+    
         
 }
 

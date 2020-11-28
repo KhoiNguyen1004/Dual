@@ -34,13 +34,10 @@ class NormalLoginVC: UIViewController, UITextFieldDelegate {
 
         // Do any additional setup after loading the view.
         
-        
-
         phoneBtn.setTitleColor(UIColor.white, for: .normal)
         usernameBtn.setTitleColor(UIColor.lightGray, for: .normal)
         
-       
-        
+  
         loadPhoneBook()
         
     }

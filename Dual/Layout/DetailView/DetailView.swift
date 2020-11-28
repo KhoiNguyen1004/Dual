@@ -18,7 +18,9 @@ class DetailView: UIView {
    @IBOutlet weak var timeStamp: UILabel!
    @IBOutlet weak var gameLogo: borderAvatarView!
    @IBOutlet weak var soundLbl: UILabel!
-  
+    @IBOutlet weak var LikeCountLbl: UILabel!
+    @IBOutlet weak var CommentCountLbl: UILabel!
+    
    let kCONTENT_XIB_NAME = "DetailView"
     
     override init(frame: CGRect) {

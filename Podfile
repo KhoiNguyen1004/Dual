@@ -1,13 +1,12 @@
 # Uncomment the next line to define a global platform for your project
-platform :ios, '11.0'
+ platform :ios, '11.0'
 
 target 'Dual' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
   # Pods for Dual
-  
-  pod ‘Firebase/Auth’
+	pod ‘Firebase/Auth’
   pod ‘Firebase/Database’
   pod ‘Firebase/Storage’
   pod 'Firebase/Messaging'
@@ -18,10 +17,8 @@ target 'Dual' do
   pod 'Alamofire'
   pod 'AlamofireImage'
   pod 'SwiftyJSON'
-  pod 'MGSwipeTableCell'
   pod "ZSWTappableLabel", "~> 2.0"
   pod "ZSWTaggedString/Swift", "~> 4.0"
-  pod 'SwiftEntryKit', '1.2.3'
   pod 'PixelSDK'
   pod 'NVActivityIndicatorView/AppExtension'
   pod 'MarqueeLabel'
@@ -36,9 +33,7 @@ target 'Dual' do
   pod 'GoogleSignIn'
   pod 'TwitterKit'
   pod 'SwiftPublicIP', '~> 0.0.2'
- 
-  
- # pod 'SinchVerification-Swift'
+  pod 'SwiftEntryKit', '1.2.6'
 
   target 'DualTests' do
     inherit! :search_paths

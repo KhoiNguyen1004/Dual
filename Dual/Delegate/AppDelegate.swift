@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         FirebaseApp.configure()
-        PixelSDK.setup("test")
+        PixelSDK.setup(pixel_key)
         PixelSDK.shared.maxVideoDuration = 60
         
         
@@ -56,7 +56,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
         
         TWTRTwitter.sharedInstance().start(withConsumerKey: twApiKey, consumerSecret: twSecretKey)
-           
+        
+        
         
         return true
     }

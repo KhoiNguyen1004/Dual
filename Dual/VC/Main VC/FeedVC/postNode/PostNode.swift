@@ -14,12 +14,17 @@ import Firebase
 
 class PostNode: ASCellNode {
     
+    
+    var time = 0
+    var challengeName = ""
+    //
+    
     var post: HighlightsModel
     var gradientNode: GradientNode
     var backgroundImageNode: ASNetworkImageNode
     var videoNode: ASVideoNode
     var animatedLabel: MarqueeLabel!
-    
+    var region: String!
     var PlayViews: PlayView!
     var DetailViews: DetailView!
     
@@ -28,7 +33,11 @@ class PostNode: ASCellNode {
     var shareBtn : ((ASCellNode) -> Void)?
     var challengeBtn : ((ASCellNode) -> Void)?
     var linkBtn : ((ASCellNode) -> Void)?
+    var profileBtn : ((ASCellNode) -> Void)?
     
+    
+    var target = ""
+    var value = 1
     //
     init(with post: HighlightsModel) {
         
@@ -49,7 +58,7 @@ class PostNode: ASCellNode {
         self.videoNode.shouldAutoplay = true
         self.videoNode.shouldAutorepeat = true
         
-        if post.ratio <= 1.0 {
+        if post.ratio < 1.0 {
             
             self.videoNode.gravity = AVLayerVideoGravity.resizeAspectFill.rawValue
             
@@ -74,7 +83,7 @@ class PostNode: ASCellNode {
             DetailViews.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
             DetailViews.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0).isActive = true
             DetailViews.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0).isActive = true
-            DetailViews.heightAnchor.constraint(equalToConstant: 210).isActive = true
+            DetailViews.heightAnchor.constraint(equalToConstant: 200).isActive = true
             
             //
             self.gameInfoSetting(post: post, Dview: DetailViews)
@@ -98,7 +107,7 @@ class PostNode: ASCellNode {
             PlayViews.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0).isActive = true
             PlayViews.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0).isActive = true
             PlayViews.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0).isActive = true
-            PlayViews.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -210).isActive = true
+            PlayViews.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -200).isActive = true
             
             // add inside button
 
@@ -170,6 +179,13 @@ class PostNode: ASCellNode {
             linkBtn.addTarget(self, action: #selector(PostNode.streamLinkBtnPressed), forControlEvents: .touchUpInside)
             
             DetailViews.addSubnode(linkBtn)
+            
+            let profileBtn = ASButtonNode()
+            profileBtn.backgroundColor = UIColor.clear
+            profileBtn.frame = CGRect(x: 16, y: 8, width: DetailViews.avatarImg.frame.width, height: DetailViews.avatarImg.frame.height)
+            profileBtn.addTarget(self, action: #selector(PostNode.userProfileBtnPressed), forControlEvents: .touchUpInside)
+            
+            DetailViews.addSubnode(profileBtn)
                   
         }
 
@@ -192,6 +208,7 @@ class PostNode: ASCellNode {
           
             
         } else {
+            
             videoNode.play()
             
             UIView.transition(with: PlayViews.playImg, duration: 0.5, options: .transitionFlipFromRight, animations: { [self] in
@@ -207,18 +224,156 @@ class PostNode: ASCellNode {
     @objc func DoubleTapped() {
         // do something here
         
-        print("Like handle")
+        if let uid = Auth.auth().currentUser?.uid {
+            
+            DataService.instance.mainFireStoreRef.collection("Likes").whereField("Mux_playbackID", isEqualTo: post.Mux_playbackID!).whereField("LikerID", isEqualTo: uid).getDocuments { querySnapshot, error in
+                
+                guard querySnapshot != nil else {
+                    print("Error fetching snapshots: \(error!)")
+                    return
+                }
+                
+                
+                self.target = "Like"
+          
+                if querySnapshot?.isEmpty == true {
+                    
+                    print("new like")
+                    self.value = 1
+                    SwiftPublicIP.getPublicIP(url: PublicIPAPIURLs.ipv4.icanhazip.rawValue) { [self] (string, error) in
+                        if let error = error {
+                            print(error.localizedDescription)
+                        } else if let string = string {
+                            
+                            generateLikeIP(IP: string)
+                           
+                        }
+                        
+                    }
+                    
+                } else {
+                    
+                    print("remove like")
+                   
+                    for item in querySnapshot!.documents {
+                        
+                        let id = item.documentID
+                        DataService.instance.mainFireStoreRef.collection("Likes").document(id).delete()
+                        print("Like delete")
+                        
+                        break
+                        
+                        
+                    }
+                    
+                    self.value = -1
+                    SwiftPublicIP.getPublicIP(url: PublicIPAPIURLs.ipv4.icanhazip.rawValue) { [self] (string, error) in
+                        if let error = error {
+                            print(error.localizedDescription)
+                        } else if let string = string {
+                            
+                            generateLikeIP(IP: string)
+                           
+                        }
+                        
+                    }
+                    
+                
+                }
+            }
+            
+        }
+        
+        
+        
+    
+    }
+    
+  
+    func likeInteraction() {
+        
+        DataService.instance.mainFireStoreRef.collection("Likes").whereField("Mux_playbackID", isEqualTo: post.Mux_playbackID!).getDocuments{ querySnapshot, error in
+            
+            
+           
+            guard querySnapshot != nil else {
+                print("Error fetching snapshots: \(error!)")
+                return
+            }
+            
+            if querySnapshot?.isEmpty == true {
+                
+                self.DetailViews.LikeCountLbl.text = "Likes"
+                
+            } else {
+                
+                if let count = querySnapshot?.count {
+                    
+            
+                    self.DetailViews.LikeCountLbl.text = "\(count.formatUsingAbbrevation()) Likes"
+                    
+                }
+                
+            }
+            
+            
+            
+               
+            
+        }
+        
+        
         
     }
     
-    
+    func CommentInteraction() {
+        
+        DataService.instance.mainFireStoreRef.collection("Comments").whereField("Mux_playbackID", isEqualTo: post.Mux_playbackID!).getDocuments{ querySnapshot, error in
+            
+            
+           
+            guard querySnapshot != nil else {
+                print("Error fetching snapshots: \(error!)")
+                return
+            }
+            
+            if querySnapshot?.isEmpty == true {
+                
+                self.DetailViews.CommentCountLbl.text = "Comments"
+                
+            } else {
+                
+                if let count = querySnapshot?.count {
+                    
+            
+                    self.DetailViews.CommentCountLbl.text = "\(count.formatUsingAbbrevation()) Comments"
+                    
+                }
+                
+            }
+            
+            
+            
+               
+            
+        }
+        
+        
+        
+    }
    
     @objc func resumeVideo() {
         
         
-        if videoNode.isPlaying() == false {
+        if videoNode.isPlaying() == false, PlayViews.playImg.image == nil {
             
-            videoNode.play()
+            if should_Play == true {
+                videoNode.play()
+            }
+            
+        } else {
+            
+            videoNode.pause()
             
         }
         
@@ -242,6 +397,20 @@ class PostNode: ASCellNode {
         
     }
     
+    @objc func CheckIfPauseVideo() {
+        
+        
+        if PlayViews.playImg.image != nil {
+            
+
+            videoNode.pause()
+            
+        }
+        
+    
+        
+    }
+    
     func removeAllobserve() {
         
         print("Remove all expired observes")
@@ -253,34 +422,115 @@ class PostNode: ASCellNode {
         
         
         print("Start new observing")
+        
+        time = 0
         NotificationCenter.default.addObserver(self, selector: #selector(PostNode.pauseVideo), name: (NSNotification.Name(rawValue: "pauseVideo")), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(PostNode.CheckIfPauseVideo), name: (NSNotification.Name(rawValue: "CheckIfPauseVideo")), object: nil)
+        
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToactive), name: UIApplication.didBecomeActiveNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(fileComplete),name: NSNotification.Name.AVPlayerItemDidPlayToEndTime,object: nil)
+        
+        impressionList.append(post.highlight_id)
       
     }
     
+    
     @objc func fileComplete() {
         
-        SwiftPublicIP.getPublicIP(url: PublicIPAPIURLs.ipv4.icanhazip.rawValue) { [self] (string, error) in
-            if let error = error {
-                print(error.localizedDescription)
-            } else if let string = string {
-                
-                getIPInformation(IP: string)
-               
+        time += 1
+        
+        if time < 2 {
+            
+            value = 1
+            
+            SwiftPublicIP.getPublicIP(url: PublicIPAPIURLs.ipv4.icanhazip.rawValue) { [self] (string, error) in
+                if let error = error {
+                    print(error.localizedDescription)
+                } else if let string = string {
+                    
+                    getIPInformation(IP: string)
+                   
+                }
             }
+            
+        } else {
+            
+            NotificationCenter.default.post(name: (NSNotification.Name(rawValue: "scrollToIndex")), object: nil)
+            
+            
         }
         
+       
+        
+    }
+    
+    func generateLikeIP(IP: String) {
+        
+        let device = UIDevice().type.rawValue
+        let urls = URL(string: "http://ip-api.com/json/")!.appendingPathComponent(IP)
+        var data = ["Mux_playbackID": post.Mux_playbackID!, "LikerID": Auth.auth().currentUser!.uid, "ownerUID": post.userUID!, "timeStamp": FieldValue.serverTimestamp(), "Device": device, "category": post.category!] as [String : Any]
+        let db = DataService.instance.mainFireStoreRef.collection("Likes")
+        var ref: DocumentReference? = nil
+        target = "Like"
+        
+        
+        AF.request(urls, method: .get)
+            .validate(statusCode: 200..<500)
+            .responseJSON { responseJSON in
+                
+                switch responseJSON.result {
+                    
+                case .success(let json):
+                    
+                    if let dict = json as? Dictionary<String, Any> {
+                        
+  
+                        if let status = dict["status"] as? String, status == "success" {
+                            
+                            data.merge(dict: dict)
+                            self.region = dict["country"] as? String
+                            var id = ""
+                            if self.value != -1 {
+                                ref = db.addDocument(data: data)
+                                id = ref!.documentID
+                            } else{
+                                id = self.randomString(length: 8)
+                            }
+                            
+           
+                            self.sendToItemsPersonalize(data: data, id: id)
+                           
+                        }
+                        
+                    }
+                    
+                case .failure(_ ): break
+                    
+                    
+                   
+                    
+                }
+                
+            }
+        
+    }
+    
+    func randomString(length: Int) -> String {
+      let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+      return String((0..<length).map{ _ in letters.randomElement()! })
     }
     
     func getIPInformation(IP: String) {
         
         let device = UIDevice().type.rawValue
         let urls = URL(string: "http://ip-api.com/json/")!.appendingPathComponent(IP)
-        var data = ["assetID": post.Mux_assetID!, "ViewerID": Auth.auth().currentUser!.uid, "ownerUID": post.userUID!, "timeStamp": FieldValue.serverTimestamp(), "Device": device] as [String : Any]
+        var data = ["Mux_playbackID": post.Mux_playbackID!, "ViewerID": Auth.auth().currentUser!.uid, "ownerUID": post.userUID!, "timeStamp": FieldValue.serverTimestamp(), "Device": device, "category": post.category!] as [String : Any]
+        let db = DataService.instance.mainFireStoreRef.collection("Views")
+        var ref: DocumentReference? = nil
+        target = "View"
         
         AF.request(urls, method: .get)
             .validate(statusCode: 200..<500)
@@ -295,13 +545,18 @@ class PostNode: ASCellNode {
                         if let status = dict["status"] as? String, status == "success" {
                             
                             data.merge(dict: dict)
+                            self.region = dict["country"] as? String
                             
-                            DataService.instance.mainFireStoreRef.collection("Views").addDocument(data: data)
-                            
+                            ref = db.addDocument(data: data)
+                            self.sendToItemsPersonalize(data: data, id: ref!.documentID)
+                           
                         } else {
                             
                             print("Fail to get IP")
-                            DataService.instance.mainFireStoreRef.collection("Views").addDocument(data: data)
+                            
+                            self.region = "United States"
+                            ref = db.addDocument(data: data)
+                            self.sendToItemsPersonalize(data: data, id: ref!.documentID)
                             
                         }
                         
@@ -312,7 +567,10 @@ class PostNode: ASCellNode {
                     
                     
                     print(error.localizedDescription)
-                    DataService.instance.mainFireStoreRef.collection("Views").addDocument(data: data)
+                    
+                    self.region = "United States"
+                    ref = db.addDocument(data: data)
+                    self.sendToItemsPersonalize(data: data, id: ref!.documentID)
                     
                     
                 }
@@ -320,6 +578,73 @@ class PostNode: ASCellNode {
             }
       
      
+        
+    }
+    
+    func sendToItemsPersonalize(data: [String: Any], id: String) {
+        
+        
+        let url = MainAPIClient.shared.baseURLString
+        let urls = URL(string: url!)?.appendingPathComponent("aws-personalize-send-events")
+        let timeStamp = Int(Date().timeIntervalSince1970)
+       
+        if target == "View" {
+            
+            if let uid = Auth.auth().currentUser?.uid {
+                
+                AF.request(urls!, method: .post, parameters: [
+
+                    "USER_ID": uid,
+                    "ITEM_ID": self.post.highlight_id!,
+                    "EVENT_VALUE": value,
+                    "EVENT_TYPE": "View",
+                    "TIMESTAMP": timeStamp,
+                    "EVENTID": id,
+                    "REGION_ID": self.region!,
+                    "impression": impressionList
+
+                ])
+                .validate(statusCode: 200..<500)
+                .responseJSON { responseJSON in
+                
+            }
+            }
+
+        } else if target == "Like" {
+            
+            if let uid = Auth.auth().currentUser?.uid {
+                
+                
+                likeInteraction()
+                
+                AF.request(urls!, method: .post, parameters: [
+
+                    "USER_ID": uid,
+                    "ITEM_ID": self.post.highlight_id!,
+                    "EVENT_VALUE": value,
+                    "EVENT_TYPE": "Like",
+                    "TIMESTAMP": timeStamp,
+                    "EVENTID": id,
+                    "REGION_ID": self.region!,
+                    "impression": impressionList
+
+                ])
+                .validate(statusCode: 200..<500)
+                .responseJSON { responseJSON in
+                
+            }
+                
+            }
+            
+            
+            
+        }
+        
+    
+            
+            
+            
+        
         
     }
     
@@ -340,7 +665,7 @@ class PostNode: ASCellNode {
     
     @objc func appMovedToactive() {
         
-        if videoNode.isPlaying() == false {
+        if videoNode.isPlaying() == false, PlayViews.playImg.image == nil {
             
             print("resume active")
             if should_Play == true {
@@ -348,6 +673,10 @@ class PostNode: ASCellNode {
             }
        
         
+            
+        } else {
+            
+            videoNode.pause()
             
         }
 
@@ -375,6 +704,12 @@ class PostNode: ASCellNode {
     
     }
     
+    @objc func userProfileBtnPressed(sender: AnyObject!) {
+  
+        profileBtn?(self)
+  
+    }
+    
     
    
     
@@ -382,12 +717,15 @@ class PostNode: ASCellNode {
         
         
         self.loadInfo(uid: post.userUID, Dview: Dview)
+        self.likeInteraction()
+        self.CommentInteraction()
         
         Dview.gameName.text = post.category
         
         
         let date = post.post_time.dateValue()
         Dview.timeStamp.text = timeAgoSinceDate(date, numericDates: true)
+        
 
         getLogo(category: post.category, Dview: Dview)
         
@@ -407,7 +745,8 @@ class PostNode: ASCellNode {
                         
                         //
                         
-                        Dview.username.text = username
+                        challengeName = username
+                        Dview.username.text = "@\(username)"
                         
                         if let avatarUrl = item["avatarUrl"] as? String {
                             
@@ -476,8 +815,11 @@ class PostNode: ASCellNode {
                             
                         }
    
+                    } else {
+                        
+                        challengeName = "Undefined"
+                        
                 }
-                
                 
             }
             

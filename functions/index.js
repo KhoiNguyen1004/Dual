@@ -13,8 +13,8 @@ const path = require('path');
 var app = express();
 const bodyParser = require('body-parser');
 
-const accessToken = '900e84ef-0028-4f41-9481-ce1ff3ab699d';
-const secret = 'AZI9szZ2TpD/YlHJ+flwW+rwiRpL28D2W6PcjSoCtqehFmLARgXDVcPl6j5H9yFxAMFCHq1pHta';
+const accessToken = 'eeee4a87-bcf3-4ba3-8dbd-4b2b9d4a39f7';
+const secret = '1noR31utvv295Ccoz1vmO0VOlN4d3d3rDaAMV4RF6Azis9GKywyQJ4tZtbjsUwIxrADQbTIhQjd';
 
 const Mux = require('@mux/mux-node');
 const { Video, Data } = new Mux(accessToken, secret);

@@ -212,7 +212,7 @@ PODS:
     - abseil/base/base_internal
     - abseil/base/config
     - abseil/meta/type_traits
-  - Alamofire (5.2.2)
+  - Alamofire (5.4.0)
   - AlamofireImage (4.1.0):
     - Alamofire (~> 5.1)
   - AppAuth (1.4.0):
@@ -227,11 +227,11 @@ PODS:
     - BoringSSL-GRPC/Interface (= 0.0.7)
   - BoringSSL-GRPC/Interface (0.0.7)
   - Cache (5.3.0)
-  - DTCollectionViewManager (8.0.0-beta.1):
-    - DTModelStorage (~> 9.0.0-beta.1)
-  - DTModelStorage (9.0.0-beta.1):
-    - DTModelStorage/Core (= 9.0.0-beta.1)
-  - DTModelStorage/Core (9.0.0-beta.1)
+  - DTCollectionViewManager (8.0.0):
+    - DTModelStorage (~> 9.0.0)
+  - DTModelStorage (9.0.0):
+    - DTModelStorage/Core (= 9.0.0)
+  - DTModelStorage/Core (9.0.0)
   - FBSDKCoreKit (5.15.1):
     - FBSDKCoreKit/Basics (= 5.15.1)
     - FBSDKCoreKit/Core (= 5.15.1)
@@ -387,14 +387,13 @@ PODS:
   - GTMAppAuth (1.1.0):
     - AppAuth/Core (~> 1.4)
     - GTMSessionFetcher (~> 1.4)
-  - GTMSessionFetcher (1.4.0):
-    - GTMSessionFetcher/Full (= 1.4.0)
-  - GTMSessionFetcher/Core (1.4.0)
-  - GTMSessionFetcher/Full (1.4.0):
-    - GTMSessionFetcher/Core (= 1.4.0)
+  - GTMSessionFetcher (1.5.0):
+    - GTMSessionFetcher/Full (= 1.5.0)
+  - GTMSessionFetcher/Core (1.5.0)
+  - GTMSessionFetcher/Full (1.5.0):
+    - GTMSessionFetcher/Core (= 1.5.0)
   - leveldb-library (1.22)
   - MarqueeLabel (4.0.5)
-  - MGSwipeTableCell (1.6.11)
   - Mux-Stats-AVPlayer (1.3.8):
     - Mux-Stats-Core (~> 2.2.0)
   - Mux-Stats-Core (2.2.2)
@@ -404,28 +403,28 @@ PODS:
   - nanopb/decode (1.30906.0)
   - nanopb/encode (1.30906.0)
   - NVActivityIndicatorView/AppExtension (4.8.0)
-  - PINCache (3.0.2):
-    - PINCache/Arc-exception-safe (= 3.0.2)
-    - PINCache/Core (= 3.0.2)
-  - PINCache/Arc-exception-safe (3.0.2):
+  - PINCache (3.0.3):
+    - PINCache/Arc-exception-safe (= 3.0.3)
+    - PINCache/Core (= 3.0.3)
+  - PINCache/Arc-exception-safe (3.0.3):
     - PINCache/Core
-  - PINCache/Core (3.0.2):
-    - PINOperation (~> 1.2.0)
-  - PINOperation (1.2)
-  - PINRemoteImage/Core (3.0.1):
+  - PINCache/Core (3.0.3):
+    - PINOperation (~> 1.2.1)
+  - PINOperation (1.2.1)
+  - PINRemoteImage/Core (3.0.3):
     - PINOperation
-  - PINRemoteImage/iOS (3.0.1):
+  - PINRemoteImage/iOS (3.0.3):
     - PINRemoteImage/Core
-  - PINRemoteImage/PINCache (3.0.1):
-    - PINCache (~> 3.0.1)
+  - PINRemoteImage/PINCache (3.0.3):
+    - PINCache (~> 3.0.3)
     - PINRemoteImage/Core
-  - PixelSDK (10.1.2):
-    - PixelSDK-GPUImage3 (~> 1.1.1)
-  - PixelSDK-GPUImage3 (1.1.13)
+  - PixelSDK (11.0.1):
+    - PixelSDK-GPUImage3 (~> 3.0.0)
+  - PixelSDK-GPUImage3 (3.0.0)
   - PromisesObjC (1.2.11)
   - Protobuf (3.13.0)
   - QuickLayout (3.0.0)
-  - SwiftEntryKit (1.2.3):
+  - SwiftEntryKit (1.2.6):
     - QuickLayout (= 3.0.0)
   - SwiftPublicIP (0.0.2)
   - SwiftyJSON (5.0.0)
@@ -476,11 +475,10 @@ DEPENDENCIES:
   - GeoFire
   - GoogleSignIn
   - MarqueeLabel
-  - MGSwipeTableCell
   - Mux-Stats-AVPlayer (~> 1.3.0)
   - NVActivityIndicatorView/AppExtension
   - PixelSDK
-  - SwiftEntryKit (= 1.2.3)
+  - SwiftEntryKit (= 1.2.6)
   - SwiftPublicIP (~> 0.0.2)
   - SwiftyJSON
   - Texture
@@ -525,7 +523,6 @@ SPEC REPOS:
     - GTMSessionFetcher
     - leveldb-library
     - MarqueeLabel
-    - MGSwipeTableCell
     - Mux-Stats-AVPlayer
     - Mux-Stats-Core
     - nanopb
@@ -550,13 +547,13 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
-  Alamofire: 814429acc853c6c54ff123fc3d2ef66803823ce0
+  Alamofire: 3b6a534a3df22db367e4dedeeca73d1ddfcf0e2f
   AlamofireImage: c4a2ba349885fb3064feb74d2e547bd42ce9be10
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   BoringSSL-GRPC: 8edf627ee524575e2f8d19d56f068b448eea3879
   Cache: 48762993ec44e1d93483c4d4a13edd18452326f4
-  DTCollectionViewManager: 0e819ece2344ff39e64a3f98d4d930b59b9e4a99
-  DTModelStorage: 8a7e58c22a77539fe705427cff137cd578feafa8
+  DTCollectionViewManager: c653dddb7dea880e699509e9a5457bfbe727fab9
+  DTModelStorage: 168426d508092a1f4742043f3d450e1fe985560f
   FBSDKCoreKit: 1d5acf7c9d7a2f92bb1a242dc60cae5b7adb91df
   FBSDKLoginKit: f1ea8026a58b52d30c9f2e6a58ca7d813619fb83
   FBSDKPlacesKit: 26d4033cb8cc8640f1e0eadb3635e7dd29c4d073
@@ -580,23 +577,22 @@ SPEC CHECKSUMS:
   "gRPC-C++": 13d8ccef97d5c3c441b7e3c529ef28ebee86fad2
   gRPC-Core: 4afa11bfbedf7cdecd04de535a9e046893404ed5
   GTMAppAuth: 197a8dabfea5d665224aa00d17f164fc2248dab9
-  GTMSessionFetcher: 6f5c8abbab8a9bce4bb3f057e317728ec6182b10
+  GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   MarqueeLabel: 00cc0bcd087111dca575878b3531af980559707d
-  MGSwipeTableCell: b804e4e450dee439c42250be90bd50458bf67fce
   Mux-Stats-AVPlayer: f6366e5e2862b0fbabfd8bb812470caf7f02847f
   Mux-Stats-Core: 16b58f39b40a5277ab0742f2efaf544cee98792d
   nanopb: 59317e09cf1f1a0af72f12af412d54edf52603fc
   NVActivityIndicatorView: d24b7ebcf80af5dcd994adb650e2b6c93379270f
-  PINCache: bea7c404c360f6fe0f6ee783c5cd14e778fa2aab
-  PINOperation: 3a967a927e7867e61976c6cc23e5770416449fbc
-  PINRemoteImage: 3b7cedb118c2d357f87e9eabc7c81ba0202cb236
-  PixelSDK: 733ada36c2c43e0ba9c2e6437daa612ed00de595
-  PixelSDK-GPUImage3: 739e8363b869501fbb9cd3e4230755798e4609cb
+  PINCache: 7a8fc1a691173d21dbddbf86cd515de6efa55086
+  PINOperation: 00c935935f1e8cf0d1e2d6b542e75b88fc3e5e20
+  PINRemoteImage: f1295b29f8c5e640e25335a1b2bd9d805171bd01
+  PixelSDK: 561da50c1e59c918ea5a9a9e03615d766b7d6edc
+  PixelSDK-GPUImage3: e06fb7be214dbd76f3107a0c1d9c7dc8f648e3ad
   PromisesObjC: 8c196f5a328c2cba3e74624585467a557dcb482f
   Protobuf: 3dac39b34a08151c6d949560efe3f86134a3f748
   QuickLayout: 07b45a72b10083fee3f095990cfed1c1e7b27f0a
-  SwiftEntryKit: 340713c2e4a6662c5149629990bf1088bf5f0389
+  SwiftEntryKit: 96a2fa90b2631bbbfac50d18449e9ca3d0635f13
   SwiftPublicIP: 541a07881cf504954e30237eaa99157b1aa50ca3
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
   Texture: 2f109e937850d94d1d07232041c9c7313ccddb81
@@ -606,6 +602,6 @@ SPEC CHECKSUMS:
   ZSWTaggedString: 1a6aab3143188634c1e5dfe9383ce754c1fb5fe2
   ZSWTappableLabel: cff84c0a55e30f2141f7dac24e5903302a7e35ec
 
-PODFILE CHECKSUM: bcfc45f577d38d089a188e996c7880e7c1fe5abf
+PODFILE CHECKSUM: e69a9b500fff5beba2c6a3868b292ec0080b5415
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.10.0

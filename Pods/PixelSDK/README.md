@@ -83,13 +83,21 @@ Pixel SDK is a photo and video editing framework written in Swift.
 
 ### CocoaPods
 
-[CocoaPods](https://cocoapods.org/) is a dependency manager for iOS projects. To integrate PixelSDK into your Xcode project using CocoaPods, specify it in your `Podfile`:
+[CocoaPods](https://cocoapods.org/) is a dependency manager for iOS projects. To integrate PixelSDK into your Xcode project, first verify you have at least Xcode 11.4 or greater installed.
+
+Then, ensure you have the latest version of CocoaPods installed by running the following command:
+
+```
+$ sudo gem install cocoapods
+```
+
+Specify PixelSDK in your `Podfile`:
 
 ```
 pod 'PixelSDK'
 ```
 
-Then, run the following command:
+Run the following command from within your project directory:
 
 ```
 $ pod install

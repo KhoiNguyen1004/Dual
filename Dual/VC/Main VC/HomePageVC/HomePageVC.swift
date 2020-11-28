@@ -7,9 +7,9 @@
 
 import UIKit
 import Firebase
+import Alamofire
 
-
-class HomePageVC: UITabBarController {
+class HomePageVC: UITabBarController, UITabBarControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,18 +20,19 @@ class HomePageVC: UITabBarController {
         tabBar.isTranslucent = false
         
         //try? Auth.auth().signOut()
-        
+        self.delegate = self
+
     }
+ 
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-    
-        
+         
         check_condition()
-        
-        
+
     }
+   
+   
     
     func check_condition() {
         
@@ -53,5 +54,16 @@ class HomePageVC: UITabBarController {
         
     }
     
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        
+        let tabBarIndex = tabBarController.selectedIndex
+        
+        if tabBarIndex == 0, alreadyShow == true{
+            
+            NotificationCenter.default.post(name: (NSNotification.Name(rawValue: "scrollToTop")), object: nil)
+            
+        }
+        
+    }
 
 }

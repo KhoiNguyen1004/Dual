@@ -13,6 +13,10 @@ import SwiftEntryKit
 
 
 
+var impressionList = [String]()
+var alreadyShow = false
+
+
 typealias DownloadComplete = () -> ()
 
 
@@ -548,5 +552,97 @@ public extension UIDevice {
 extension String {
     var stringByRemovingWhitespaces: String {
         return components(separatedBy: .whitespaces).joined()
+    }
+}
+
+extension Date {
+    var ticks: UInt64 {
+        return UInt64((self.timeIntervalSince1970) / 10)
+    }
+}
+
+extension Int {
+
+    func formatUsingAbbrevation () -> String {
+        let numFormatter = NumberFormatter()
+
+        typealias Abbrevation = (threshold:Double, divisor:Double, suffix:String)
+        let abbreviations:[Abbrevation] = [(0, 1, ""),
+                                           (100.0, 1000.0, "K"),
+                                           (100_000.0, 1_000_000.0, "M"),
+                                           (100_000_000.0, 1_000_000_000.0, "B")]
+                                           // you can add more !
+        let startValue = Double (abs(self))
+        let abbreviation:Abbrevation = {
+            var prevAbbreviation = abbreviations[0]
+            for tmpAbbreviation in abbreviations {
+                if (startValue < tmpAbbreviation.threshold) {
+                    break
+                }
+                prevAbbreviation = tmpAbbreviation
+            }
+            return prevAbbreviation
+        } ()
+
+        let value = Double(self) / abbreviation.divisor
+        numFormatter.positiveSuffix = abbreviation.suffix
+        numFormatter.negativeSuffix = abbreviation.suffix
+        numFormatter.allowsFloats = true
+        numFormatter.minimumIntegerDigits = 1
+        numFormatter.minimumFractionDigits = 0
+        numFormatter.maximumFractionDigits = 1
+
+        return numFormatter.string(from: NSNumber (value:value))!
+    }
+
+}
+
+func showNote(text: String) {
+    
+    var attributes = EKAttributes.topNote
+    attributes.popBehavior = .animated(animation: .init(translate: .init(duration: 0.3), scale: .init(from: 1, to: 0.7, duration: 0.7)))
+    attributes.entryBackground = .color(color: .dimmedDarkestOrangeBackground)
+    attributes.shadow = .active(with: .init(color: .black, opacity: 0.5, radius: 10, offset: .zero))
+    attributes.statusBar = .dark
+    attributes.scroll = .enabled(swipeable: true, pullbackAnimation: .jolt)
+    attributes.positionConstraints.maxSize = .init(width: .constant(value: UIScreen.main.bounds.width), height: .intrinsic)
+    
+    
+    let style = EKProperty.LabelStyle(
+        font: UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.medium),
+        color: .white,
+        alignment: .center
+    )
+    let labelContent = EKProperty.LabelContent(
+        text: text,
+        style: style
+    )
+    let contentView = EKNoteMessageView(with: labelContent)
+    SwiftEntryKit.display(entry: contentView, using: attributes)
+    
+}
+
+func getCurrentMillis()->Int64 {
+    return Int64(Date().timeIntervalSince1970 * 1000)
+}
+
+extension UITableView {
+
+    func setEmptyMessage(_ message: String) {
+        let messageLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height))
+        messageLabel.text = message
+        messageLabel.textColor = .white
+        messageLabel.numberOfLines = 0
+        messageLabel.textAlignment = .center
+        messageLabel.font = UIFont(name: "TrebuchetMS", size: 15)
+        messageLabel.sizeToFit()
+
+        self.backgroundView = messageLabel
+        self.separatorStyle = .none
+    }
+
+    func restore() {
+        self.backgroundView = nil
+        self.separatorStyle = .singleLine
     }
 }

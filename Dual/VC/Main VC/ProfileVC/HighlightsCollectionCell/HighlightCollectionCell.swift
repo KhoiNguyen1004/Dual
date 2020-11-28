@@ -25,13 +25,11 @@ class HighlightsCollectionCell: UICollectionViewCell, ModelTransfer {
     }
     
     func update(with model: HighlightsModel) {
-        
-        
-        // Fill cell with actual data
-          
-        
+    
+   
         let playbackID = model.Mux_playbackID
         
+    
         let mode = model.mode
         
         if mode == "Public" {
@@ -62,17 +60,17 @@ class HighlightsCollectionCell: UICollectionViewCell, ModelTransfer {
         
         if let uid = Auth.auth().currentUser?.uid {
             
-            calViewCount(assetID: model.Mux_assetID, uid: uid)
+            calViewCount(Mux_playbackID: model.Mux_playbackID, uid: uid)
             
         }
         
         
     }
     
-    func calViewCount(assetID: String, uid: String) {
+    func calViewCount(Mux_playbackID: String, uid: String) {
         
         
-        DataService.instance.mainFireStoreRef.collection("Views").whereField("assetID", isEqualTo: assetID).whereField("ownerUID", isEqualTo: uid).getDocuments { querySnapshot, error in
+        DataService.instance.mainFireStoreRef.collection("Views").whereField("Mux_playbackID", isEqualTo: Mux_playbackID).whereField("ownerUID", isEqualTo: uid).getDocuments { querySnapshot, error in
             guard querySnapshot != nil else {
                 print("Error fetching snapshots: \(error!)")
                 return
@@ -87,7 +85,7 @@ class HighlightsCollectionCell: UICollectionViewCell, ModelTransfer {
                 
                 if let count = querySnapshot?.count {
                     
-                    self.ViewCount.text = "\(count)"
+                    self.ViewCount.text = "\(count.formatUsingAbbrevation())"
                     
                 }
                 

@@ -13,7 +13,7 @@ import AVFoundation
 import CoreLocation
 import Alamofire
 import DTCollectionViewManager
-
+import AsyncDisplayKit
 
 
 class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionViewManageable, UICollectionViewDelegateFlowLayout {
@@ -385,13 +385,12 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionV
         let db = DataService.instance.mainFireStoreRef
         let uid = Auth.auth().currentUser?.uid
         
-        db.collection("Highlights").whereField("userUID", isEqualTo: uid!).order(by: "post_time", descending: true).limit(to: 50)
+        db.collection("Highlights").whereField("userUID", isEqualTo: uid!).order(by: "post_time", descending: true)
             .addSnapshotListener { [self] querySnapshot, error in
                 guard let snapshot = querySnapshot else {
                     print("Error fetching snapshots: \(error!)")
                     return
                 }
-                
 
                 if firstLoad == true {
                     
@@ -519,10 +518,11 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionV
         return UIEdgeInsets(top: 0,left: 0,bottom: 0,right: 0);
     }
     
+    
     @IBAction func settingBtnPressed(_ sender: Any) {
         
         self.performSegue(withIdentifier: "moveToSettingVC", sender: nil)
-        
+       
     }
     
     @IBAction func setting1BtnPressed(_ sender: Any) {
@@ -530,6 +530,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionV
         self.performSegue(withIdentifier: "moveToSettingVC", sender: nil)
         
     }
+    
 }
 
 extension ProfileVC: UIImagePickerControllerDelegate {

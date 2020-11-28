@@ -11,7 +11,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DetailView" customModule="Dual" customModuleProvider="target">
             <connections>
+                <outlet property="CommentCountLbl" destination="KGy-cR-sKS" id="yXx-U0-Rkh"/>
                 <outlet property="InfoView" destination="Xe4-cF-jWw" id="R0A-Az-Gdv"/>
+                <outlet property="LikeCountLbl" destination="4rd-lj-1kr" id="S4H-Wo-zaS"/>
                 <outlet property="avatarImg" destination="ksT-Zp-3zt" id="ftq-n5-txO"/>
                 <outlet property="contentView" destination="sjU-3o-Mcs" id="hbi-On-2GZ"/>
                 <outlet property="gameLogo" destination="Xn7-Vt-MKW" id="Sca-fa-YGI"/>
@@ -53,14 +55,14 @@
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Xe4-cF-jWw">
                     <rect key="frame" x="81" y="13" width="165" height="62.5"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@Kai1004pro" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9pF-uT-Ro3">
-                            <rect key="frame" x="0.0" y="0.0" width="87" height="16"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@Undefined" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9pF-uT-Ro3">
+                            <rect key="frame" x="0.0" y="0.0" width="79.5" height="16"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LOL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wtZ-lT-nIX">
-                            <rect key="frame" x="0.0" y="21" width="32" height="20.5"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="UNDEFINED" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wtZ-lT-nIX">
+                            <rect key="frame" x="0.0" y="21" width="97.5" height="20.5"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
@@ -118,14 +120,14 @@
                         </label>
                     </subviews>
                 </stackView>
-                <stackView opaque="NO" contentMode="scaleToFill" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="p19-Gc-3js">
-                    <rect key="frame" x="8" y="83.5" width="215" height="20"/>
+                <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="p19-Gc-3js">
+                    <rect key="frame" x="8" y="83.5" width="205" height="20"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eF3-dQ-hzw">
                             <rect key="frame" x="0.0" y="0.0" width="100" height="20"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="dhM-mD-q7e">
-                                    <rect key="frame" x="4.5" y="2.5" width="91" height="15"/>
+                                    <rect key="frame" x="24" y="2.5" width="52.5" height="15"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Icon ionic-ios-heart-empty" translatesAutoresizingMaskIntoConstraints="NO" id="5Th-bn-gbV">
                                             <rect key="frame" x="0.0" y="0.0" width="15" height="15"/>
@@ -134,8 +136,8 @@
                                                 <constraint firstAttribute="height" constant="15" id="Sfs-l0-Mfa"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="18,900 likes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4rd-lj-1kr">
-                                            <rect key="frame" x="23" y="0.0" width="68" height="15"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Likes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4rd-lj-1kr">
+                                            <rect key="frame" x="23" y="0.0" width="29.5" height="15"/>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="11"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
@@ -152,10 +154,10 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kip-GW-qQQ">
-                            <rect key="frame" x="115" y="0.0" width="100" height="20"/>
+                            <rect key="frame" x="105" y="0.0" width="100" height="20"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Iil-ES-Uzc">
-                                    <rect key="frame" x="-12" y="2.5" width="124" height="15"/>
+                                    <rect key="frame" x="8.5" y="2.5" width="83.5" height="15"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Icon awesome-comment-alt" translatesAutoresizingMaskIntoConstraints="NO" id="kGX-Qu-0os">
                                             <rect key="frame" x="0.0" y="0.0" width="15" height="15"/>
@@ -164,8 +166,8 @@
                                                 <constraint firstAttribute="width" constant="15" id="G8W-Lr-AN3"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="18,900 comments" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KGy-cR-sKS">
-                                            <rect key="frame" x="23" y="0.0" width="101" height="15"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Comments" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KGy-cR-sKS">
+                                            <rect key="frame" x="23" y="0.0" width="60.5" height="15"/>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="11"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>

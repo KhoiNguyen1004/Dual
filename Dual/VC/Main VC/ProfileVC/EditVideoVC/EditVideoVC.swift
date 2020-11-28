@@ -26,6 +26,8 @@ class EditVideoVC: UIViewController {
     @IBOutlet weak var gameLogo: borderAvatarView!
     @IBOutlet weak var soundLbl: MarqueeLabel!
     @IBOutlet weak var videoPlayer: UIView!
+    @IBOutlet weak var likeCountLbl: UILabel!
+    @IBOutlet weak var commentCountLbl: UILabel!
     
     //
     var selectedItem: HighlightsModel!
@@ -116,8 +118,11 @@ class EditVideoVC: UIViewController {
             
         }
         
+        if let name = SelectedUserName {
+            usernameLbl.text = "@\(name)"
+        }
         
-        usernameLbl.text = SelectedUserName
+       
         gameName.text = selectedItem.category
        
         let date = selectedItem.post_time.dateValue()
@@ -126,8 +131,81 @@ class EditVideoVC: UIViewController {
         
         
         loadLogo(category: selectedItem.category)
-        
+        self.likeInteraction()
+        self.CommentInteraction()
   
+        
+    }
+    
+    func likeInteraction() {
+        
+        DataService.instance.mainFireStoreRef.collection("Likes").whereField("Mux_playbackID", isEqualTo: selectedItem.Mux_playbackID!).getDocuments{ querySnapshot, error in
+            
+            
+           
+            guard querySnapshot != nil else {
+                print("Error fetching snapshots: \(error!)")
+                return
+            }
+            
+            if querySnapshot?.isEmpty == true {
+                
+                self.likeCountLbl.text = "Likes"
+                
+            } else {
+                
+                if let count = querySnapshot?.count {
+                    
+            
+                    self.likeCountLbl.text = "\(count.formatUsingAbbrevation()) Likes"
+                    
+                }
+                
+            }
+            
+            
+            
+               
+            
+        }
+        
+        
+        
+    }
+    
+    func CommentInteraction() {
+        
+        DataService.instance.mainFireStoreRef.collection("Comments").whereField("Mux_playbackID", isEqualTo: selectedItem.Mux_playbackID!).getDocuments{ querySnapshot, error in
+            
+            
+           
+            guard querySnapshot != nil else {
+                print("Error fetching snapshots: \(error!)")
+                return
+            }
+            
+            if querySnapshot?.isEmpty == true {
+                
+                self.commentCountLbl.text = "Comments"
+                
+            } else {
+                
+                if let count = querySnapshot?.count {
+                    
+            
+                    self.commentCountLbl.text = "\(count.formatUsingAbbrevation()) Comments"
+                    
+                }
+                
+            }
+            
+            
+            
+               
+            
+        }
+        
+        
         
     }
     
@@ -244,7 +322,7 @@ class EditVideoVC: UIViewController {
             
             videoPlayer.addSubnode(videoNode)
             
-            if selectedItem.ratio <= 1.0 {
+            if selectedItem.ratio < 1.0 {
                 
                 videoNode.gravity = AVLayerVideoGravity.resizeAspectFill.rawValue
                 
