@@ -16,7 +16,6 @@ class PostNode: ASCellNode {
     
     
     var time = 0
-    var challengeName = ""
     //
     
     var post: HighlightsModel
@@ -733,6 +732,7 @@ class PostNode: ASCellNode {
     
     func loadInfo(uid: String, Dview: DetailView) {
         
+       
         DataService.init().mainFireStoreRef.collection("Users").whereField("userUID", isEqualTo: uid).getDocuments { [self] querySnapshot, error in
                 guard let snapshot = querySnapshot else {
                     print("Error fetching snapshots: \(error!)")
@@ -745,7 +745,7 @@ class PostNode: ASCellNode {
                         
                         //
                         
-                        challengeName = username
+                        
                         Dview.username.text = "@\(username)"
                         
                         if let avatarUrl = item["avatarUrl"] as? String {
@@ -815,11 +815,7 @@ class PostNode: ASCellNode {
                             
                         }
    
-                    } else {
-                        
-                        challengeName = "Undefined"
-                        
-                }
+                    }
                 
             }
             

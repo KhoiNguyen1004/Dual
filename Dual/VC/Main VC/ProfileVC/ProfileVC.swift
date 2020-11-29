@@ -385,7 +385,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionV
         let db = DataService.instance.mainFireStoreRef
         let uid = Auth.auth().currentUser?.uid
         
-        db.collection("Highlights").whereField("userUID", isEqualTo: uid!).order(by: "post_time", descending: true)
+        db.collection("Highlights").whereField("userUID", isEqualTo: uid!).order(by: "post_time", descending: true).limit(to: 50)
             .addSnapshotListener { [self] querySnapshot, error in
                 guard let snapshot = querySnapshot else {
                     print("Error fetching snapshots: \(error!)")

@@ -15,6 +15,7 @@ class ChallengesView: UIView {
     @IBOutlet weak var send: UIButton!
     @IBOutlet weak var username: UILabel!
     @IBOutlet weak var messages: UITextField!
+    @IBOutlet weak var toLbl: UILabel!
     let kCONTENT_XIB_NAME = "ChallengesView"
      
     override init(frame: CGRect) {

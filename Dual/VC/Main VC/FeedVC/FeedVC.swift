@@ -29,6 +29,7 @@ class FeedVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     var currentIndex = 0
     var challengeItem: HighlightsModel!
     var challengeName = ""
+    var userid = ""
     
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var bView: UIView!
@@ -985,31 +986,72 @@ class FeedVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         if let uid = Auth.auth().currentUser?.uid, Auth.auth().currentUser?.isAnonymous != true, uid != item.userUID {
             
             
-            self.backgroundView.frame = self.view.frame
-            backgroundView.backgroundColor = UIColor.black
-            backgroundView.alpha = 0.6
-            self.view.addSubview(backgroundView)
+            DataService.init().mainFireStoreRef.collection("Users").whereField("userUID", isEqualTo: item.userUID!).getDocuments { [self] querySnapshot, error in
+                    guard let snapshot = querySnapshot else {
+                        print("Error fetching snapshots: \(error!)")
+                        return
+                }
+                
+                
+                if snapshot.isEmpty != true {
+                    
+                    for items in snapshot.documents {
+                        
+                        if let username = items.data()["username"] as? String {
+                                
+                                challengeName = username
+                                
+                                
+                        } else {
+                            
+                            challengeName = "Undefined"
+                            
+                        }
+                            
+                    }
+                    
+                    self.userid = item.userUID
+                    
+                    self.backgroundView.frame = self.view.frame
+                    backgroundView.backgroundColor = UIColor.black
+                    backgroundView.alpha = 0.6
+                    self.view.addSubview(backgroundView)
+                    
+                    
+                    
+                    CView.frame = CGRect(x: self.view.frame.size.width / 2, y: self.view.frame.size.height * (250/813), width: self.view.frame.size.width * (365/414), height: self.view.frame.size.height * (157/813))
+                    self.view.addSubview(CView)
+                    NotificationCenter.default.post(name: (NSNotification.Name(rawValue: "pauseVideo")), object: nil)
+                    CView.messages.becomeFirstResponder()
+                    CView.center.x = view.center.x
+                    challengeItem = item
+                    CView.messages.delegate = self
+                    
+                    CView.toLbl.text = "To @\(challengeName)"
+                    CView.messages.attributedPlaceholder = NSAttributedString(string: "Send a message to @\(challengeName)",
+                                                                              attributes: [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)])
+                    CView.messages.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+                    CView.send.addTarget(self, action:  #selector(FeedVC.ChallengeBtnPressed), for: .touchUpInside)
+                    
+                } else {
+                    
+                    self.showErrorAlert("Oops !", msg: "You can't send challenge to this user.")
+                    return
+                    
+                }
+                
+                
+                    
+                
+                
+            }
             
-            
-            
-            CView.frame = CGRect(x: self.view.frame.size.width / 2, y: self.view.frame.size.height * (250/813), width: self.view.frame.size.width * (365/414), height: self.view.frame.size.height * (157/813))
-            self.view.addSubview(CView)
-            NotificationCenter.default.post(name: (NSNotification.Name(rawValue: "pauseVideo")), object: nil)
-            CView.messages.becomeFirstResponder()
-            CView.center.x = view.center.x
-            challengeItem = item
-            CView.messages.delegate = self
-            
-            CView.messages.attributedPlaceholder = NSAttributedString(string: "Send a message to @\(challengeName)",
-                                                                      attributes: [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)])
-            CView.messages.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-            CView.send.addTarget(self, action:  #selector(FeedVC.ChallengeBtnPressed), for: .touchUpInside)
-           
+  
             
         } else {
             
             
-            self.showErrorAlert("Oops !", msg: "You should be a signed user to challenge")
+            self.showErrorAlert("Oops !", msg: "You should be a signed user to challenge or you can't challenge yourself.")
             
             
         }
@@ -1266,6 +1308,7 @@ class FeedVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         
         NotificationCenter.default.post(name: (NSNotification.Name(rawValue: "pauseVideo")), object: nil)
         isFeed = true
+        userid = item.userUID
         self.performSegue(withIdentifier: "moveToUserProfileVC3", sender: nil)
 
     }
@@ -1277,6 +1320,7 @@ class FeedVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
             {
                 
                 destination.isFeed = self.isFeed
+                destination.uid = self.userid
                   
             }
         }
@@ -1543,7 +1587,6 @@ extension FeedVC: ASTableDataSource {
             
         }
         
-        challengeName = cell.challengeName
         
         cell.startObserve()
     
