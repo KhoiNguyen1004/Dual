@@ -6,7 +6,7 @@ target 'Dual' do
   use_frameworks!
 
   # Pods for Dual
-	pod ‘Firebase/Auth’
+  pod ‘Firebase/Auth’
   pod ‘Firebase/Database’
   pod ‘Firebase/Storage’
   pod 'Firebase/Messaging'
@@ -23,7 +23,6 @@ target 'Dual' do
   pod 'NVActivityIndicatorView/AppExtension'
   pod 'MarqueeLabel'
   pod 'DTCollectionViewManager', '~> 8.0.0-beta.1'
-  pod 'Mux-Stats-AVPlayer', '~>1.3.0'
   pod 'TransitionButton'
   pod "Texture"
   pod 'FBSDKCoreKit'
