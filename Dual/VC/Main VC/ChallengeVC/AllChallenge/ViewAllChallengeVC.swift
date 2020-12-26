@@ -13,6 +13,7 @@ class ViewAllChallengeVC: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var tableView: UITableView!
     var challengeList = [ChallengeModel]()
     var type: String!
+    var userid: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -200,7 +201,24 @@ class ViewAllChallengeVC: UIViewController, UITableViewDelegate, UITableViewData
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        userid = challengeList[indexPath.row].sender_ID
+        
         self.performSegue(withIdentifier: "moveToUserProfileVC2", sender: nil)
+        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "moveToUserProfileVC2"
+        {
+            if let destination = segue.destination as? UserProfileVC
+            {
+                
+                destination.isFeed = false
+                destination.uid = self.userid
+                  
+            }
+        }
         
     }
     

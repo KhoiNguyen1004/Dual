@@ -17,9 +17,9 @@ enum challengeControl {
 
 class ChallengeVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-
     var ControlChallenge = challengeControl.pending
     var type: String!
+    var userid: String!
 
     @IBOutlet weak var height1Constant: NSLayoutConstraint!
     @IBOutlet weak var height2Constant: NSLayoutConstraint!
@@ -37,7 +37,6 @@ class ChallengeVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
     
   
     var firstLoad = false
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -319,18 +318,12 @@ class ChallengeVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
             
         }
         
-        
-        
         if done == false {
             
             completed()
             
         }
-        
-        
-        
-        
-        
+           
         
     }
     
@@ -745,6 +738,18 @@ class ChallengeVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        
+        switch self.ControlChallenge {
+        
+            case .pending:
+                self.userid = pendingList[indexPath.row].sender_ID
+            case .active:
+                self.userid = activeList[indexPath.row].sender_ID
+            case .expire:
+                self.userid = expireList[indexPath.row].sender_ID
+        }
+        
+        
         self.performSegue(withIdentifier: "moveToUserProfileVC1", sender: nil)
         
     }
@@ -779,7 +784,6 @@ class ChallengeVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
     }
     
     
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == "MoveToViewAllVC"{
@@ -788,7 +792,15 @@ class ChallengeVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
                 
                 destination.type = self.type
                 
+            }
+        } else if segue.identifier == "moveToUserProfileVC1"
+        {
+            if let destination = segue.destination as? UserProfileVC
+            {
                 
+                destination.isFeed = false
+                destination.uid = self.userid
+                  
             }
         }
         

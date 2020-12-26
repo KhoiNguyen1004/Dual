@@ -212,7 +212,7 @@ PODS:
     - abseil/base/base_internal
     - abseil/base/config
     - abseil/meta/type_traits
-  - Alamofire (5.4.0)
+  - Alamofire (5.4.1)
   - AlamofireImage (4.1.0):
     - Alamofire (~> 5.1)
   - AppAuth (1.4.0):
@@ -227,7 +227,7 @@ PODS:
     - BoringSSL-GRPC/Interface (= 0.0.7)
   - BoringSSL-GRPC/Interface (0.0.7)
   - Cache (5.3.0)
-  - DTCollectionViewManager (8.0.0):
+  - DTCollectionViewManager (8.0.1):
     - DTModelStorage (~> 9.0.0)
   - DTModelStorage (9.0.1):
     - DTModelStorage/Core (= 9.0.1)
@@ -327,7 +327,10 @@ PODS:
   - FirebaseStorage (3.9.1):
     - FirebaseCore (~> 6.10)
     - GTMSessionFetcher/Core (~> 1.1)
-  - GeoFire (4.0.1):
+  - GeoFire (4.1.0):
+    - Firebase/Database (~> 6.0)
+    - GeoFire/Utils (= 4.1.0)
+  - GeoFire/Utils (4.1.0):
     - Firebase/Database (~> 6.0)
   - GoogleAppMeasurement (6.9.0):
     - GoogleUtilities/AppDelegateSwizzler (~> 6.7)
@@ -415,11 +418,11 @@ PODS:
   - PINRemoteImage/PINCache (3.0.3):
     - PINCache (~> 3.0.3)
     - PINRemoteImage/Core
-  - PixelSDK (11.0.1):
+  - PixelSDK (11.0.2):
     - PixelSDK-GPUImage3 (~> 3.0.0)
   - PixelSDK-GPUImage3 (3.0.0)
   - PromisesObjC (1.2.11)
-  - Protobuf (3.13.0)
+  - Protobuf (3.14.0)
   - QuickLayout (3.0.0)
   - SwiftEntryKit (1.2.6):
     - QuickLayout (= 3.0.0)
@@ -541,12 +544,12 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
-  Alamofire: 3b6a534a3df22db367e4dedeeca73d1ddfcf0e2f
+  Alamofire: 2291f7d21ca607c491dd17642e5d40fdcda0e65c
   AlamofireImage: c4a2ba349885fb3064feb74d2e547bd42ce9be10
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   BoringSSL-GRPC: 8edf627ee524575e2f8d19d56f068b448eea3879
   Cache: 48762993ec44e1d93483c4d4a13edd18452326f4
-  DTCollectionViewManager: c653dddb7dea880e699509e9a5457bfbe727fab9
+  DTCollectionViewManager: 3cef3a7d925dd76035bd9a5cab4aa34ea8a3f46e
   DTModelStorage: 114a4b10f7c9600fa52398e4c201893b23e56303
   FBSDKCoreKit: 1d5acf7c9d7a2f92bb1a242dc60cae5b7adb91df
   FBSDKLoginKit: f1ea8026a58b52d30c9f2e6a58ca7d813619fb83
@@ -563,7 +566,7 @@ SPEC CHECKSUMS:
   FirebaseInstanceID: bd3ffc24367f901a43c063b36c640b345a4a5dd1
   FirebaseMessaging: 5eca4ef173de76253352511aafef774caa1cba2a
   FirebaseStorage: 15e0f15ef3c7fec3d1899d68623e47d4447066b4
-  GeoFire: 67b5276c561434b4e4c7ea567c2c4d64e711339c
+  GeoFire: 8372fdf980b5ef1df6767dba7ff79288fad34612
   GoogleAppMeasurement: a6a3a066369828db64eda428cb2856dc1cdc7c4e
   GoogleDataTransport: f56af7caa4ed338dc8e138a5d7c5973e66440833
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
@@ -579,10 +582,10 @@ SPEC CHECKSUMS:
   PINCache: 7a8fc1a691173d21dbddbf86cd515de6efa55086
   PINOperation: 00c935935f1e8cf0d1e2d6b542e75b88fc3e5e20
   PINRemoteImage: f1295b29f8c5e640e25335a1b2bd9d805171bd01
-  PixelSDK: 561da50c1e59c918ea5a9a9e03615d766b7d6edc
+  PixelSDK: 14c3f242211beb11ef0403ba88fc999600ece6e4
   PixelSDK-GPUImage3: e06fb7be214dbd76f3107a0c1d9c7dc8f648e3ad
   PromisesObjC: 8c196f5a328c2cba3e74624585467a557dcb482f
-  Protobuf: 3dac39b34a08151c6d949560efe3f86134a3f748
+  Protobuf: 0cde852566359049847168e51bd1c690e0f70056
   QuickLayout: 07b45a72b10083fee3f095990cfed1c1e7b27f0a
   SwiftEntryKit: 96a2fa90b2631bbbfac50d18449e9ca3d0635f13
   SwiftPublicIP: 541a07881cf504954e30237eaa99157b1aa50ca3

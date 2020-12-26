@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -25,6 +25,7 @@
 		6A30584E254785330096BA1F /* NormalLoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A30584D254785320096BA1F /* NormalLoginVC.swift */; };
 		6A30585B254790360096BA1F /* PhoneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A30585A254790360096BA1F /* PhoneView.xib */; };
 		6A3058602547904A0096BA1F /* PhoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A30585F2547904A0096BA1F /* PhoneView.swift */; };
+		6A3DEB7F25967EA1003E9148 /* Session+TypeAlias.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3DEB7E25967EA1003E9148 /* Session+TypeAlias.swift */; };
 		6A4077CF252959C20063F378 /* InterestedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4077CE252959C20063F378 /* InterestedModel.swift */; };
 		6A4077D825295E660063F378 /* InterestedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4077D725295E660063F378 /* InterestedCell.swift */; };
 		6A40786D252A5F6A0063F378 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A40786C252A5F6A0063F378 /* Constant.swift */; };
@@ -86,7 +87,6 @@
 		6ABD0A902544EC7E004CD9D5 /* ChallengeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6ABD0A8F2544EC7E004CD9D5 /* ChallengeView.xib */; };
 		6ABF1DCB252CBEAD00D15D27 /* SwiftLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ABF1DCA252CBEAC00D15D27 /* SwiftLoader.swift */; };
 		6ABF1DD5252CECFF00D15D27 /* HomePageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ABF1DD4252CECFF00D15D27 /* HomePageVC.swift */; };
-		6AC5481D2530F98C00999916 /* Session+TypeAlias.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC5481C2530F98C00999916 /* Session+TypeAlias.swift */; };
 		6AC6F7902550E9620065AD8F /* SettingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC6F78F2550E9620065AD8F /* SettingVC.swift */; };
 		6AC6F7CB2550EB050065AD8F /* SettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC6F7CA2550EB050065AD8F /* SettingCell.swift */; };
 		6AC6F8052551AE240065AD8F /* EditProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC6F8042551AE240065AD8F /* EditProfileVC.swift */; };
@@ -150,6 +150,7 @@
 		6A30584D254785320096BA1F /* NormalLoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalLoginVC.swift; sourceTree = "<group>"; };
 		6A30585A254790360096BA1F /* PhoneView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PhoneView.xib; sourceTree = "<group>"; };
 		6A30585F2547904A0096BA1F /* PhoneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneView.swift; sourceTree = "<group>"; };
+		6A3DEB7E25967EA1003E9148 /* Session+TypeAlias.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Session+TypeAlias.swift"; sourceTree = "<group>"; };
 		6A4077CE252959C20063F378 /* InterestedModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterestedModel.swift; sourceTree = "<group>"; };
 		6A4077D725295E660063F378 /* InterestedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterestedCell.swift; sourceTree = "<group>"; };
 		6A40786C252A5F6A0063F378 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
@@ -220,7 +221,6 @@
 		6ABD0A8F2544EC7E004CD9D5 /* ChallengeView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChallengeView.xib; sourceTree = "<group>"; };
 		6ABF1DCA252CBEAC00D15D27 /* SwiftLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftLoader.swift; sourceTree = "<group>"; };
 		6ABF1DD4252CECFF00D15D27 /* HomePageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageVC.swift; sourceTree = "<group>"; };
-		6AC5481C2530F98C00999916 /* Session+TypeAlias.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Session+TypeAlias.swift"; path = "Dual/Utils/Session+TypeAlias.swift"; sourceTree = SOURCE_ROOT; };
 		6AC6F78F2550E9620065AD8F /* SettingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingVC.swift; sourceTree = "<group>"; };
 		6AC6F7CA2550EB050065AD8F /* SettingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingCell.swift; sourceTree = "<group>"; };
 		6AC6F8042551AE240065AD8F /* EditProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileVC.swift; sourceTree = "<group>"; };
@@ -824,9 +824,9 @@
 			isa = PBXGroup;
 			children = (
 				6A1187B22532143F00494E0C /* MainAPIClient.swift */,
-				6AC5481C2530F98C00999916 /* Session+TypeAlias.swift */,
 				6A85F09D2568F86500A1FECB /* UIColor+Utils.swift */,
 				6A1187E82534A2BF00494E0C /* DispatchQueue+Extensions.swift */,
+				6A3DEB7E25967EA1003E9148 /* Session+TypeAlias.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -996,8 +996,8 @@
 				6A6374F52518E16C0019A984 /* Sources */,
 				6A6374F62518E16C0019A984 /* Frameworks */,
 				6A6374F72518E16C0019A984 /* Resources */,
-				75F818B034F930A45EA4FCC3 /* [CP] Embed Pods Frameworks */,
-				F4730137864F698B43D7C0F4 /* [CP] Copy Pods Resources */,
+				1BB3A14D292646351BA272B0 /* [CP] Embed Pods Frameworks */,
+				25C5C6F0F745B06BFB0A27B1 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1035,8 +1035,8 @@
 				6A6375162518E16E0019A984 /* Sources */,
 				6A6375172518E16E0019A984 /* Frameworks */,
 				6A6375182518E16E0019A984 /* Resources */,
-				E03B786C1749BFFE6F6C8079 /* [CP] Embed Pods Frameworks */,
-				F4C0905DBA265EC196A527F0 /* [CP] Copy Pods Resources */,
+				69A1D05FE5D081E9249E191B /* [CP] Embed Pods Frameworks */,
+				CBDC22AD056136EF070F5EBD /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1132,6 +1132,40 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		1BB3A14D292646351BA272B0 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Dual/Pods-Dual-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Dual/Pods-Dual-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Dual/Pods-Dual-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		25C5C6F0F745B06BFB0A27B1 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Dual/Pods-Dual-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Dual/Pods-Dual-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Dual/Pods-Dual-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		3FE9D352C0BD646484653F6A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1154,21 +1188,38 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		75F818B034F930A45EA4FCC3 /* [CP] Embed Pods Frameworks */ = {
+		69A1D05FE5D081E9249E191B /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Dual/Pods-Dual-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Dual-DualUITests/Pods-Dual-DualUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Dual/Pods-Dual-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Dual-DualUITests/Pods-Dual-DualUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Dual/Pods-Dual-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Dual-DualUITests/Pods-Dual-DualUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CBDC22AD056136EF070F5EBD /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Dual-DualUITests/Pods-Dual-DualUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Dual-DualUITests/Pods-Dual-DualUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Dual-DualUITests/Pods-Dual-DualUITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		CE1141525AF02EDB8690BE4D /* [CP] Check Pods Manifest.lock */ = {
@@ -1191,57 +1242,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E03B786C1749BFFE6F6C8079 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Dual-DualUITests/Pods-Dual-DualUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Dual-DualUITests/Pods-Dual-DualUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Dual-DualUITests/Pods-Dual-DualUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F4730137864F698B43D7C0F4 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Dual/Pods-Dual-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Dual/Pods-Dual-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Dual/Pods-Dual-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F4C0905DBA265EC196A527F0 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Dual-DualUITests/Pods-Dual-DualUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Dual-DualUITests/Pods-Dual-DualUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Dual-DualUITests/Pods-Dual-DualUITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F8CEA53B456650B0935D057B /* [CP] Check Pods Manifest.lock */ = {
@@ -1290,7 +1290,6 @@
 				6A108DE7253D241A008996C3 /* VideoSettingVC.swift in Sources */,
 				6A61DF0E2538AF050029399F /* HighlightsModel.swift in Sources */,
 				6A30584E254785330096BA1F /* NormalLoginVC.swift in Sources */,
-				6AC5481D2530F98C00999916 /* Session+TypeAlias.swift in Sources */,
 				6A1187B32532143F00494E0C /* MainAPIClient.swift in Sources */,
 				6AC6F8172551B43B0065AD8F /* GeneralInfomationVC.swift in Sources */,
 				6AD7CEC0252E693D00E326F0 /* AddCell.swift in Sources */,
@@ -1303,6 +1302,7 @@
 				6A6084C62549E7D900E1A4B5 /* usernamePwdView.swift in Sources */,
 				6A76906225202402009BFC21 /* RoundedView.swift in Sources */,
 				6AC6F82025520F940065AD8F /* PasswordVC.swift in Sources */,
+				6A3DEB7F25967EA1003E9148 /* Session+TypeAlias.swift in Sources */,
 				6A76906825202402009BFC21 /* CommentTxtView.swift in Sources */,
 				6AD84C352542080D001C3AA2 /* CategoryModel.swift in Sources */,
 				6A6084A42549518600E1A4B5 /* DetailInfoVC.swift in Sources */,

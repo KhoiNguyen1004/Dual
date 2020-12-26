@@ -42,9 +42,19 @@ class ExpireTableViewCell: UITableViewCell {
         self.info = Information
         
         loadInfo(uid: self.info.sender_ID)
-        self.info.updated_timeStamp.dateValue()
-        let date = self.info.updated_timeStamp.dateValue()
-        messages.text = "Expired \(timeAgoSinceDate(date, numericDates: true))"
+        
+        if self.info.updated_timeStamp != nil {
+            
+            self.info.updated_timeStamp.dateValue()
+            let date = self.info.updated_timeStamp.dateValue()
+            messages.text = "Expired \(timeAgoSinceDate(date, numericDates: true))"
+            
+        } else {
+            
+            messages.text = ""
+            
+        }
+        
            
     }
     
