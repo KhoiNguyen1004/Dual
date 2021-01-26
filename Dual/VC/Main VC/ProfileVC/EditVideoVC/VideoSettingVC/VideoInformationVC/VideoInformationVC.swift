@@ -66,7 +66,7 @@ class VideoInformationVC: UIViewController {
             OnlyMeBtn.setImage(UIImage(named: "profile"), for: .normal)
             
             
-        } else if selectedItem.mode == "Friends" {
+        } else if selectedItem.mode == "Followers" {
             
             FriendsBtn.setImage(UIImage(named: "selectedFriends"), for: .normal)
             publicBtn.setImage(UIImage(named: "public"), for: .normal)
@@ -153,6 +153,11 @@ class VideoInformationVC: UIViewController {
                 
                 updateData.updateValue(titleLbl.text!, forKey: "highlight_title")
                 
+            } else {
+                
+                // delete cmt lbl
+                
+                
             }
             
             if creatorLinkLbl.text != "" {
@@ -191,6 +196,8 @@ class VideoInformationVC: UIViewController {
     }
     
     
+    
+    
     // mode choose
     
     @IBAction func PublicBtnPressed(_ sender: Any) {
@@ -211,7 +218,7 @@ class VideoInformationVC: UIViewController {
         OnlyMeBtn.setImage(UIImage(named: "profile"), for: .normal)
         
         
-        mode = "Friends"
+        mode = "Followers"
         
     }
     

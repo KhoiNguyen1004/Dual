@@ -15,6 +15,9 @@ import SwiftEntryKit
 
 var impressionList = [String]()
 var alreadyShow = false
+var ismained = false
+var isReObserved = false
+
 
 
 typealias DownloadComplete = () -> ()
@@ -45,11 +48,6 @@ let memoryConfig = MemoryConfig(
   totalCostLimit: 0
 )
 
-let storage = try! Storage(
-  diskConfig: diskConfig,
-  memoryConfig: memoryConfig,
-  transformer: TransformerFactory.forCodable(ofType: User.self)
-)
 
 let disksConfig = DiskConfig(name: "Mix")
 
@@ -600,8 +598,8 @@ extension Int {
 func showNote(text: String) {
     
     var attributes = EKAttributes.topNote
-    attributes.popBehavior = .animated(animation: .init(translate: .init(duration: 0.3), scale: .init(from: 1, to: 0.7, duration: 0.7)))
-    attributes.entryBackground = .color(color: .dimmedDarkestOrangeBackground)
+    attributes.popBehavior = .animated(animation: .init(translate: .init(duration: 0.2), scale: .init(from: 1, to: 0.7, duration: 0.7)))
+    attributes.entryBackground = .color(color: .musicBackground)
     attributes.shadow = .active(with: .init(color: .black, opacity: 0.5, radius: 10, offset: .zero))
     attributes.statusBar = .dark
     attributes.scroll = .enabled(swipeable: true, pullbackAnimation: .jolt)
@@ -629,10 +627,10 @@ func getCurrentMillis()->Int64 {
 extension UITableView {
 
     func setEmptyMessage(_ message: String) {
-        let messageLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height))
+        let messageLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.bounds.size.width - 20, height: self.bounds.size.height))
         messageLabel.text = message
         messageLabel.textColor = .white
-        messageLabel.numberOfLines = 0
+        messageLabel.numberOfLines = 3
         messageLabel.textAlignment = .center
         messageLabel.font = UIFont(name: "TrebuchetMS", size: 15)
         messageLabel.sizeToFit()
@@ -645,4 +643,18 @@ extension UITableView {
         self.backgroundView = nil
         self.separatorStyle = .singleLine
     }
+}
+
+func calculateMedian(array: [Int]) -> Double {
+    // Array should be sorted
+    let sorted = array.sorted()
+    let length = array.count
+    
+    // handle when count of items is even
+    if (length % 2 == 0) {
+        return (Double(sorted[length / 2 - 1]) + Double(sorted[length / 2])) / 2.0
+    }
+    
+    // handle when count of items is odd
+    return Double(sorted[length / 2])
 }

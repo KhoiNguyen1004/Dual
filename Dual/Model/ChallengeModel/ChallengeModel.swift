@@ -14,12 +14,27 @@ class ChallengeModel {
     
     fileprivate var _challenge_status: String!
     fileprivate var _category: String!
-    fileprivate var _challenge_id: String!
+    var _challenge_id: String!
+    var _shouldShowRate: Bool!
     fileprivate var _sender_ID: String!
     fileprivate var _messages: String!
+    fileprivate var _uid_list: [String]!
     fileprivate var _started_timeStamp: Timestamp!
     fileprivate var _updated_timeStamp: Timestamp!
     fileprivate var _created_timeStamp: Timestamp!
+    
+    
+    
+    var uid_list: [String]! {
+        get {
+            if _uid_list.isEmpty == true {
+                return _uid_list
+            }
+            
+            return _uid_list
+        }
+        
+    }
    
     var challenge_status: String! {
         get {
@@ -122,9 +137,51 @@ class ChallengeModel {
         if let created_timeStamp = Challenge_model["created_timeStamp"] as? Timestamp {
             self._created_timeStamp = created_timeStamp
         }
+        
+        if let uid_list = Challenge_model["uid_list"] as? [String] {
+            self._uid_list = uid_list
             
+            for item in uid_list {
+                
+                if item != Auth.auth().currentUser?.uid {
+                    
+                    checkifShouldshowRate(challenge_id: self._challenge_id, from_uid: Auth.auth().currentUser!.uid, to_uid: item)
+                        
+                    
+                }
+                
+            }
+        }
+        
+        
+        
+        
+        
     }
     
+    
+    func checkifShouldshowRate(challenge_id: String, from_uid: String, to_uid: String) {
+        
+        DataService.instance.mainFireStoreRef.collection("Challenge_rate").whereField("challenge_id", isEqualTo: challenge_id).whereField("from_uid", isEqualTo: from_uid).whereField("to_uid", isEqualTo: to_uid).getDocuments {  querySnapshot, error in
+            
+            guard let snapshot = querySnapshot else {
+                self._shouldShowRate = true
+                return
+            }
+            
+            if snapshot.isEmpty == true {
+                self._shouldShowRate = true
+            } else {
+                
+                
+                self._shouldShowRate = false
+                
+            }
+        
+        }
+        
+        
+    }
    
     
     

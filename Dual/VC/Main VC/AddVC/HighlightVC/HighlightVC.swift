@@ -227,7 +227,7 @@ class HighlightVC: UIViewController {
                             FriendsBtn.setImage(UIImage(named: "friends"), for: .normal)
                             OnlyMeBtn.setImage(UIImage(named: "profile"), for: .normal)
                             
-                        } else if SavedMode == "Friends" {
+                        } else if SavedMode == "Followers" {
                             
                             self.mode = SavedMode
                             
@@ -330,7 +330,7 @@ class HighlightVC: UIViewController {
         OnlyMeBtn.setImage(UIImage(named: "profile"), for: .normal)
         
         
-        mode = "Friends"
+        mode = "Followers"
         
     }
     
@@ -441,7 +441,9 @@ class HighlightVC: UIViewController {
                  
                  // put in firestore here
                       
-                var higlightVideo = ["category": self.item.name as Any, "url": downloadedUrl as Any, "status": "Pending" as Any, "userUID": Auth.auth().currentUser!.uid as Any, "post_time": FieldValue.serverTimestamp() , "mode": self.mode as Any, "music": self.music as Any, "Mux_processed": false, "Mux_playbackID": "nil", "Allow_comment": self.isAllowComment!, "highlight_title": self.Htitle!, "stream_link": self.StreamLink!,"ratio": self.ratio!, "Device": device, "AWS": false]
+                var higlightVideo = ["category": self.item.name as Any, "url": downloadedUrl as Any, "h_status": "Pending" as Any, "userUID": Auth.auth().currentUser!.uid as Any, "post_time": FieldValue.serverTimestamp() , "mode": self.mode as Any, "music": self.music as Any, "Mux_processed": false, "Mux_playbackID": "nil", "Allow_comment": self.isAllowComment!, "highlight_title": self.Htitle!, "stream_link": self.StreamLink!,"ratio": self.ratio!, "Device": device, "AWS": false]
+                
+                
                 
                 //
                 

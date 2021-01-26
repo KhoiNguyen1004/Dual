@@ -116,7 +116,7 @@ extension EKColor {
     }
     
     static var musicBackground: EKColor {
-        return EKColor(light: .white,
+        return EKColor(light: .musicBackgroundDark,
                        dark: .musicBackgroundDark)
     }
     

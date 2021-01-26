@@ -9,6 +9,9 @@ import UIKit
 import MarqueeLabel
 class DetailView: UIView {
     
+    
+    @IBOutlet weak var likeImg: UIImageView!
+    @IBOutlet weak var cmtLbl: UILabel!
    @IBOutlet weak var avatarImg: borderAvatarView!
    @IBOutlet weak var InfoView: UIStackView!
    @IBOutlet var contentView: UIView!
@@ -20,6 +23,9 @@ class DetailView: UIView {
    @IBOutlet weak var soundLbl: UILabel!
     @IBOutlet weak var LikeCountLbl: UILabel!
     @IBOutlet weak var CommentCountLbl: UILabel!
+   
+    
+  
     
    let kCONTENT_XIB_NAME = "DetailView"
     

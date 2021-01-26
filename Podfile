@@ -33,7 +33,8 @@ target 'Dual' do
   pod 'TwitterKit'
   pod 'SwiftPublicIP', '~> 0.0.2'
   pod 'SwiftEntryKit', '1.2.6'
-
+  pod 'MGSwipeTableCell'
+  
   target 'DualTests' do
     inherit! :search_paths
     # Pods for testing

@@ -11,14 +11,17 @@ import MarqueeLabel
 import Alamofire
 import AsyncDisplayKit
 import Firebase
+import SwiftPublicIP
 
 
 class EditVideoVC: UIViewController {
     
+    @IBOutlet weak var likeImg: UIImageView!
+    @IBOutlet weak var playImg: UIImageView!
+    @IBOutlet weak var titleLbl: UILabel!
     @IBOutlet weak var avatarUrl: borderAvatarView!
     @IBOutlet weak var usernameLbl: UILabel!
     @IBOutlet weak var InfoView: UIStackView!
-    @IBOutlet weak var playBtn: UIButton!
     @IBOutlet weak var streamLink: MarqueeLabel!
     @IBOutlet weak var gameName: UILabel!
     @IBOutlet weak var timeStamp: UILabel!
@@ -28,6 +31,9 @@ class EditVideoVC: UIViewController {
     @IBOutlet weak var likeCountLbl: UILabel!
     @IBOutlet weak var commentCountLbl: UILabel!
     
+    var region: String!
+    var target = ""
+    var value = 1
     //
     var selectedItem: HighlightsModel!
     var animatedLabel: MarqueeLabel!
@@ -36,7 +42,7 @@ class EditVideoVC: UIViewController {
     var SelectedAvatarUrl: String!
     
     @IBOutlet weak var videoHeight: NSLayoutConstraint!
-    
+    let selectedColor = UIColor(red: 248/255, green: 189/255, blue: 91/255, alpha: 1.0)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -130,41 +136,346 @@ class EditVideoVC: UIViewController {
         
         
         loadLogo(category: selectedItem.category)
+        loadTitleOrCmt()
         self.likeInteraction()
         self.CommentInteraction()
   
+        videoNode.isUserInteractionEnabled = false
+        
+        let singleTap = UITapGestureRecognizer(target: self, action: #selector(videoControl))
+        singleTap.numberOfTapsRequired = 1
+        videoPlayer.addGestureRecognizer(singleTap)
+        
+        let doubleTap = UITapGestureRecognizer(target: self, action: #selector(DoubleTapped))
+        doubleTap.numberOfTapsRequired = 2
+        videoPlayer.addGestureRecognizer(doubleTap)
+        
+        
+        singleTap.require(toFail: doubleTap)
+        
         
     }
     
-    func likeInteraction() {
+    
+    @objc func DoubleTapped() {
+        // do something here
         
-        DataService.instance.mainFireStoreRef.collection("Likes").whereField("Mux_playbackID", isEqualTo: selectedItem.Mux_playbackID!).getDocuments{ querySnapshot, error in
+        if let uid = Auth.auth().currentUser?.uid {
             
-            
-           
-            guard querySnapshot != nil else {
-                print("Error fetching snapshots: \(error!)")
-                return
+            DataService.instance.mainFireStoreRef.collection("Likes").whereField("Mux_playbackID", isEqualTo: selectedItem.Mux_playbackID!).whereField("LikerID", isEqualTo: uid).getDocuments { querySnapshot, error in
+                
+                guard querySnapshot != nil else {
+                    print("Error fetching snapshots: \(error!)")
+                    return
+                }
+                     
+                
+                self.target = "Like"
+          
+                if querySnapshot?.isEmpty == true {
+                    
+                    
+                    let imgView = UIImageView()
+                    imgView.image = UIImage(named: "heart-fill")
+                    imgView.frame.size = CGSize(width: 70, height: 70)
+                    imgView.center = self.videoPlayer.center
+                    
+                    let degree = arc4random_uniform(200) + 1;
+                    
+                    
+                    imgView.transform = CGAffineTransform(rotationAngle: CGFloat(degree))
+                    
+                    
+                    self.videoPlayer.addSubview(imgView)
+                    
+                    UIView.animate(withDuration: 1.5) {
+                        imgView.alpha = 0
+                    }
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                        
+                        if imgView.alpha == 0 {
+                            
+                            imgView.removeFromSuperview()
+                            
+                        }
+                        
+                    }
+                    
+                    
+                    print("new like")
+                    self.value = 1
+                    SwiftPublicIP.getPublicIP(url: PublicIPAPIURLs.ipv4.icanhazip.rawValue) { [self] (string, error) in
+                        if let error = error {
+                            print(error.localizedDescription)
+                        } else if let string = string {
+                            
+                            generateLikeIP(IP: string)
+                           
+                        }
+                        
+                    }
+                    
+                } else {
+                    
+                    print("remove like")
+                   
+                    for item in querySnapshot!.documents {
+                        
+                        let id = item.documentID
+                        DataService.instance.mainFireStoreRef.collection("Likes").document(id).delete()
+                        
+                        print("Like delete")
+                        
+                        break
+                        
+                        
+                    }
+                    
+                    
+                    self.value = -1
+                    SwiftPublicIP.getPublicIP(url: PublicIPAPIURLs.ipv4.icanhazip.rawValue) { [self] (string, error) in
+                        if let error = error {
+                            print(error.localizedDescription)
+                        } else if let string = string {
+                            
+                            generateLikeIP(IP: string)
+                           
+                        }
+                        
+                    }
+                    
+                
+                }
             }
             
-            if querySnapshot?.isEmpty == true {
+        }
+        
+    }
+    
+    
+    func generateLikeIP(IP: String) {
+        
+        let device = UIDevice().type.rawValue
+        let urls = URL(string: "http://ip-api.com/json/")!.appendingPathComponent(IP)
+        var data = ["Mux_playbackID": selectedItem.Mux_playbackID!, "LikerID": Auth.auth().currentUser!.uid, "ownerUID": selectedItem.userUID!, "timeStamp": FieldValue.serverTimestamp(), "Device": device, "category": selectedItem.category!] as [String : Any]
+        let db = DataService.instance.mainFireStoreRef.collection("Likes")
+        var ref: DocumentReference? = nil
+        target = "Like"
+        
+        
+        AF.request(urls, method: .get)
+            .validate(statusCode: 200..<500)
+            .responseJSON { responseJSON in
                 
-                self.likeCountLbl.text = "Likes"
-                
-            } else {
-                
-                if let count = querySnapshot?.count {
+                switch responseJSON.result {
                     
-            
-                    self.likeCountLbl.text = "\(count.formatUsingAbbrevation()) Likes"
+                case .success(let json):
+                    
+                    if let dict = json as? Dictionary<String, Any> {
+                        
+  
+                        if let status = dict["status"] as? String, status == "success" {
+                            
+                            data.merge(dict: dict)
+                            self.region = dict["country"] as? String
+                            var id = ""
+                            if self.value != -1 {
+                                ref = db.addDocument(data: data)
+                                id = ref!.documentID
+                            } else{
+                                id = self.randomString(length: 8)
+                            }
+                            
+           
+                            self.sendToItemsPersonalize(data: data, id: id)
+                           
+                        }
+                        
+                    }
+                    
+                case .failure(_ ): break
+                    
+                    
+                   
                     
                 }
                 
             }
+        
+        }
+    
+    
+    func sendToItemsPersonalize(data: [String: Any], id: String) {
+        
+        
+        let url = MainAPIClient.shared.baseURLString
+        let urls = URL(string: url!)?.appendingPathComponent("aws-personalize-send-events")
+        let timeStamp = Int(Date().timeIntervalSince1970)
+       
+        if target == "Like" {
+            
+            if let uid = Auth.auth().currentUser?.uid {
+                
+                
+                likeInteraction()
+                
+                AF.request(urls!, method: .post, parameters: [
+
+                    "USER_ID": uid,
+                    "ITEM_ID": self.selectedItem.highlight_id!,
+                    "EVENT_VALUE": value,
+                    "EVENT_TYPE": "Like",
+                    "TIMESTAMP": timeStamp,
+                    "EVENTID": id,
+                    "REGION_ID": self.region!,
+                    "impression": impressionList
+
+                ])
+                .validate(statusCode: 200..<500)
+                .responseJSON { responseJSON in
+                
+            }
+                
+            }
+
+        }
+  
+    }
+    
+    
+    func randomString(length: Int) -> String {
+      let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+      return String((0..<length).map{ _ in letters.randomElement()! })
+    }
+    
+    func loadTitleOrCmt() {
+        
+        if self.selectedItem.highlight_title != "nil"{
+            
+            let paragraphStyles = NSMutableParagraphStyle()
+            paragraphStyles.alignment = .left
+            
+            let usernameAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: UIFont(name: "Avenir-Medium", size: 12)!, NSAttributedString.Key.foregroundColor: self.selectedColor, NSAttributedString.Key.paragraphStyle: paragraphStyles]
+            let textAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: UIFont(name: "Avenir-Medium", size: 12)!, NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.paragraphStyle: paragraphStyles]
+            let user = NSMutableAttributedString(string: "Author: ", attributes: usernameAttributes)
+            
+            let text = NSAttributedString(string: self.selectedItem.highlight_title, attributes: textAttributes)
+            user.append(text)
+        
+            
+            titleLbl.attributedText = user
+            
+        } else {
+            
+            
+            loadLastestCmt()
             
             
             
-               
+        }
+        
+        
+    }
+    
+    func loadLastestCmt() {
+        
+        let db = DataService.instance.mainFireStoreRef
+        
+        db.collection("Comments").whereField("isReply", isEqualTo: false).whereField("Mux_playbackID", isEqualTo: self.selectedItem.Mux_playbackID!).whereField("cmt_status", isEqualTo: "valid").whereField("is_title", isEqualTo: false).order(by: "Update_timestamp", descending: true).limit(to: 1).getDocuments { [self] (snap, err) in
+            
+            if err != nil {
+                
+                titleLbl.text = "What do you think?"
+                print(err!.localizedDescription)
+                return
+            }
+                
+            if snap?.isEmpty != true {
+                
+                for items in snap!.documents {
+                    
+                    let item = CommentModel(postKey: items.documentID, Comment_model: items.data())
+                    
+                    getUserCmtInfo(cmt_item: item)
+                }
+                
+            } else {
+                
+                titleLbl.text = "What do you think?"
+                
+            }
+            
+        }
+        
+        
+    }
+    
+    func getUserCmtInfo(cmt_item: CommentModel) {
+        
+        DataService.init().mainFireStoreRef.collection("Users").whereField("userUID", isEqualTo: cmt_item.Comment_uid!).getDocuments {  querySnapshot, error in
+                guard let snapshot = querySnapshot else {
+                    print("Error fetching snapshots: \(error!)")
+                    return
+                }
+                
+                for item in snapshot.documents {
+                    
+                    let paragraphStyles = NSMutableParagraphStyle()
+                    paragraphStyles.alignment = .left
+                
+                    if let username = item.data()["username"] as? String {
+                        
+                    
+                       let username = "@\(username)"
+                        
+                       
+                        if cmt_item.timeStamp != nil {
+                            
+                            let date = cmt_item.timeStamp.dateValue()
+                            
+                            let usernameAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: UIFont(name: "Avenir-Medium", size: 12)!, NSAttributedString.Key.foregroundColor: self.selectedColor, NSAttributedString.Key.paragraphStyle: paragraphStyles]
+                            
+                            let textAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: UIFont(name: "Avenir-Medium", size: 12)!, NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.paragraphStyle: paragraphStyles]
+                            let timeAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: UIFont(name: "Avenir-Medium", size: 12)!, NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.paragraphStyle: paragraphStyles]
+                            
+                            
+                            let user = NSMutableAttributedString(string: "\(username): ", attributes: usernameAttributes)
+                            
+                            let text = NSAttributedString(string: cmt_item.text, attributes: textAttributes)
+                            let time = NSAttributedString(string: " \(timeAgoSinceDate(date, numericDates: true))", attributes: timeAttributes)
+                            user.append(text)
+                            user.append(time)
+                            
+                            self.titleLbl.attributedText = user
+                            
+                            
+                        } else {
+                            
+                            
+                            let usernameAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: UIFont(name: "Avenir-Medium", size: 12)!, NSAttributedString.Key.foregroundColor: self.selectedColor, NSAttributedString.Key.paragraphStyle: paragraphStyles]
+                            
+                            
+                            let textAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: UIFont(name: "Avenir-Medium", size: 12)!, NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.paragraphStyle: paragraphStyles]
+                            let timeAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: UIFont(name: "Avenir-Medium", size: 12)!, NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.paragraphStyle: paragraphStyles]
+                            
+                            
+                            let user = NSMutableAttributedString(string: "\(username): ", attributes: usernameAttributes)
+                            
+                            let text = NSAttributedString(string: cmt_item.text, attributes: textAttributes)
+                            let time = NSAttributedString(string: " Just now", attributes: timeAttributes)
+                            user.append(text)
+                            user.append(time)
+                            
+                            self.titleLbl.attributedText = user
+                            
+                            
+                        }
+                        
+                        
+                    }
+                    
+                }
             
         }
         
@@ -172,9 +483,79 @@ class EditVideoVC: UIViewController {
         
     }
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    func likeInteraction() {
+        
+        DataService.instance.mainFireStoreRef.collection("Likes").whereField("Mux_playbackID", isEqualTo: selectedItem.Mux_playbackID!).getDocuments { querySnapshot, error in
+                     
+            guard querySnapshot != nil else {
+                print("Error fetching snapshots: \(error!)")
+                return
+            }
+            
+            if querySnapshot?.isEmpty == true {
+                
+                self.likeImg.image = UIImage(named: "Icon ionic-ios-heart-empty")
+                self.likeCountLbl.text = "Likes"
+                
+            } else {
+                
+                if let count = querySnapshot?.count {
+                    
+                    //LikerID
+                    
+                    self.likeCountLbl.text = "\(count.formatUsingAbbrevation()) Likes"
+                    self.checkifUserLike()
+                    
+                }
+                
+            }
+                
+            
+        }
+        
+    
+    }
+    func checkifUserLike() {
+        
+        DataService.instance.mainFireStoreRef.collection("Likes").whereField("Mux_playbackID", isEqualTo: selectedItem.Mux_playbackID!).whereField("LikerID", isEqualTo: Auth.auth().currentUser!.uid).getDocuments { querySnapshot, error in
+                     
+            guard querySnapshot != nil else {
+                print("Error fetching snapshots: \(error!)")
+                return
+            }
+            
+            if querySnapshot?.isEmpty == true {
+                
+                self.likeImg.image = UIImage(named: "Icon ionic-ios-heart-empty")
+                
+                
+            } else {
+                
+                self.likeImg.image = UIImage(named: "heart-fill")
+                
+                
+            }
+            
+            
+            
+        }
+        
+        
+    }
+    
     func CommentInteraction() {
         
-        DataService.instance.mainFireStoreRef.collection("Comments").whereField("Mux_playbackID", isEqualTo: selectedItem.Mux_playbackID!).getDocuments{ querySnapshot, error in
+        DataService.instance.mainFireStoreRef.collection("Comments").whereField("Mux_playbackID", isEqualTo: selectedItem.Mux_playbackID!).whereField("cmt_status", isEqualTo: "valid").whereField("is_title", isEqualTo: false).getDocuments{ querySnapshot, error in
             
             
            
@@ -197,14 +578,8 @@ class EditVideoVC: UIViewController {
                 }
                 
             }
-            
-            
-            
-               
-            
+         
         }
-        
-        
         
     }
     
@@ -213,7 +588,9 @@ class EditVideoVC: UIViewController {
         
         if let link = selectedItem.stream_link, link != ""
         {
+        
             guard let requestUrl = URL(string: link) else {
+                self.showErrorAlert("Oops!", msg: "This link seems not legit, we cannot open for safety reason.")
                 return
             }
 
@@ -403,33 +780,28 @@ class EditVideoVC: UIViewController {
         
     }
     
-    @IBAction func playBtnPressed(_ sender: Any) {
-        
-        videoControl()
-        
-    }
+ 
     
-    func videoControl() {
+    @objc func videoControl() {
         
         
         if videoNode.isPlaying() == true {
-            
-            UIView.transition(with: playBtn, duration: 0.5, options: .transitionFlipFromRight, animations: { [self] in
-                playBtn.setImage(UIImage(named: "play"), for: .normal)
-                        }, completion: nil)
-        
-        
+              
             videoNode.pause()
+            
+            UIView.transition(with: playImg, duration: 0.5, options: .transitionFlipFromRight, animations: { [self] in
+                playImg.image = UIImage(named: "play")
+                    }, completion: nil)
+            
             
         } else {
             
-            
-            
-            UIView.transition(with: playBtn, duration: 0.5, options: .transitionFlipFromLeft, animations: { [self] in
-                playBtn.setImage(nil, for: .normal)
-                        }, completion: nil)
-            
+       
             videoNode.play()
+            
+            UIView.transition(with: playImg, duration: 0.5, options: .transitionFlipFromRight, animations: { [self] in
+                playImg.image = nil
+                    }, completion: nil)
             
         }
         
@@ -491,4 +863,60 @@ class EditVideoVC: UIViewController {
         
     }
     
+    @IBAction func cmtBtnPressed(_ sender: Any) {
+        
+        
+        DataService.instance.mainFireStoreRef.collection("Highlights").whereField("Mux_assetID", isEqualTo: selectedItem.Mux_assetID!).whereField("Mux_playbackID", isEqualTo: selectedItem.Mux_playbackID!).whereField("h_status", isEqualTo: "Ready").whereField("Allow_comment", isEqualTo: true).getDocuments { (snap, err) in
+            
+            
+            if err != nil {
+                
+                self.showErrorAlert("Oops !", msg: "Can't open the comment for this highlight right now.")
+                return
+            }
+            
+            if snap?.isEmpty == true {
+                
+                self.showErrorAlert("Oops !", msg: "The comment for this highlight is disabled")
+                return
+                
+            } else {
+                
+                NotificationCenter.default.post(name: (NSNotification.Name(rawValue: "pauseVideo")), object: nil)
+                
+                //let memeDetailVC = MemeDetailVC.init(meme: Meme())
+                let slideVC = CommentVC()
+                
+                slideVC.modalPresentationStyle = .custom
+                slideVC.transitioningDelegate = self
+                slideVC.currentItem = self.selectedItem
+                should_Play = false
+                self.present(slideVC, animated: true, completion: nil)
+                          
+                
+            }
+            
+        }
+        
+        
+        
+    }
+    
+    func showErrorAlert(_ title: String, msg: String) {
+                                                                                                                                           
+        let alert = UIAlertController(title: title, message: msg, preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alert.addAction(action)
+        
+                                                                                       
+        present(alert, animated: true, completion: nil)
+        
+    }
+    
+}
+
+extension EditVideoVC: UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        PresentationController(presentedViewController: presented, presenting: presenting)
+    }
 }

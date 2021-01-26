@@ -6,8 +6,10 @@
 //
 
 import UIKit
+import Firebase
+import MGSwipeTableCell
 
-class AllChallengeCell: UITableViewCell {
+class AllChallengeCell: MGSwipeTableCell {
     
     @IBOutlet var avatarImg: UIImageView!
     @IBOutlet var username: UILabel!
@@ -29,24 +31,14 @@ class AllChallengeCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-    
-    override func layoutSubviews() {
-          super.layoutSubviews()
-          //set the values for top,left,bottom,right margins
-          let margins = UIEdgeInsets(top: 5, left: 0, bottom: 5, right: 0)
-          contentView.frame = contentView.frame.inset(by: margins)
-          contentView.layer.cornerRadius = 25
-        
-    }
-    
+  
     func configureCell(_ Information: ChallengeModel) {
         
         self.info = Information
-        
-        loadInfo(uid: self.info.sender_ID)
-        
+          
         if self.info.challenge_status == "Pending" {
 
+            loadInfo(uid: self.info.sender_ID)
             messages.text = self.info.messages
             
         } else if self.info.challenge_status == "Active" {
@@ -55,11 +47,37 @@ class AllChallengeCell: UITableViewCell {
             let date = self.info.started_timeStamp.dateValue()
             messages.text = "Actives \(timeAgoSinceDate(date, numericDates: true))"
             
+            
+            for uid in self.info.uid_list {
+                
+                if uid != Auth.auth().currentUser?.uid {
+                    
+                    
+                    loadInfo(uid: uid)
+                    
+                }
+                
+                
+            }
+            
         } else {
             
             self.info.updated_timeStamp.dateValue()
             let date = self.info.updated_timeStamp.dateValue()
             messages.text = "Expired \(timeAgoSinceDate(date, numericDates: true))"
+            
+            
+            for uid in self.info.uid_list {
+                
+                if uid != Auth.auth().currentUser?.uid {
+                    
+                    
+                    loadInfo(uid: uid)
+                    
+                }
+                
+                
+            }
             
         }
         
@@ -88,7 +106,7 @@ class AllChallengeCell: UITableViewCell {
                         
                         //
                         
-                        username.text = "@\(usern)"
+                        getstar(user: usern, uid: uid)
                         
                         if let avatarUrl = item["avatarUrl"] as? String {
                             
@@ -112,7 +130,68 @@ class AllChallengeCell: UITableViewCell {
         
     }
 
-    
+    func getstar(user: String, uid: String) {
+        
+        
+        DataService.instance.mainFireStoreRef.collection("Challenge_rate").whereField("to_uid", isEqualTo: uid).limit(to: 100).getDocuments { querySnapshot, error in
+            guard let snapshot = querySnapshot else {
+                print("Error fetching snapshots: \(error!)")
+                return
+            }
+            
+            
+            if snapshot.isEmpty != true {
+                
+                var rate_lis = [Int]()
+                
+                for item in snapshot.documents {
+                    
+                    if let current_rate = item.data()["rate_value"] as? Int {
+                        
+                        
+                        rate_lis.append(current_rate)
+                        
+                    }
+                    
+                }
+                
+                print(rate_lis.count)
+                
+                let average = calculateMedian(array: rate_lis)
+                let usernameAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14, weight: .medium), NSAttributedString.Key.foregroundColor: UIColor.white]
+                let starAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12, weight: .light), NSAttributedString.Key.foregroundColor: UIColor.lightGray]
+                
+                let usertext = NSMutableAttributedString(string: "\(user) ", attributes: usernameAttributes)
+                let rate = NSAttributedString(string: " \(String(format:"%.1f", average))", attributes: starAttributes)
+
+                // create our NSTextAttachment
+                let image1Attachment = NSTextAttachment()
+                image1Attachment.image = UIImage(named: "shapes-and-symbols")
+
+                // wrap the attachment in its own attributed string so we can append it
+                let image1String = NSAttributedString(attachment: image1Attachment)
+
+                // add the NSTextAttachment wrapper to our full string, then add some more text.
+                usertext.append(image1String)
+                usertext.append(rate)
+                
+                self.username.attributedText = usertext
+                
+            } else {
+                
+                
+                self.username.text = user
+                
+            }
+            
+           
+            
+            
+        }
+        
+        
+    }
+
     
     
 

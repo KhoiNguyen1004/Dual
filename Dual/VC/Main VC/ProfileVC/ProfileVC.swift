@@ -19,6 +19,33 @@ import AsyncDisplayKit
 class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionViewManageable, UICollectionViewDelegateFlowLayout {
     
     
+    // challenge history
+    
+    
+    @IBOutlet weak var rate2: UILabel!
+    @IBOutlet weak var rate1: UILabel!
+    @IBOutlet weak var emptyMessage: UILabel!
+    
+    @IBOutlet weak var stackViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var stackView: UIView!
+    @IBOutlet weak var view1: UIView!
+    @IBOutlet weak var view2: UIView!
+    
+    
+    @IBOutlet weak var category1: UILabel!
+    @IBOutlet weak var logo1: borderAvatarView!
+    @IBOutlet weak var date1: UILabel!
+    @IBOutlet weak var name1: UILabel!
+    @IBOutlet weak var star1: UILabel!
+    
+    
+    @IBOutlet weak var category2: UILabel!
+    @IBOutlet weak var logo2: borderAvatarView!
+    @IBOutlet weak var date2: UILabel!
+    @IBOutlet weak var name2: UILabel!
+    @IBOutlet weak var star2: UILabel!
+    
+    
     @IBOutlet weak var usernameLbl: UILabel!
     @IBOutlet weak var nameLbl: UILabel!
     var SelectedUserName = ""
@@ -33,7 +60,9 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionV
     private var expectedTargetContentOffset: CGPoint = .zero
     
     var Highlight_list = [HighlightsModel]()
+    var challenge_list = [ChallengeModel]()
     var firstLoad = true
+    var firstChallenge = true
     var firstLoadProfile = true
     
     private var pullControl = UIRefreshControl()
@@ -68,6 +97,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionV
      
         loadVideo()
         loadProfile()
+        loadChallenge()
         
         
         pullControl.tintColor = UIColor.systemOrange
@@ -78,6 +108,317 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionV
             collectionView.addSubview(pullControl)
         }
         
+        
+    }
+    
+    
+    func loadChallenge() {
+        
+        let db = DataService.instance.mainFireStoreRef
+        let uid = Auth.auth().currentUser?.uid
+           
+        db.collection("Challenges").whereField("isPending", isEqualTo: false).whereField("uid_list", arrayContains: uid!).order(by: "updated_timeStamp", descending: true).limit(to: 2)
+            
+            .addSnapshotListener { [self] querySnapshot, error in
+                guard let snapshot = querySnapshot else {
+                    print("Error fetching snapshots: \(error!)")
+                    return
+                }
+                
+                if firstChallenge == true {
+                    
+                    if snapshot.isEmpty == true {
+                        
+                        
+                        view1.isHidden = true
+                        view2.isHidden = true
+                        emptyMessage.text = "You don't have any challenge, let's get some!"
+                        emptyMessage.isHidden = false
+                        
+                        
+                    } else {
+                        
+                        emptyMessage.isHidden = true
+                        
+                        for item in snapshot.documents {
+                            
+                            let elem = ChallengeModel(postKey: item.documentID, Challenge_model: item.data())
+                            challenge_list.append(elem)
+                            
+                        }
+                        
+                        if challenge_list.count >= 2 {
+                            
+                            view1.isHidden = false
+                            view2.isHidden = false
+                            
+                        } else {
+                            
+                            view1.isHidden = false
+                            view2.isHidden = true
+                            
+                        }
+                        
+                        loadChallengeInfo()
+                        
+                    }
+                    
+                    firstChallenge = false
+                    
+                    
+                    
+                }
+
+                snapshot.documentChanges.forEach { diff in
+                    
+                    let item = ChallengeModel(postKey: diff.document.documentID, Challenge_model: diff.document.data())
+
+                    if (diff.type == .modified) {
+                       
+                        if diff.document.data()["isPending"] as! Bool == false {
+                               
+                            let isIn = findDataInChallengeList(item: item)
+                            
+                            if isIn == false {
+                                
+                                emptyMessage.isHidden = true
+                                
+                                
+                                if challenge_list.count >= 2 {
+                                    
+                                    challenge_list.remove(at: 0)
+                                    challenge_list.append(item)
+                                    
+                                } else {
+                                    
+                                    challenge_list.append(item)
+                                    
+                                }
+                                
+                                
+                                if challenge_list.count >= 2 {
+                                    
+                                    view1.isHidden = false
+                                    view2.isHidden = false
+                                    
+                                } else {
+                                    
+                                    view1.isHidden = false
+                                    view2.isHidden = true
+                                    
+                                }
+                                
+                        }
+                            
+                        loadChallengeInfo()
+             
+                    }
+                        
+                }
+                  
+            }
+        }
+           
+    }
+    
+    
+    
+    func loadChallengeInfo() {
+        
+        var count = 0
+        
+        for item in challenge_list {
+            
+            let uid = getuserUID(list: item.uid_list!)
+            
+            if uid != "" {
+            
+                let date = item.updated_timeStamp.dateValue()
+                
+                
+                if count == 0 {
+                    
+                    
+                    date1.text = formatDate(date: date)
+                    category1.text = item.category
+                    getLogo(category: item.category, image: logo1)
+                    loadInfo(uid: uid, user: name1)
+                    getstar(uid: uid, rate: rate1)
+                    
+                } else if count == 1 {
+                    
+                    date2.text = formatDate(date: date)
+                    category2.text = item.category
+                    getLogo(category: item.category, image: logo2)
+                    loadInfo(uid: uid, user: name2)
+                    getstar(uid: uid, rate: rate2)
+                    
+                }
+   
+                
+            }
+            
+            
+            count+=1
+            
+            
+        }
+        
+        
+    }
+    
+    
+    func getstar(uid: String, rate: UILabel) {
+        
+        DataService.instance.mainFireStoreRef.collection("Challenge_rate").whereField("to_uid", isEqualTo: uid).limit(to: 100).getDocuments { querySnapshot, error in
+            guard let snapshot = querySnapshot else {
+                print("Error fetching snapshots: \(error!)")
+                return
+            }
+            
+            
+            if snapshot.isEmpty != true {
+                
+                
+                var rate_lis = [Int]()
+                
+                for item in snapshot.documents {
+                    
+                    
+                    
+                    if let current_rate = item.data()["rate_value"] as? Int {
+                        
+                        rate_lis.append(current_rate)
+                        
+                    }
+                    
+                    
+                    
+                    
+                }
+                
+            
+                let average = calculateMedian(array: rate_lis)
+                rate.text = String(format:"%.1f", average)
+                
+            }
+            
+    
+        }
+        
+        
+        
+        
+    }
+    
+    
+    func loadInfo(uid: String, user: UILabel) {
+        
+       
+        DataService.init().mainFireStoreRef.collection("Users").whereField("userUID", isEqualTo: uid).getDocuments { querySnapshot, error in
+                guard let snapshot = querySnapshot else {
+                    print("Error fetching snapshots: \(error!)")
+                    return
+                }
+                
+                for item in snapshot.documents {
+                
+                    if let username = item.data()["username"] as? String {
+                        
+                        //
+                        user.text = "Vs @\(username)"
+
+   
+                    }
+                
+            }
+            
+        }
+       
+        
+    }
+    
+    func getLogo(category: String, image: UIImageView) {
+        
+        
+        DataService.instance.mainFireStoreRef.collection("Support_game").whereField("name", isEqualTo: category).getDocuments { (snap, err) in
+            
+            
+            if err != nil {
+                
+                print(err!.localizedDescription)
+                return
+            }
+            
+            for item in snap!.documents {
+                
+                if let url = item.data()["url2"] as? String {
+                    
+                   
+                    let imageNode = ASNetworkImageNode()
+
+                    
+                    imageNode.contentMode = .scaleAspectFill
+                    imageNode.shouldRenderProgressImages = true
+                    imageNode.animatedImagePaused = false
+                    imageNode.url = URL.init(string: url)
+                    imageNode.frame = image.layer.bounds
+                    
+  
+                    image.addSubnode(imageNode)
+                    
+                    
+                }
+                
+                
+            }
+            
+            
+        }
+        
+    }
+    
+    func formatDate(date: Date) -> String{
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .none
+       
+        return dateFormatter.string(from: date)
+        
+    }
+    
+    func getuserUID(list: [String]) -> String {
+        
+        let uid = Auth.auth().currentUser?.uid
+        
+        for item in list {
+            
+            if item != uid {
+                
+                return item
+            }
+            
+            
+        }
+        
+        return ""
+        
+        
+    }
+    
+    func findDataInChallengeList(item: ChallengeModel) -> Bool {
+        
+        for i in challenge_list {
+            
+            if i.messages == item.messages, i.created_timeStamp == item.created_timeStamp {
+                
+                return true
+                
+            }
+        }
+        
+        return false
         
     }
     
@@ -124,7 +465,6 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionV
           
                 snapshot.documentChanges.forEach { diff in
                     
-                   
 
                     if (diff.type == .modified) {
                        
@@ -146,6 +486,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionV
             self.SelectedAvatarUrl = avatarUrl
             nameLbl.text = name
             usernameLbl.text = "@\(username)"
+            
             let imageNode = ASNetworkImageNode()
             imageNode.contentMode = .scaleAspectFit
             imageNode.shouldRenderProgressImages = true
@@ -155,6 +496,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionV
             
             
             self.avatarImg.addSubnode(imageNode)
+            
             
         }
         
@@ -375,10 +717,17 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionV
                
                 
             }
+        } else if segue.identifier == "moveToViewAllChallenge2"{
+            if let destination = segue.destination as? ViewAllChallengeVC
+            {
+                
+                destination.viewUID = Auth.auth().currentUser?.uid
+                
+            }
         }
         
     }
-    
+  
     
     func loadVideo() {
         
@@ -397,7 +746,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionV
                     for item in snapshot.documents {
                         
                         
-                        if item.data()["status"] as! String == "Ready" {
+                        if let status = item.data()["h_status"] as? String, status == "Ready" {
                             
                            
                             let dict = HighlightsModel(postKey: item.documentID, Highlight_model: item.data())
@@ -424,7 +773,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionV
 
                     if (diff.type == .modified) {
                        
-                        if diff.document.data()["status"] as! String == "Ready" {
+                        if let status = diff.document.data()["h_status"] as? String, status == "Ready" {
                                
                             
                             
@@ -447,17 +796,14 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionV
                             manager.memoryStorage.setItems(self.Highlight_list)
                             // add new item processing goes here
                             
+                        } else if let status = diff.document.data()["h_status"] as? String, status == "Deleted" {
+                            
+                            let index = findDataIndex(item: item)
+                            self.Highlight_list.remove(at: index)
+                            manager.memoryStorage.setItems(self.Highlight_list)
+                            
                         }
                         
-                    } else if (diff.type == .removed) {
-                        
-                       
-                       
-                        let index = findDataIndex(item: item)
-                        self.Highlight_list.remove(at: index)
-                        manager.memoryStorage.setItems(self.Highlight_list)
-                        
-                        // delete processing goes here
                     }
                   
                 }
@@ -530,6 +876,22 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, DTCollectionV
         self.performSegue(withIdentifier: "moveToSettingVC", sender: nil)
         
     }
+     
+    
+    @IBAction func AllChallengeBtnPressed(_ sender: Any) {
+        
+        
+        self.performSegue(withIdentifier: "moveToViewAllChallenge2", sender: nil)
+        
+        
+    }
+    
+    
+    @IBAction func moveToFollowList(_ sender: Any) {
+        
+        self.performSegue(withIdentifier: "moveToFollowListVC", sender: nil)
+        
+    }
     
 }
 
@@ -552,7 +914,7 @@ extension ProfileVC: UIImagePickerControllerDelegate {
     
     private func itemSize(for width: CGFloat) -> CGSize {
  
-        return CGSize(width: (width - 0)/2, height: 150)
+        return CGSize(width: (width - 0)/2 - 2, height: 150)
     
     }
     
@@ -563,5 +925,8 @@ extension ProfileVC: UIImagePickerControllerDelegate {
         layout.itemSize = itemSize(for: size.width)
         collectionView.setCollectionViewLayout(layout, animated: animated)
     }
+    
+    
+    
     
 }

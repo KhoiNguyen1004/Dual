@@ -15,6 +15,9 @@ import Firebase
 class PostNode: ASCellNode {
     
     
+    
+    let selectedColor = UIColor(red: 248/255, green: 189/255, blue: 91/255, alpha: 1.0)
+    
     var time = 0
     //
     
@@ -33,11 +36,14 @@ class PostNode: ASCellNode {
     var challengeBtn : ((ASCellNode) -> Void)?
     var linkBtn : ((ASCellNode) -> Void)?
     var profileBtn : ((ASCellNode) -> Void)?
+    var commentBtn : ((ASCellNode) -> Void)?
     
     
     var target = ""
     var value = 1
+    
     //
+    
     init(with post: HighlightsModel) {
         
         self.post = post
@@ -53,6 +59,7 @@ class PostNode: ASCellNode {
         self.gradientNode.isLayerBacked = true
         self.gradientNode.isOpaque = false
 
+        
         self.videoNode.url = self.getThumbnailURL(post: post)
         self.videoNode.shouldAutoplay = true
         self.videoNode.shouldAutorepeat = true
@@ -63,7 +70,7 @@ class PostNode: ASCellNode {
             
         } else {
             
-            self.videoNode.gravity = AVLayerVideoGravity.resizeAspect.rawValue
+            self.videoNode.gravity = AVLayerVideoGravity.resizeAspectFill.rawValue
             
         }
     
@@ -82,10 +89,11 @@ class PostNode: ASCellNode {
             DetailViews.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
             DetailViews.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0).isActive = true
             DetailViews.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0).isActive = true
-            DetailViews.heightAnchor.constraint(equalToConstant: 200).isActive = true
+            DetailViews.heightAnchor.constraint(equalToConstant: 190).isActive = true
             
             //
             self.gameInfoSetting(post: post, Dview: DetailViews)
+            loadTitleOrCmt()
             
             self.videoNode.view.translatesAutoresizingMaskIntoConstraints = false
             self.videoNode.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0).isActive = true
@@ -100,14 +108,15 @@ class PostNode: ASCellNode {
             // add playview
             PlayViews = PlayView()
             self.view.addSubview(PlayViews)
-           
+            
             
             PlayViews.translatesAutoresizingMaskIntoConstraints = false
             PlayViews.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0).isActive = true
             PlayViews.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0).isActive = true
             PlayViews.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0).isActive = true
-            PlayViews.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -200).isActive = true
+            PlayViews.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -190).isActive = true
             
+            //PlayViews.removeFromSuperview()
             // add inside button
 
             
@@ -135,9 +144,7 @@ class PostNode: ASCellNode {
         // update layout
        
         DispatchQueue.main.async() { [self] in
-            
-            
-            
+
             
             let challengeViews = ChallengeView()
             self.view.addSubview(challengeViews)
@@ -185,13 +192,155 @@ class PostNode: ASCellNode {
             profileBtn.addTarget(self, action: #selector(PostNode.userProfileBtnPressed), forControlEvents: .touchUpInside)
             
             DetailViews.addSubnode(profileBtn)
+            
+            
+            let commentBtn = ASButtonNode()
+            commentBtn.backgroundColor = UIColor.clear
+            commentBtn.frame = CGRect(x: 32, y: 116, width: DetailViews.cmtLbl.frame.width, height: DetailViews.cmtLbl.frame.height - 20)
+            commentBtn.addTarget(self, action: #selector(PostNode.cmtBtnPressed), forControlEvents: .touchUpInside)
+            
+            DetailViews.addSubnode(commentBtn)
+ 
                   
         }
 
        
     }
     
-
+    
+    func loadTitleOrCmt() {
+        
+        if self.post.highlight_title != "nil"{
+            
+            let paragraphStyles = NSMutableParagraphStyle()
+            paragraphStyles.alignment = .left
+            
+            let usernameAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: UIFont(name: "Avenir-Medium", size: 12)!, NSAttributedString.Key.foregroundColor: self.selectedColor, NSAttributedString.Key.paragraphStyle: paragraphStyles]
+            let textAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: UIFont(name: "Avenir-Medium", size: 12)!, NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.paragraphStyle: paragraphStyles]
+            let user = NSMutableAttributedString(string: "Author: ", attributes: usernameAttributes)
+            
+            let text = NSAttributedString(string: self.post.highlight_title, attributes: textAttributes)
+            user.append(text)
+        
+            
+            self.DetailViews.cmtLbl.attributedText = user
+            
+        } else {
+            
+            
+            loadLastestCmt()
+            
+            
+            
+        }
+        
+        
+    }
+    
+    func loadLastestCmt() {
+        
+        let db = DataService.instance.mainFireStoreRef
+        
+        db.collection("Comments").whereField("isReply", isEqualTo: false).whereField("Mux_playbackID", isEqualTo: self.post.Mux_playbackID!).whereField("cmt_status", isEqualTo: "valid").whereField("is_title", isEqualTo: false).order(by: "Update_timestamp", descending: true).limit(to: 1).getDocuments { [self] (snap, err) in
+            
+            if err != nil {
+                
+                DetailViews.cmtLbl.text = "What do you think?"
+                print(err!.localizedDescription)
+                return
+            }
+                
+            if snap?.isEmpty != true {
+                
+                for items in snap!.documents {
+                    
+                    let item = CommentModel(postKey: items.documentID, Comment_model: items.data())
+                    
+                    getUserCmtInfo(cmt_item: item)
+                }
+                
+            } else {
+                
+                DetailViews.cmtLbl.text = "What do you think?"
+                
+            }
+            
+        }
+        
+        
+    }
+    
+    func getUserCmtInfo(cmt_item: CommentModel) {
+        
+        DataService.init().mainFireStoreRef.collection("Users").whereField("userUID", isEqualTo: cmt_item.Comment_uid!).getDocuments {  querySnapshot, error in
+                guard let snapshot = querySnapshot else {
+                    print("Error fetching snapshots: \(error!)")
+                    return
+                }
+                
+                for item in snapshot.documents {
+                    
+                    let paragraphStyles = NSMutableParagraphStyle()
+                    paragraphStyles.alignment = .left
+                
+                    if let username = item.data()["username"] as? String {
+                        
+                    
+                       let username = "@\(username)"
+                        
+                       
+                        if cmt_item.timeStamp != nil {
+                            
+                            let date = cmt_item.timeStamp.dateValue()
+                            
+                            let usernameAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: UIFont(name: "Avenir-Medium", size: 12)!, NSAttributedString.Key.foregroundColor: self.selectedColor, NSAttributedString.Key.paragraphStyle: paragraphStyles]
+                            
+                            let textAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: UIFont(name: "Avenir-Medium", size: 12)!, NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.paragraphStyle: paragraphStyles]
+                            let timeAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: UIFont(name: "Avenir-Medium", size: 12)!, NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.paragraphStyle: paragraphStyles]
+                            
+                            
+                            let user = NSMutableAttributedString(string: "\(username): ", attributes: usernameAttributes)
+                            
+                            let text = NSAttributedString(string: cmt_item.text, attributes: textAttributes)
+                            let time = NSAttributedString(string: " \(timeAgoSinceDate(date, numericDates: true))", attributes: timeAttributes)
+                            user.append(text)
+                            user.append(time)
+                            
+                            self.DetailViews.cmtLbl.attributedText = user
+                            
+                            
+                        } else {
+                            
+                            
+                            let usernameAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: UIFont(name: "Avenir-Medium", size: 12)!, NSAttributedString.Key.foregroundColor: self.selectedColor, NSAttributedString.Key.paragraphStyle: paragraphStyles]
+                            
+                            
+                            let textAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: UIFont(name: "Avenir-Medium", size: 12)!, NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.paragraphStyle: paragraphStyles]
+                            let timeAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: UIFont(name: "Avenir-Medium", size: 12)!, NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.paragraphStyle: paragraphStyles]
+                            
+                            
+                            let user = NSMutableAttributedString(string: "\(username): ", attributes: usernameAttributes)
+                            
+                            let text = NSAttributedString(string: cmt_item.text, attributes: textAttributes)
+                            let time = NSAttributedString(string: " Just now", attributes: timeAttributes)
+                            user.append(text)
+                            user.append(time)
+                            
+                            self.DetailViews.cmtLbl.attributedText = user
+                            
+                            
+                        }
+                        
+                        
+                    }
+                    
+                }
+            
+        }
+        
+        
+        
+    }
     
     @objc func SingleTapped() {
         
@@ -214,9 +363,15 @@ class PostNode: ASCellNode {
                 PlayViews.playImg.image = nil
                     }, completion: nil)
         }
+        
+        if isReObserved == true {
+            
+            isReObserved = false
+            startObserve()
+            
+            
+        }
  
-        
-        
     }
     
     
@@ -231,11 +386,42 @@ class PostNode: ASCellNode {
                     print("Error fetching snapshots: \(error!)")
                     return
                 }
-                
+                     
                 
                 self.target = "Like"
           
                 if querySnapshot?.isEmpty == true {
+                    
+                    
+                    let imgView = UIImageView()
+                    imgView.image = UIImage(named: "heart-fill")
+                    imgView.frame.size = CGSize(width: 70, height: 70)
+                    imgView.center = self.PlayViews.center
+                    
+                    
+                    
+                    let degree = arc4random_uniform(200) + 1;
+                    
+                    
+                    imgView.transform = CGAffineTransform(rotationAngle: CGFloat(degree))
+                    
+                    
+                    self.PlayViews.addSubview(imgView)
+                    
+                    UIView.animate(withDuration: 1.5) {
+                        imgView.alpha = 0
+                    }
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                        
+                        if imgView.alpha == 0 {
+                            
+                            imgView.removeFromSuperview()
+                            
+                        }
+                        
+                    }
+                    
                     
                     print("new like")
                     self.value = 1
@@ -258,6 +444,7 @@ class PostNode: ASCellNode {
                         
                         let id = item.documentID
                         DataService.instance.mainFireStoreRef.collection("Likes").document(id).delete()
+                        
                         print("Like delete")
                         
                         break
@@ -283,18 +470,13 @@ class PostNode: ASCellNode {
             
         }
         
-        
-        
-    
     }
     
   
     func likeInteraction() {
         
-        DataService.instance.mainFireStoreRef.collection("Likes").whereField("Mux_playbackID", isEqualTo: post.Mux_playbackID!).getDocuments{ querySnapshot, error in
-            
-            
-           
+        DataService.instance.mainFireStoreRef.collection("Likes").whereField("Mux_playbackID", isEqualTo: post.Mux_playbackID!).getDocuments { querySnapshot, error in
+                     
             guard querySnapshot != nil else {
                 print("Error fetching snapshots: \(error!)")
                 return
@@ -302,32 +484,60 @@ class PostNode: ASCellNode {
             
             if querySnapshot?.isEmpty == true {
                 
+                self.DetailViews.likeImg.image = UIImage(named: "Icon ionic-ios-heart-empty")
                 self.DetailViews.LikeCountLbl.text = "Likes"
                 
             } else {
                 
                 if let count = querySnapshot?.count {
                     
-            
+                    //LikerID
+                    
                     self.DetailViews.LikeCountLbl.text = "\(count.formatUsingAbbrevation()) Likes"
+                    self.checkifUserLike()
                     
                 }
+                
+            }
+                
+            
+        }
+        
+    
+    }
+    
+    
+    func checkifUserLike() {
+        
+        DataService.instance.mainFireStoreRef.collection("Likes").whereField("Mux_playbackID", isEqualTo: post.Mux_playbackID!).whereField("LikerID", isEqualTo: Auth.auth().currentUser!.uid).getDocuments { querySnapshot, error in
+                     
+            guard querySnapshot != nil else {
+                print("Error fetching snapshots: \(error!)")
+                return
+            }
+            
+            if querySnapshot?.isEmpty == true {
+                
+                self.DetailViews.likeImg.image = UIImage(named: "Icon ionic-ios-heart-empty")
+                
+                
+            } else {
+                
+                self.DetailViews.likeImg.image = UIImage(named: "heart-fill")
+                
                 
             }
             
             
             
-               
-            
         }
-        
         
         
     }
     
     func CommentInteraction() {
         
-        DataService.instance.mainFireStoreRef.collection("Comments").whereField("Mux_playbackID", isEqualTo: post.Mux_playbackID!).getDocuments{ querySnapshot, error in
+        DataService.instance.mainFireStoreRef.collection("Comments").whereField("Mux_playbackID", isEqualTo: post.Mux_playbackID!).whereField("cmt_status", isEqualTo: "valid").whereField("is_title", isEqualTo: false).getDocuments{ querySnapshot, error in
             
             
            
@@ -351,14 +561,8 @@ class PostNode: ASCellNode {
                 
             }
             
-            
-            
-               
-            
         }
-        
-        
-        
+     
     }
    
     @objc func resumeVideo() {
@@ -389,10 +593,25 @@ class PostNode: ASCellNode {
 
             videoNode.pause()
             
+    
         }
         
         NotificationCenter.default.removeObserver(self, name:(NSNotification.Name(rawValue: "pauseVideo")), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(PostNode.resumeVideo), name: (NSNotification.Name(rawValue: "resumeVideo")), object: nil)
+        
+    }
+    
+    @objc func pauseVideo2() {
+        
+        
+        DispatchQueue.main.async() { [self] in
+            
+            PlayViews.playImg.image = UIImage(named: "play")
+            
+        }
+        
+        
+        NotificationCenter.default.removeObserver(self, name:(NSNotification.Name(rawValue: "pauseVideo2")), object: nil)
         
     }
     
@@ -410,7 +629,7 @@ class PostNode: ASCellNode {
         
     }
     
-    func removeAllobserve() {
+    @objc func removeAllobserve() {
         
         print("Remove all expired observes")
         NotificationCenter.default.removeObserver(self)
@@ -425,12 +644,18 @@ class PostNode: ASCellNode {
         time = 0
         NotificationCenter.default.addObserver(self, selector: #selector(PostNode.pauseVideo), name: (NSNotification.Name(rawValue: "pauseVideo")), object: nil)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(PostNode.pauseVideo2), name: (NSNotification.Name(rawValue: "pauseVideo2")), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(PostNode.removeAllobserve), name: (NSNotification.Name(rawValue: "removeAllobserve")), object: nil)
+        
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(PostNode.CheckIfPauseVideo), name: (NSNotification.Name(rawValue: "CheckIfPauseVideo")), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(appMovedToactive), name: UIApplication.didBecomeActiveNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(fileComplete),name: NSNotification.Name.AVPlayerItemDidPlayToEndTime,object: nil)
+        
+       
         
         impressionList.append(post.highlight_id)
       
@@ -439,28 +664,33 @@ class PostNode: ASCellNode {
     
     @objc func fileComplete() {
         
-        time += 1
+
+        value = 1
         
-        if time < 2 {
+        SwiftPublicIP.getPublicIP(url: PublicIPAPIURLs.ipv4.icanhazip.rawValue) { [self] (string, error) in
+            if let error = error {
+                print(error.localizedDescription)
+            } else if let string = string {
+                
+                getIPInformation(IP: string)
+               
+            }
+        }
+        
+        if ismained == true {
             
-            value = 1
+            time += 1
             
-            SwiftPublicIP.getPublicIP(url: PublicIPAPIURLs.ipv4.icanhazip.rawValue) { [self] (string, error) in
-                if let error = error {
-                    print(error.localizedDescription)
-                } else if let string = string {
-                    
-                    getIPInformation(IP: string)
-                   
-                }
+            if time < 2 {
+                
+            } else {
+                
+                NotificationCenter.default.post(name: (NSNotification.Name(rawValue: "scrollToIndex")), object: nil)
+          
             }
             
-        } else {
-            
-            NotificationCenter.default.post(name: (NSNotification.Name(rawValue: "scrollToIndex")), object: nil)
-            
-            
         }
+        
         
        
         
@@ -634,17 +864,9 @@ class PostNode: ASCellNode {
             }
                 
             }
-            
-            
-            
+
         }
-        
-    
-            
-            
-            
-        
-        
+  
     }
     
     @objc func appMovedToBackground() {
@@ -706,6 +928,12 @@ class PostNode: ASCellNode {
     @objc func userProfileBtnPressed(sender: AnyObject!) {
   
         profileBtn?(self)
+  
+    }
+    
+    @objc func cmtBtnPressed(sender: AnyObject!) {
+  
+        commentBtn?(self)
   
     }
     

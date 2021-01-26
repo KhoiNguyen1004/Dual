@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="reportView" customModule="Dual" customModuleProvider="target">
+            <connections>
+                <outlet property="Cpview" destination="6m8-za-wuM" id="VhB-QT-fbz"/>
+                <outlet property="tableView" destination="vZG-p0-F2d" id="tGq-gr-8ba"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="408" height="612"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Report" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l1S-6a-NKz">
+                    <rect key="frame" x="177.5" y="52" width="53" height="20.5"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="vZG-p0-F2d">
+                    <rect key="frame" x="8" y="125.5" width="392" height="478.5"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </tableView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Why are you reporting this account ?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s0n-ZD-gf7">
+                    <rect key="frame" x="61" y="88.5" width="286" height="21"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6m8-za-wuM">
+                    <rect key="frame" x="0.0" y="0.0" width="408" height="612"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Thanks for letting us know" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7b9-3a-DYC">
+                            <rect key="frame" x="101.5" y="94" width="205.5" height="21"/>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="rpcompleted" translatesAutoresizingMaskIntoConstraints="NO" id="wfI-og-ds6">
+                            <rect key="frame" x="169" y="16" width="70" height="70"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="70" id="Nfy-SG-ViJ"/>
+                                <constraint firstAttribute="width" constant="70" id="UGm-uo-gdi"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your feedback is very important in helping us keep the Dual community safe." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2wO-zw-o44">
+                            <rect key="frame" x="32" y="105" width="344" height="100"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="100" id="IxH-mC-qfm"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="wfI-og-ds6" firstAttribute="centerX" secondItem="6m8-za-wuM" secondAttribute="centerX" id="88F-Am-qgS"/>
+                        <constraint firstItem="2wO-zw-o44" firstAttribute="leading" secondItem="6m8-za-wuM" secondAttribute="leading" constant="32" id="Jhv-F4-8Th"/>
+                        <constraint firstItem="wfI-og-ds6" firstAttribute="top" secondItem="6m8-za-wuM" secondAttribute="top" constant="16" id="h59-ld-cyP"/>
+                        <constraint firstAttribute="trailing" secondItem="2wO-zw-o44" secondAttribute="trailing" constant="32" id="lfD-Ky-f7b"/>
+                        <constraint firstItem="2wO-zw-o44" firstAttribute="top" secondItem="7b9-3a-DYC" secondAttribute="bottom" constant="-10" id="mfJ-Hr-rnf"/>
+                        <constraint firstItem="2wO-zw-o44" firstAttribute="centerX" secondItem="6m8-za-wuM" secondAttribute="centerX" id="tL5-vd-ZYt"/>
+                        <constraint firstItem="7b9-3a-DYC" firstAttribute="top" secondItem="wfI-og-ds6" secondAttribute="bottom" constant="8" id="ug0-fX-JWs"/>
+                        <constraint firstItem="7b9-3a-DYC" firstAttribute="centerX" secondItem="6m8-za-wuM" secondAttribute="centerX" id="vBq-iI-Iok"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="l1S-6a-NKz" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="8" id="2wH-ua-gEg"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="6m8-za-wuM" secondAttribute="trailing" id="86I-J7-n8e"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="vZG-p0-F2d" secondAttribute="trailing" constant="8" id="FF2-kc-pPF"/>
+                <constraint firstItem="6m8-za-wuM" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="H4w-mC-vxX"/>
+                <constraint firstItem="s0n-ZD-gf7" firstAttribute="top" secondItem="l1S-6a-NKz" secondAttribute="bottom" constant="16" id="ME9-El-Ofw"/>
+                <constraint firstItem="vZG-p0-F2d" firstAttribute="top" secondItem="s0n-ZD-gf7" secondAttribute="bottom" constant="16" id="Tgt-Vi-orn"/>
+                <constraint firstItem="s0n-ZD-gf7" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="XpX-2r-7lk"/>
+                <constraint firstItem="l1S-6a-NKz" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="hT1-WS-9I3"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="vZG-p0-F2d" secondAttribute="bottom" constant="8" id="hmV-Pg-xM7"/>
+                <constraint firstItem="vZG-p0-F2d" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="8" id="on5-Jt-8LM"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="6m8-za-wuM" secondAttribute="bottom" id="y0k-vZ-6kA"/>
+                <constraint firstItem="6m8-za-wuM" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="zet-eh-xqD"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="69.565217391304358" y="220.3125"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="rpcompleted" width="96" height="96"/>
+    </resources>
+</document>

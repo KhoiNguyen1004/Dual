@@ -14,6 +14,7 @@ import Alamofire
 import SwiftyJSON
 
 
+
 enum LoadControl {
     case NewLoad
     case NewLoadCategory
@@ -24,12 +25,14 @@ enum LoadControl {
 
 class FeedVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIAdaptivePresentationControllerDelegate, UITextFieldDelegate {
 
+    
 
     var ControlLoad = LoadControl.NewLoad
     var currentIndex = 0
     var challengeItem: HighlightsModel!
     var challengeName = ""
     var userid = ""
+    var currentItem: HighlightsModel!
     
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var bView: UIView!
@@ -40,11 +43,10 @@ class FeedVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     var itemList = [CategoryModel]()
     var tableNode: ASTableNode!
     var posts = [HighlightsModel]()
-    var lastDocumentSnapshot: DocumentSnapshot!
-    var query: Query!
     var item_id_list = [String]()
     var index = 0
     var type = "For you"
+    
     
     var backgroundView = UIView()
     var CView = ChallengesView()
@@ -97,19 +99,6 @@ class FeedVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
             tableNode.view.addSubview(pullControl)
         }
         
-       
-        
-        /*
-        dragControl.tintColor = UIColor.systemOrange
-        dragControl.addTarget(self, action: #selector(refreshListCategory(_:)), for: .valueChanged)
-        if #available(iOS 10.0, *) {
-            collectionView.refreshControl = dragControl
-        } else {
-            collectionView.addSubview(dragControl)
-        }
-        
-        self.collectionView.alwaysBounceVertical = true
-        */
    
     }
     
@@ -122,6 +111,7 @@ class FeedVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         self.firstLoad = true
         loadAddGame()
               
+        
     }
     
     
@@ -293,12 +283,16 @@ class FeedVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         
         should_Play = false
         alreadyShow = false
+        ismained = true
         
         NotificationCenter.default.removeObserver(self, name: (NSNotification.Name(rawValue: "scrollToTop")), object: nil)
         NotificationCenter.default.removeObserver(self, name: (NSNotification.Name(rawValue: "scrollToIndex")), object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShow), name:UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        
+       
        
     }
 
@@ -320,10 +314,16 @@ class FeedVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         NotificationCenter.default.post(name: (NSNotification.Name(rawValue: "CheckIfPauseVideo")), object: nil)
         
         
-        
         should_Play = true
         alreadyShow = true
         
+        
+        if isReObserved == true {
+            
+            isReObserved = false
+            
+            
+        }
         
     
     }
@@ -1157,7 +1157,7 @@ class FeedVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
                         
                                     let device = UIDevice().type.rawValue
                                     let urls = URL(string: "http://ip-api.com/json/")!.appendingPathComponent(string)
-                                    var data = ["receiver_ID": challengeItem.userUID!, "sender_ID": Auth.auth().currentUser!.uid, "category": challengeItem.category!, "created_timeStamp": FieldValue.serverTimestamp(), "started_timeStamp": FieldValue.serverTimestamp(), "Device": device, "messages": self.CView.messages.text!, "challenge_status": "Pending"] as [String : Any]
+                                    var data = ["receiver_ID": challengeItem.userUID!, "sender_ID": Auth.auth().currentUser!.uid, "category": challengeItem.category!, "created_timeStamp": FieldValue.serverTimestamp(), "started_timeStamp": FieldValue.serverTimestamp(), "updated_timeStamp": FieldValue.serverTimestamp(), "Device": device, "messages": self.CView.messages.text!, "challenge_status": "Pending", "uid_list": [challengeItem.userUID, Auth.auth().currentUser!.uid], "isPending": true] as [String : Any]
                                     
                                     let db = DataService.instance.mainFireStoreRef.collection("Challenges")
                                     
@@ -1190,7 +1190,7 @@ class FeedVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
                                                             CView.removeFromSuperview()
                                                             NotificationCenter.default.post(name: (NSNotification.Name(rawValue: "resumeVideo")), object: nil)
                                                             
-                                                            showNote(text: "Cool! You have succesfully sent a challenge to @\(challengeName)")
+                                                            showNote(text: "Cool! Challenge sent to @\(challengeName)")
                                                             
                                                             
                                                         }
@@ -1309,8 +1309,52 @@ class FeedVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         NotificationCenter.default.post(name: (NSNotification.Name(rawValue: "pauseVideo")), object: nil)
         isFeed = true
         userid = item.userUID
+        
+        ismained = false
+        
         self.performSegue(withIdentifier: "moveToUserProfileVC3", sender: nil)
 
+    }
+    
+    func openComment(item: HighlightsModel) {
+        
+        
+        DataService.instance.mainFireStoreRef.collection("Highlights").whereField("Mux_assetID", isEqualTo: item.Mux_assetID!).whereField("Mux_playbackID", isEqualTo: item.Mux_playbackID!).whereField("status", isEqualTo: "Ready").whereField("Allow_comment", isEqualTo: true).getDocuments { (snap, err) in
+            
+            
+            if err != nil {
+                
+                self.showErrorAlert("Oops !", msg: "Can't open the comment for this highlight right now.")
+                return
+            }
+            
+            if snap?.isEmpty == true {
+                
+                self.showErrorAlert("Oops !", msg: "The comment for this highlight is disabled")
+                return
+                
+            } else {
+                
+                NotificationCenter.default.post(name: (NSNotification.Name(rawValue: "pauseVideo")), object: nil)
+                self.isFeed = true
+                self.currentItem = item
+                //let memeDetailVC = MemeDetailVC.init(meme: Meme())
+                let slideVC = CommentVC()
+                
+                slideVC.modalPresentationStyle = .custom
+                slideVC.transitioningDelegate = self
+                slideVC.isFeed = self.isFeed
+                slideVC.currentItem = self.currentItem
+                should_Play = false
+                self.present(slideVC, animated: true, completion: nil)
+                          
+                
+            }
+            
+        }
+    
+        
+        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -1326,8 +1370,7 @@ class FeedVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         }
         
     }
-    
-    
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         
@@ -1360,7 +1403,9 @@ class FeedVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     
         
 }
+
 extension FeedVC: ASTableDelegate {
+    
     func tableNode(_ tableNode: ASTableNode, constrainedSizeForRowAt indexPath: IndexPath) -> ASSizeRange {
         let width = UIScreen.main.bounds.size.width;
         let min = CGSize(width: width, height: self.bView.layer.frame.height);
@@ -1566,6 +1611,12 @@ extension FeedVC: ASTableDataSource {
                 self.openProfile(item: post)
                 
             }
+            
+            node.commentBtn = { (node) in
+                
+                self.openComment(item: post)
+                
+            }
                 
             return node
         }
@@ -1587,7 +1638,7 @@ extension FeedVC: ASTableDataSource {
             
         }
         
-        
+        cell.time = 0
         cell.startObserve()
     
         
@@ -1605,7 +1656,9 @@ extension FeedVC: ASTableDataSource {
         
         cell.removeAllobserve()
         
+        
     }
+ 
     
     func loadRecommendID(IP: String, completed: @escaping DownloadComplete) {
         
@@ -1644,8 +1697,6 @@ extension FeedVC: ASTableDataSource {
                                         urls = URL(string: url!)?.appendingPathComponent("aws-personalize-get-recommendation-category-viewFilter")
                                     
                                     }
-                                    
-            
                                     
                                     AF.request(urls!, method: .post, parameters: [
 
@@ -1741,9 +1792,7 @@ extension FeedVC: ASTableDataSource {
         let total = list.count
         var tempList = [String]()
         let db = DataService.instance.mainFireStoreRef
-        
-        
-        
+         
         for key in list {
         
             db.collection("Highlights").document(key).getDocument { (snap, err) in
@@ -1754,7 +1803,7 @@ extension FeedVC: ASTableDataSource {
                     return
                 }
                 
-                if snap?.data() != nil, snap!.data()!["status"] as! String == "Ready" {
+                if snap?.data() != nil, snap!.data()!["h_status"] as! String == "Ready", snap!.data()!["mode"] as! String != "Only me" {
                     
                     tempList.append(key)
                     
@@ -1836,8 +1885,7 @@ extension FeedVC {
              
              
         }
-        
-       
+         
     
     }
     
@@ -1870,8 +1918,13 @@ extension FeedVC {
         self.posts.append(contentsOf: items)
         self.tableNode.insertRows(at: indexPaths, with: .none)
         
-        
     }
     
     
+}
+
+extension FeedVC: UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        PresentationController(presentedViewController: presented, presenting: presenting)
+    }
 }

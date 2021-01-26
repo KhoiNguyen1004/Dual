@@ -110,9 +110,9 @@ class SettingVC: UIViewController,  UITableViewDelegate, UITableViewDataSource {
                     
                     self.performSegue(withIdentifier: "moveToMainVC6", sender: nil)
                     
-            }
+                }
             
-        }
+            }
         
         }
         
@@ -120,7 +120,7 @@ class SettingVC: UIViewController,  UITableViewDelegate, UITableViewDataSource {
     
     func openTermOfService() {
         
-        guard let urls = URL(string: "http://campusconnectonline.com/wp-content/uploads/2017/07/Website-Terms-of-Use.pdf") else {
+        guard let urls = URL(string: "http://dual.so") else {
             return //be safe
         }
         
@@ -133,7 +133,7 @@ class SettingVC: UIViewController,  UITableViewDelegate, UITableViewDataSource {
     
     func openAboutUs() {
         
-        guard let urls = URL(string: "http://campusconnectonline.com/wp-content/uploads/2017/07/Web-Privacy-Policy.pdf") else {
+        guard let urls = URL(string: "http://dual.so") else {
             return //be safe
         }
         

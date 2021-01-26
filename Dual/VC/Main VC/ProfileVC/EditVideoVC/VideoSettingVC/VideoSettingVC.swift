@@ -99,10 +99,12 @@ class VideoSettingVC: UIViewController {
                 }
               
                 let db = DataService.instance.mainFireStoreRef.collection("Highlights")
+                
+                
+                //h_status
+                
+                db.document(id).updateData(["h_status": "Deleted"]) { (err) in
                     
-                db.document(id).delete() { err in
-                    
-                   
                     DispatchQueue.main.async {
                         SwiftLoader.hide()
                     }
@@ -111,9 +113,7 @@ class VideoSettingVC: UIViewController {
                             print("Error removing document: \(err)")
                     } else {
                             print("Document successfully removed!")
-                        
-                    
-                        
+       
                         print("Send data to backend for mux deleting!")
                         
                         DataService.instance.mainRealTimeDataBaseRef.child("Mux-Deleting").child(id).setValue(["id": playback_id])
@@ -130,7 +130,8 @@ class VideoSettingVC: UIViewController {
                             
                     }
                 }
-                
+                    
+             
                 
             }
             

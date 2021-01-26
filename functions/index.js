@@ -67,7 +67,7 @@ exports.MuxProcessing = functions.database.ref('/Mux-Processing/{ref}/{urls}')
             const res = await highlightRef.update({
               Mux_processed: true,
               Mux_playbackID: id,
-              status: 'Ready',
+              h_status: 'Ready',
               Mux_assetID: asset.id});
 
             var rm = rt.ref('/Mux-Processing'+'/' + ref);
@@ -105,3 +105,66 @@ exports.MuxDelete = functions.database.ref('/Mux-Deleting/{ref}/{id}')
 
 
 });
+
+
+exports.CmtDelete = functions.database.ref('/Cmt-Deleting/{ref}/{id}')
+    .onWrite(async (change, context) => {
+
+      const ref = context.params.ref;
+      const commentRef = db.collection('Comments');
+
+      var rm = rt.ref('/Cmt-Deleting'+'/' + ref);
+      rm.remove();
+
+      const snapshot = await commentRef.where('isReply', '==', true).where('cmt_status', '==', 'valid').where('root_id', '==', ref).get();
+
+      if (snapshot.empty) {
+          console.log('No matching documents.');
+          return;
+
+      }
+
+      var count = 0
+      var total = snapshot.size
+      var dict = [];
+
+      snapshot.forEach(doc => {
+
+        dict.push({
+            ITEM_ID: doc.id
+        });
+
+      });
+
+      console.log(dict)
+      MarkDelItem(0, dict)
+
+});
+
+async function MarkDelItem(index, dict) {
+
+    if (index < dict.length) {
+
+      var item = dict[index];
+
+      const updateRef = db.collection('Comments').doc(`${item.ITEM_ID}`);
+
+      const res = await updateRef.update({
+
+          cmt_status: "deleted-by-root",
+          updated_timeStamp: admin.firestore.Timestamp.now()
+
+      })
+
+      console.log("Del item ", `${item.ITEM_ID}`, index, "of ", dict.length);
+
+      index++
+      MarkDelItem(index, dict);
+
+
+    }
+
+
+
+
+}

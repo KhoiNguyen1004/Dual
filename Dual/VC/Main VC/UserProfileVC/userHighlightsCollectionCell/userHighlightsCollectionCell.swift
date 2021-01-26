@@ -36,7 +36,7 @@ class userHighlightsCollectionCell: UICollectionViewCell, ModelTransfer {
             
             modeView.image = UIImage(named: "public")
         
-        } else if mode == "Friends" {
+        } else if mode == "Followers" {
             
             modeView.image = UIImage(named: "friends")
             
