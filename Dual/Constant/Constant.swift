@@ -18,7 +18,7 @@ var alreadyShow = false
 var ismained = false
 var isReObserved = false
 
-
+var sendbird_applicationID = "3282B7E3-9F35-412F-B911-DBC217B9B0D6"
 
 typealias DownloadComplete = () -> ()
 
@@ -657,4 +657,29 @@ func calculateMedian(array: [Int]) -> Double {
     
     // handle when count of items is odd
     return Double(sorted[length / 2])
+}
+
+
+extension UINavigationBar {
+
+    @IBInspectable var bottomBorderColor: UIColor {
+        get {
+            return self.bottomBorderColor;
+        }
+        set {
+            let bottomBorderRect = CGRect.zero;
+            let bottomBorderView = UIView(frame: bottomBorderRect);
+            bottomBorderView.backgroundColor = newValue;
+            addSubview(bottomBorderView);
+
+            bottomBorderView.translatesAutoresizingMaskIntoConstraints = false;
+
+            self.addConstraint(NSLayoutConstraint(item: bottomBorderView, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1, constant: 0));
+            self.addConstraint(NSLayoutConstraint(item: bottomBorderView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1, constant: 0));
+            self.addConstraint(NSLayoutConstraint(item: bottomBorderView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1, constant: 0));
+            self.addConstraint(NSLayoutConstraint(item: bottomBorderView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute,multiplier: 1, constant: 1));
+        }
+
+    }
+
 }

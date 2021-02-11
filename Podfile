@@ -34,6 +34,7 @@ target 'Dual' do
   pod 'SwiftPublicIP', '~> 0.0.2'
   pod 'SwiftEntryKit', '1.2.6'
   pod 'MGSwipeTableCell'
+  pod 'SendBirdSDK'
   
   target 'DualTests' do
     inherit! :search_paths

@@ -425,6 +425,7 @@ PODS:
   - PromisesObjC (1.2.12)
   - Protobuf (3.14.0)
   - QuickLayout (3.0.0)
+  - SendBirdSDK (3.0.214)
   - SwiftEntryKit (1.2.6):
     - QuickLayout (= 3.0.0)
   - SwiftPublicIP (0.0.2)
@@ -479,6 +480,7 @@ DEPENDENCIES:
   - MGSwipeTableCell
   - NVActivityIndicatorView/AppExtension
   - PixelSDK
+  - SendBirdSDK
   - SwiftEntryKit (= 1.2.6)
   - SwiftPublicIP (~> 0.0.2)
   - SwiftyJSON
@@ -535,6 +537,7 @@ SPEC REPOS:
     - PromisesObjC
     - Protobuf
     - QuickLayout
+    - SendBirdSDK
     - SwiftEntryKit
     - SwiftPublicIP
     - SwiftyJSON
@@ -591,6 +594,7 @@ SPEC CHECKSUMS:
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   Protobuf: 0cde852566359049847168e51bd1c690e0f70056
   QuickLayout: 07b45a72b10083fee3f095990cfed1c1e7b27f0a
+  SendBirdSDK: 38f229cd4932a53690a0717175896c920cc637b1
   SwiftEntryKit: 96a2fa90b2631bbbfac50d18449e9ca3d0635f13
   SwiftPublicIP: 541a07881cf504954e30237eaa99157b1aa50ca3
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
@@ -601,6 +605,6 @@ SPEC CHECKSUMS:
   ZSWTaggedString: 1a6aab3143188634c1e5dfe9383ce754c1fb5fe2
   ZSWTappableLabel: cff84c0a55e30f2141f7dac24e5903302a7e35ec
 
-PODFILE CHECKSUM: dab6457d3b31289757a6549099ef2597ee04259f
+PODFILE CHECKSUM: 79d69a388307a0a24120667b2f5299227113515a
 
 COCOAPODS: 1.10.0

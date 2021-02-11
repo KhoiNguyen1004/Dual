@@ -12,6 +12,7 @@ import Alamofire
 import FBSDKCoreKit
 import GoogleSignIn
 import TwitterKit
+import SendBirdSDK
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -53,11 +54,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                    application,
                    didFinishLaunchingWithOptions: launchOptions
                )
+        
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
         
         TWTRTwitter.sharedInstance().start(withConsumerKey: twApiKey, consumerSecret: twSecretKey)
         
-        
+        SBDMain.initWithApplicationId(sendbird_applicationID)
         
         return true
     }

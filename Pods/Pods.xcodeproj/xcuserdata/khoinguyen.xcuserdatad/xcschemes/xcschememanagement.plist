@@ -305,68 +305,75 @@
 			<key>orderHint</key>
 			<integer>48</integer>
 		</dict>
-		<key>SwiftEntryKit.xcscheme</key>
+		<key>SendBirdSDK.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
 			<integer>49</integer>
 		</dict>
-		<key>SwiftPublicIP.xcscheme</key>
+		<key>SwiftEntryKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
 			<integer>50</integer>
 		</dict>
-		<key>SwiftyJSON.xcscheme</key>
+		<key>SwiftPublicIP.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
 			<integer>51</integer>
 		</dict>
-		<key>Texture.xcscheme</key>
+		<key>SwiftyJSON.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
 			<integer>52</integer>
 		</dict>
-		<key>TransitionButton.xcscheme</key>
+		<key>Texture.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
 			<integer>53</integer>
 		</dict>
-		<key>TwitterCore.xcscheme</key>
+		<key>TransitionButton.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
 			<integer>54</integer>
 		</dict>
-		<key>TwitterKit.xcscheme</key>
+		<key>TwitterCore.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
 			<integer>55</integer>
 		</dict>
-		<key>ZSWTaggedString.xcscheme</key>
+		<key>TwitterKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
 			<integer>56</integer>
 		</dict>
-		<key>ZSWTappableLabel.xcscheme</key>
+		<key>ZSWTaggedString.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
 			<integer>57</integer>
+		</dict>
+		<key>ZSWTappableLabel.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+			<key>orderHint</key>
+			<integer>58</integer>
 		</dict>
 		<key>abseil.xcscheme</key>
 		<dict>
