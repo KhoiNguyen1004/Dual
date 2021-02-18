@@ -216,7 +216,7 @@ class ChallengeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
        
             if err != nil {
                 self.pendingTableView.isHidden = true
-                self.height1Constant.constant = self.view.frame.height * (50/647)
+                self.height1Constant.constant = self.view.frame.height * (60/647)
                 
                 if self.pullControl1.isRefreshing == true {
                     self.pullControl1.endRefreshing()
@@ -230,7 +230,7 @@ class ChallengeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
                 if snap?.isEmpty == true {
                     
                     self.pendingTableView.isHidden = true
-                    self.height1Constant.constant = self.view.frame.height * (50/647)
+                    self.height1Constant.constant = self.view.frame.height * (60/647)
                     completed()
                     
                 } else {
@@ -240,7 +240,7 @@ class ChallengeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
                     
                     if maxItem == 1 {
                         
-                        self.height1Constant.constant = self.view.frame.height * (120/647)
+                        self.height1Constant.constant = self.view.frame.height * (130/647)
                         
                     } else {
                         
@@ -248,17 +248,17 @@ class ChallengeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
                         
                         if count == 1 {
                             
-                            self.height1Constant.constant = self.view.frame.height * (120/647)
+                            self.height1Constant.constant = self.view.frame.height * (130/647)
                             
                         }
                         else if count == 2 {
                             
-                            self.height1Constant.constant = self.view.frame.height * (150/647)
+                            self.height1Constant.constant = self.view.frame.height * (160/647)
                             
                             
                         } else {
                             
-                            self.height1Constant.constant = self.view.frame.height * (220/647)
+                            self.height1Constant.constant = self.view.frame.height * (230/647)
                             
                         }
                         
@@ -317,17 +317,17 @@ class ChallengeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
                         
                         if self.pendingList.count == 1 {
                             
-                            self.height1Constant.constant = self.view.frame.height * (120/647)
+                            self.height1Constant.constant = self.view.frame.height * (130/647)
                         }
                         else if self.pendingList.count == 2 {
                             
-                            self.height1Constant.constant = self.view.frame.height * (150/647)
+                            self.height1Constant.constant = self.view.frame.height * (160/647)
                             
                             
                         } else {
                             
                             self.pendingTableView.isHidden =  true
-                            self.height1Constant.constant = self.view.frame.height * (50/647)
+                            self.height1Constant.constant = self.view.frame.height * (60/647)
                             
                         }
                         
@@ -383,17 +383,17 @@ class ChallengeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
                             
                             if self.activeList.count == 1 {
                                 
-                                self.height2Constant.constant = self.view.frame.height * (120/647)
+                                self.height2Constant.constant = self.view.frame.height * (130/647)
                             }
                             else if self.activeList.count == 2 {
                                 
-                                self.height2Constant.constant = self.view.frame.height * (150/647)
+                                self.height2Constant.constant = self.view.frame.height * (160/647)
                                 
                                 
                             } else {
                                 
                                 self.ActiveTableView.isHidden =  true
-                                self.height2Constant.constant = self.view.frame.height * (50/647)
+                                self.height2Constant.constant = self.view.frame.height * (60/647)
                                 
                             }
                             
@@ -447,17 +447,17 @@ class ChallengeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
                             
                             if self.expireList.count == 1 {
                                 
-                                self.height3Constant.constant = self.view.frame.height * (120/647)
+                                self.height3Constant.constant = self.view.frame.height * (130/647)
                             }
                             else if self.expireList.count == 2 {
                                 
-                                self.height3Constant.constant = self.view.frame.height * (150/647)
+                                self.height3Constant.constant = self.view.frame.height * (160/647)
                                 
                                 
                             } else {
                                 
                                 self.expireTableView.isHidden =  true
-                                self.height3Constant.constant = self.view.frame.height * (50/647)
+                                self.height3Constant.constant = self.view.frame.height * (60/647)
                                 
                             }
                             
@@ -525,7 +525,7 @@ class ChallengeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
             if err != nil {
                 
                 self.ActiveTableView.isHidden = true
-                self.height2Constant.constant = self.view.frame.height * (50/647)
+                self.height2Constant.constant = self.view.frame.height * (60/647)
                 if self.pullControl2.isRefreshing == true {
                     self.pullControl2.endRefreshing()
                 }
@@ -536,7 +536,7 @@ class ChallengeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
             if snap?.isEmpty == true {
                 
                 self.ActiveTableView.isHidden = true
-                self.height2Constant.constant = self.view.frame.height * (50/647)
+                self.height2Constant.constant = self.view.frame.height * (60/647)
                 completed()
                 
             } else {
@@ -546,7 +546,7 @@ class ChallengeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
                 
                 if maxItem == 1 {
                     
-                    self.height2Constant.constant = self.view.frame.height * (120/647)
+                    self.height2Constant.constant = self.view.frame.height * (130/647)
                     
                 } else {
                     
@@ -554,16 +554,16 @@ class ChallengeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
                     
                     if count == 1 {
                         
-                        self.height2Constant.constant = self.view.frame.height * (120/647)
+                        self.height2Constant.constant = self.view.frame.height * (130/647)
                     }
                     else if count == 2 {
                         
-                        self.height2Constant.constant = self.view.frame.height * (150/647)
+                        self.height2Constant.constant = self.view.frame.height * (160/647)
                         
                         
                     } else {
                         
-                        self.height2Constant.constant = self.view.frame.height * (220/647)
+                        self.height2Constant.constant = self.view.frame.height * (230/647)
                         
                     }
                     
@@ -609,7 +609,7 @@ class ChallengeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
             if err != nil {
                 
                 self.expireTableView.isHidden = true
-                self.height3Constant.constant = self.view.frame.height * (50/647)
+                self.height3Constant.constant = self.view.frame.height * (60/647)
                 
                 if self.pullControl3.isRefreshing == true {
                     self.pullControl3.endRefreshing()
@@ -622,7 +622,7 @@ class ChallengeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
             if snap?.isEmpty == true {
                 
                 self.expireTableView.isHidden = true
-                self.height3Constant.constant = self.view.frame.height * (50/647)
+                self.height3Constant.constant = self.view.frame.height * (60/647)
                 completed()
                 
             } else {
@@ -631,7 +631,7 @@ class ChallengeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
                 
                 if maxItem == 1 {
                     
-                    self.height3Constant.constant = self.view.frame.height * (120/647)
+                    self.height3Constant.constant = self.view.frame.height * (130/647)
                     
                 } else {
                     
@@ -639,16 +639,16 @@ class ChallengeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
                     
                     if count == 1 {
                         
-                        self.height3Constant.constant = self.view.frame.height * (120/647)
+                        self.height3Constant.constant = self.view.frame.height * (130/647)
                     }
                     else if count == 2 {
                         
-                        self.height3Constant.constant = self.view.frame.height * (150/647)
+                        self.height3Constant.constant = self.view.frame.height * (160/647)
                         
                         
                     } else {
                         
-                        self.height3Constant.constant = self.view.frame.height * (220/647)
+                        self.height3Constant.constant = self.view.frame.height * (230/647)
                         
                     }
                     
@@ -814,15 +814,15 @@ class ChallengeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
             
             if pendingList.count == 1 {
                 
-                self.height1Constant.constant = self.view.frame.height * (120/647)
+                self.height1Constant.constant = self.view.frame.height * (130/647)
             }
             else if pendingList.count == 2 {
                 
-                self.height1Constant.constant = self.view.frame.height * (150/647)
+                self.height1Constant.constant = self.view.frame.height * (160/647)
                 
             } else {
                 
-                self.height1Constant.constant = self.view.frame.height * (220/647)
+                self.height1Constant.constant = self.view.frame.height * (230/647)
                 
             }
             
@@ -848,15 +848,15 @@ class ChallengeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
             
             if activeList.count == 1 {
                 
-                self.height2Constant.constant = self.view.frame.height * (120/647)
+                self.height2Constant.constant = self.view.frame.height * (130/647)
             }
             else if activeList.count == 2 {
                 
-                self.height2Constant.constant = self.view.frame.height * (150/647)
+                self.height2Constant.constant = self.view.frame.height * (160/647)
                 
             } else {
                 
-                self.height2Constant.constant = self.view.frame.height * (220/647)
+                self.height2Constant.constant = self.view.frame.height * (230/647)
                 
             }
             
@@ -883,16 +883,16 @@ class ChallengeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
             
             if expireList.count == 1 {
                 
-                self.height3Constant.constant = self.view.frame.height * (120/647)
+                self.height3Constant.constant = self.view.frame.height * (130/647)
             }
             else if expireList.count == 2 {
                 
-                self.height3Constant.constant = self.view.frame.height * (150/647)
+                self.height3Constant.constant = self.view.frame.height * (160/647)
                 
                 
             } else {
                 
-                self.height3Constant.constant = self.view.frame.height * (220/647)
+                self.height3Constant.constant = self.view.frame.height * (230/647)
                 
             }
             

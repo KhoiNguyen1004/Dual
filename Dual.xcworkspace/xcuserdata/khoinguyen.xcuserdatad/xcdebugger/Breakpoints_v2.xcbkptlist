@@ -14,8 +14,8 @@
             filePath = "Dual/VC/Main VC/FeedVC/FeedVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1085"
-            endingLineNumber = "1085"
+            startingLineNumber = "1091"
+            endingLineNumber = "1091"
             landmarkName = "checkPendingChallenge(receiver_ID:completed:)"
             landmarkType = "7">
             <Locations>
@@ -62,8 +62,8 @@
             filePath = "Dual/VC/Main VC/FeedVC/FeedVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "412"
-            endingLineNumber = "412"
+            startingLineNumber = "415"
+            endingLineNumber = "415"
             landmarkName = "loadRecommendCategory()"
             landmarkType = "7">
          </BreakpointContent>
@@ -78,8 +78,8 @@
             filePath = "Dual/VC/Main VC/FeedVC/FeedVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "398"
-            endingLineNumber = "398"
+            startingLineNumber = "401"
+            endingLineNumber = "401"
             landmarkName = "loadRecommendCategory()"
             landmarkType = "7">
          </BreakpointContent>
@@ -94,8 +94,8 @@
             filePath = "Dual/VC/Main VC/FeedVC/FeedVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "396"
-            endingLineNumber = "396"
+            startingLineNumber = "399"
+            endingLineNumber = "399"
             landmarkName = "loadRecommendCategory()"
             landmarkType = "7">
          </BreakpointContent>
@@ -104,38 +104,6 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "E330761F-0EA1-4512-A4F7-7501241CE236"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Dual/VC/Main VC/FeedVC/FeedVC.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "415"
-            endingLineNumber = "415"
-            landmarkName = "loadRecommendCategory()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "E0918E0E-E38B-4BF0-9AC0-C7ED8BF9C051"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Dual/VC/Main VC/FeedVC/FeedVC.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "416"
-            endingLineNumber = "416"
-            landmarkName = "loadRecommendCategory()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "DDE61120-15B5-44AD-B9A7-E5FE21381F87"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -151,7 +119,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "79F47369-A3AB-412B-8823-EF5891077D76"
+            uuid = "E0918E0E-E38B-4BF0-9AC0-C7ED8BF9C051"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -167,7 +135,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "D36F95C0-8076-4EEB-A529-A55EF6D8B2B3"
+            uuid = "DDE61120-15B5-44AD-B9A7-E5FE21381F87"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -183,6 +151,38 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
+            uuid = "79F47369-A3AB-412B-8823-EF5891077D76"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Dual/VC/Main VC/FeedVC/FeedVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "422"
+            endingLineNumber = "422"
+            landmarkName = "loadRecommendCategory()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D36F95C0-8076-4EEB-A529-A55EF6D8B2B3"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Dual/VC/Main VC/FeedVC/FeedVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "424"
+            endingLineNumber = "424"
+            landmarkName = "loadRecommendCategory()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
             uuid = "304213E8-1AA9-4A29-A8DB-144F9AD152E0"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -190,8 +190,8 @@
             filePath = "Dual/VC/Main VC/FeedVC/FeedVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "420"
-            endingLineNumber = "420"
+            startingLineNumber = "423"
+            endingLineNumber = "423"
             landmarkName = "loadRecommendCategory()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1662,8 +1662,8 @@
             filePath = "Dual/VC/Main VC/FeedVC/FeedVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1641"
-            endingLineNumber = "1641"
+            startingLineNumber = "1666"
+            endingLineNumber = "1666"
             landmarkName = "tableNode(_:willDisplayRowWith:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1710,8 +1710,8 @@
             filePath = "Dual/VC/Main VC/FeedVC/FeedVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1045"
-            endingLineNumber = "1045"
+            startingLineNumber = "1051"
+            endingLineNumber = "1051"
             landmarkName = "challenge(item:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1728,7 +1728,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "414"
             endingLineNumber = "414"
-            landmarkName = "swiftLoader()"
+            landmarkName = "assignProfile(item:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1742,8 +1742,8 @@
             filePath = "Dual/VC/Main VC/FeedVC/FeedVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1894"
-            endingLineNumber = "1894"
+            startingLineNumber = "1964"
+            endingLineNumber = "1964"
             landmarkName = "insertNewRowsInTableNode(newPosts:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1822,8 +1822,8 @@
             filePath = "Dual/VC/Main VC/FeedVC/FeedVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "971"
-            endingLineNumber = "971"
+            startingLineNumber = "977"
+            endingLineNumber = "977"
             landmarkName = "shareVideo(item:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1870,8 +1870,8 @@
             filePath = "Dual/VC/Main VC/FeedVC/FeedVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "966"
-            endingLineNumber = "966"
+            startingLineNumber = "972"
+            endingLineNumber = "972"
             landmarkName = "shareVideo(item:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -2606,10 +2606,10 @@
             filePath = "Dual/VC/Main VC/FeedVC/FeedVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "300"
-            endingLineNumber = "300"
-            landmarkName = "viewDidAppear(_:)"
-            landmarkType = "7">
+            startingLineNumber = "303"
+            endingLineNumber = "303"
+            landmarkName = "FeedVC"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2880,8 +2880,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "706"
             endingLineNumber = "706"
-            landmarkName = "prepare(for:sender:)"
-            landmarkType = "7">
+            landmarkName = "ProfileVC"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -3038,8 +3038,8 @@
             filePath = "Dual/VC/Main VC/FeedVC/FeedVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1370"
-            endingLineNumber = "1370"
+            startingLineNumber = "1376"
+            endingLineNumber = "1376"
             landmarkName = "prepare(for:sender:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -3072,7 +3072,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "356"
             endingLineNumber = "356"
-            landmarkName = "assignProfile(item:)"
+            landmarkName = "getuserUID(list:uid:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -4593,38 +4593,6 @@
             endingLineNumber = "504"
             landmarkName = "findExistAndRemove(item:completed:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "EE335E0E-B769-48FB-9D8F-1643DA0ACED6 - 79eb21f08a9fba28"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Dual.ChallengeVC.findExistAndRemove(item: Dual.ChallengeModel, completed: () -&gt; ()) -&gt; ()"
-                  moduleName = "Dual"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/khoinguyen/Desktop/Dual/Dual/VC/Main%20VC/ChallengeVC/ChallengeVC.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "504"
-                  endingLineNumber = "504"
-                  offsetFromSymbolStart = "12632">
-               </Location>
-               <Location
-                  uuid = "EE335E0E-B769-48FB-9D8F-1643DA0ACED6 - 17b77c278f60401e"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #4 () -&gt; () in Dual.ChallengeVC.findExistAndRemove(item: Dual.ChallengeModel, completed: () -&gt; ()) -&gt; ()"
-                  moduleName = "Dual"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/khoinguyen/Desktop/Dual/Dual/VC/Main%20VC/ChallengeVC/ChallengeVC.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "506"
-                  endingLineNumber = "506"
-                  offsetFromSymbolStart = "40">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -4719,8 +4687,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1081"
             endingLineNumber = "1081"
-            landmarkName = "tableView(_:heightForRowAt:)"
-            landmarkType = "7">
+            landmarkName = "ChallengeVC"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -4735,7 +4703,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1083"
             endingLineNumber = "1083"
-            landmarkName = "tableView(_:heightForRowAt:)"
+            landmarkName = "swipeTableCell(_:canSwipe:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -4767,7 +4735,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1088"
             endingLineNumber = "1088"
-            landmarkName = "swipeTableCell(_:canSwipe:)"
+            landmarkName = "swipeTableCell(_:swipeButtonsFor:swipeSettings:expansionSettings:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -4783,7 +4751,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1090"
             endingLineNumber = "1090"
-            landmarkName = "swipeTableCell(_:canSwipe:)"
+            landmarkName = "swipeTableCell(_:swipeButtonsFor:swipeSettings:expansionSettings:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -5596,9 +5564,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1593"
-            endingLineNumber = "1593"
-            landmarkName = "ChallengeVC"
-            landmarkType = "21">
+            endingLineNumber = "1593">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -5630,6 +5596,38 @@
             startingLineNumber = "138"
             endingLineNumber = "138"
             landmarkName = "getstar(user:uid:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "39C5AA87-9711-4986-84E1-76566FB66C86"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Dual/VC/Main VC/FeedVC/FeedVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1586"
+            endingLineNumber = "1586"
+            landmarkName = "tableNode(_:willBeginBatchFetchWith:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "21382E55-40A0-46BE-8169-8BAA4B18D956"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Dual/VC/Main VC/FeedVC/FeedVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1432"
+            endingLineNumber = "1432"
+            landmarkName = "tableNode(_:willBeginBatchFetchWith:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

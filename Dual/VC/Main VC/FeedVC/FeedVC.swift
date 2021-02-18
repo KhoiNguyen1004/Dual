@@ -64,6 +64,9 @@ class FeedVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     var min_category_record = 10
     
     var isFeed = false
+    
+    var lastDocumentSnapshot: DocumentSnapshot!
+    var query: Query!
    
     
     required init?(coder aDecoder: NSCoder) {
@@ -521,6 +524,9 @@ class FeedVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         impressionList.removeAll()
         self.index = 0
         self.RecommendLoad = false
+        
+        lastDocumentSnapshot = nil
+        query = nil
         
         self.tableNode.reloadData()
         
@@ -1019,7 +1025,7 @@ class FeedVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
                     
                     
                     
-                    CView.frame = CGRect(x: self.view.frame.size.width / 2, y: self.view.frame.size.height * (250/813), width: self.view.frame.size.width * (365/414), height: self.view.frame.size.height * (157/813))
+                    CView.frame = CGRect(x: self.view.frame.size.width / 2, y: self.view.frame.size.height * (300/813), width: self.view.frame.size.width * (365/414), height: self.view.frame.size.height * (157/813))
                     self.view.addSubview(CView)
                     NotificationCenter.default.post(name: (NSNotification.Name(rawValue: "pauseVideo")), object: nil)
                     CView.messages.becomeFirstResponder()
@@ -1319,7 +1325,7 @@ class FeedVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     func openComment(item: HighlightsModel) {
         
         
-        DataService.instance.mainFireStoreRef.collection("Highlights").whereField("Mux_assetID", isEqualTo: item.Mux_assetID!).whereField("Mux_playbackID", isEqualTo: item.Mux_playbackID!).whereField("status", isEqualTo: "Ready").whereField("Allow_comment", isEqualTo: true).getDocuments { (snap, err) in
+        DataService.instance.mainFireStoreRef.collection("Highlights").whereField("Mux_assetID", isEqualTo: item.Mux_assetID!).whereField("Mux_playbackID", isEqualTo: item.Mux_playbackID!).whereField("h_status", isEqualTo: "Ready").whereField("Allow_comment", isEqualTo: true).getDocuments { (snap, err) in
             
             
             if err != nil {
@@ -1426,6 +1432,7 @@ extension FeedVC: ASTableDelegate {
     func tableNode(_ tableNode: ASTableNode, willBeginBatchFetchWith context: ASBatchContext) {
        
    
+        /*
         if RecommendLoad == true {
             
             if item_id_list.isEmpty != true, index < item_id_list.count {
@@ -1561,7 +1568,25 @@ extension FeedVC: ASTableDelegate {
             
             
         }
-        
+        */
+        self.retrieveNextPageWithCompletion { (newPosts) in
+            
+           
+                    
+            if newPosts.count > 0 {
+                        
+                self.insertNewRowsInTableNode(newPosts: newPosts)
+                        
+            }
+                
+            if self.pullControl.isRefreshing == true {
+                self.pullControl.endRefreshing()
+            }
+              
+            context.completeBatchFetching(true)
+                    
+                    
+        }
  
     }
     
@@ -1861,6 +1886,7 @@ extension FeedVC {
     
     func retrieveNextPageWithCompletion( block: @escaping ([DocumentSnapshot]) -> Void) {
  
+        /*
         let db = DataService.instance.mainFireStoreRef
         if item_id_list.isEmpty == true || item_id_list.count > index {
                  
@@ -1885,6 +1911,50 @@ extension FeedVC {
              
              
         }
+ */
+            let db = DataService.instance.mainFireStoreRef
+                
+                // whereField("userUID", isNotEqualTo: "your uid")
+                
+                if lastDocumentSnapshot == nil {
+                    
+                    query = db.collection("Highlights").order(by: "post_time", descending: true).whereField("h_status", isEqualTo: "Ready").limit(to: 2)
+                    
+                    
+                } else {
+                    
+                    query = db.collection("Highlights").order(by: "post_time", descending: true).whereField("h_status", isEqualTo: "Ready").limit(to: 2).start(afterDocument: lastDocumentSnapshot)
+                }
+                
+                query.getDocuments { [self] (snap, err) in
+                    
+                    if err != nil {
+                        
+                        print(err!.localizedDescription)
+                        return
+                    }
+                        
+                    if snap?.isEmpty != true {
+                        
+                        print("Successfully retrieved \(snap!.count) posts.")
+                        let items = snap?.documents
+                        self.lastDocumentSnapshot = snap!.documents.last
+                        DispatchQueue.main.async {
+                            block(items!)
+                        }
+                        
+                    } else {
+                        
+                        let items = snap?.documents
+                        DispatchQueue.main.async {
+                            block(items!)
+                        }
+                      
+                        
+                    }
+                    
+                    
+                }
          
     
     }

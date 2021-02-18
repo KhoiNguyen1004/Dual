@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 class MessageVC: UIViewController {
     
@@ -25,17 +26,42 @@ class MessageVC: UIViewController {
 
         // Do any additional setup after loading the view.
         
+        
+        if Auth.auth().currentUser?.isAnonymous == true {
+            
+            print("Login anonymously")
+            
+            let Lview = LoginView()
+            Lview.frame = self.view.layer.bounds
+            Lview.SignUpBtn.addTarget(self, action: #selector(MessageVC.SignUpBtnPressed), for: .touchUpInside)
+            self.view.addSubview(Lview)
+            
+            //
+            self.navigationController?.setNavigationBarHidden(true, animated: false)
+            
+            return
+             
+        }
+        
+  
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
         navigationItem.title = "Messages"
         let add = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
         navigationItem.rightBarButtonItem = add
         
         
         
-        //
+        //moveToLoginVC6
         
         challengeBtn.setTitleColor(UIColor.white, for: .normal)
         friendBtn.setTitleColor(UIColor.lightGray, for: .normal)
         
+    }
+    
+    @objc func SignUpBtnPressed() {
+        
+        self.performSegue(withIdentifier: "moveToLoginVC6", sender: nil)
+      
     }
     
     override func viewDidAppear(_ animated: Bool) {
