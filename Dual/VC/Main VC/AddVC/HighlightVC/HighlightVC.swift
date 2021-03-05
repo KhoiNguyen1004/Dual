@@ -557,26 +557,42 @@ class HighlightVC: UIViewController {
                 StreamLink = "nil"
             }
      
-            print("Start exporting")
-            exportVideo(video: selectedVideo){
-                // add watermark
-                DispatchQueue.main.async {
-                    self.selectedVideo = nil
-                    let img = UIImage(named: "Icon awesome-photo-video")
-                    self.checkImg.image = img
-                    SwiftLoader.hide()
-                }
-                
-                print("Start uploading")
-                
-                Dispatch.background {
-                    
-                    print("Run on background thread")
-                    self.uploadVideo(url: self.exportedURL)
         
+            SwiftLoader.hide()
+            
+            
+            print("Run on background thread")
+            
+            Dispatch.background {
+                
+                
+                
+                print("Start exporting")
+                self.exportVideo(video: self.selectedVideo){
+                    
+                    
+                    // add watermark
+                    DispatchQueue.main.async {
+                        self.selectedVideo = nil
+                        let img = UIImage(named: "Icon awesome-photo-video")
+                        self.checkImg.image = img
+                    }
+                    
+                    
+                    print("Start uploading")
+                    self.uploadVideo(url: self.exportedURL)
+                    
+                    
+                    
                 }
                 
+                
+                
+    
             }
+            
+            
+            
             
         } else {
             

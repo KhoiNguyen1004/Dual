@@ -83,24 +83,30 @@ class FeedVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         
         // Do any additional setup after loading the view.
         
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        
-       
-        bView.addSubview(tableNode.view)
-        self.applyStyle()
-        self.tableNode.leadingScreensForBatching = 2
-        
-        
-        loadAddGame()
-        
-        pullControl.tintColor = UIColor.systemOrange
-        pullControl.addTarget(self, action: #selector(refreshListData(_:)), for: .valueChanged)
-        if #available(iOS 10.0, *) {
-            tableNode.view.refreshControl = pullControl
-        } else {
-            tableNode.view.addSubview(pullControl)
+        if Auth.auth().currentUser?.uid != nil {
+            
+            collectionView.delegate = self
+            collectionView.dataSource = self
+            
+           
+            bView.addSubview(tableNode.view)
+            self.applyStyle()
+            self.tableNode.leadingScreensForBatching = 2
+            
+            
+            loadAddGame()
+            
+            pullControl.tintColor = UIColor.systemOrange
+            pullControl.addTarget(self, action: #selector(refreshListData(_:)), for: .valueChanged)
+            if #available(iOS 10.0, *) {
+                tableNode.view.refreshControl = pullControl
+            } else {
+                tableNode.view.addSubview(pullControl)
+            }
+            
         }
+        
+        
         
    
     }

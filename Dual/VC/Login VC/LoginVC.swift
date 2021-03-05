@@ -582,6 +582,7 @@ class LoginVC: UIViewController, ZSWTappableLabelTapDelegate, LoginButtonDelegat
       if let id = userId, fullName != nil, tokenAccess != nil, tokenID != nil  {
             
         let dict = ["fullName": fullName as Any, "tokenAccess": tokenAccess as Any, "tokenID": tokenID as Any] as Dictionary<String, Any>
+        
         checkForAlreadyAccount(field: "Google_id", id: "gg\(id)", dict: dict)
             
       } else {
@@ -604,7 +605,7 @@ class LoginVC: UIViewController, ZSWTappableLabelTapDelegate, LoginButtonDelegat
         self.dismiss(animated: true, completion: nil)
     }
     
-    
+    //twitter
     @IBAction func twitterBtnPressed(_ sender: Any) {
         
         login_type = "Twitter"
