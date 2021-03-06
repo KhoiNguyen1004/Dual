@@ -1085,6 +1085,7 @@ class ChallengeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
         
     }
     
+    
     func swipeTableCell(_ cell: MGSwipeTableCell, swipeButtonsFor direction: MGSwipeDirection, swipeSettings: MGSwipeSettings, expansionSettings: MGSwipeExpansionSettings) -> [UIView]? {
         
         var type = ""
@@ -1337,6 +1338,7 @@ class ChallengeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
         
         
     }
+    
     
     func AcceptAtIndexPath(_ path: IndexPath) {
            

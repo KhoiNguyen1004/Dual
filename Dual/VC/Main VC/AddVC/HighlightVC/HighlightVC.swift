@@ -537,8 +537,6 @@ class HighlightVC: UIViewController {
              
             }
             
-            swiftLoader()
-          
             if let title = highlightTitle.text, title != "" {
                 
                 Htitle = title
@@ -557,39 +555,24 @@ class HighlightVC: UIViewController {
                 StreamLink = "nil"
             }
      
-        
-            SwiftLoader.hide()
-            
             
             print("Run on background thread")
             
             Dispatch.background {
                 
-                
-                
                 print("Start exporting")
                 self.exportVideo(video: self.selectedVideo){
                     
-                    
-                    // add watermark
-                    DispatchQueue.main.async {
-                        self.selectedVideo = nil
-                        let img = UIImage(named: "Icon awesome-photo-video")
-                        self.checkImg.image = img
-                    }
-                    
-                    
                     print("Start uploading")
                     self.uploadVideo(url: self.exportedURL)
-                    
-                    
-                    
+                                       
                 }
                 
-                
-                
-    
             }
+            
+            
+            showNote(text: "Your video is being uploaded!")
+            self.dismiss(animated: true, completion: nil)
             
             
             
